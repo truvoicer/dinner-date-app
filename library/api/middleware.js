@@ -1,4 +1,4 @@
-import {getSessionObject} from "../../session/authenticate";
+import {getSessionObject} from "./session";
 import {buildRequestUrl} from "./helpers/api-helpers";
 import {apiConfig} from "../../config/api/config";
 import {isSet} from "../helpers/utils-helper";
@@ -10,10 +10,10 @@ const apiRequest = axios.create({
     baseURL: apiConfig.baseUrl,
 });
 
-export const getApiUser = async () => {
+export const fetchSessionUser = async () => {
     const requestData = {
         method: "post",
-        url: `${apiConfig.endpoints.auth}/token/user`,
+        url: `${apiConfig.endpoints.session}/user/details`,
         headers: {'Authorization': sprintf("Bearer %s", getSessionObject().access_token)}
     }
     return await apiRequest.request(requestData);
