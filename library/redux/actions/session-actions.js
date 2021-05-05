@@ -5,7 +5,12 @@ import {
     setSessionError, setSessionLoginRedirect,
     setSessionUser
 } from "../reducers/session-reducer";
+import {SESSION_AUTHENTICATED, SESSION_AUTHENTICATING, SESSION_STATE_KEY} from "../constants/session-constants";
 
+export function isAuthenticated() {
+    const sessionState = store.getState()[SESSION_STATE_KEY];
+    return (!sessionState[SESSION_AUTHENTICATING] && sessionState[SESSION_AUTHENTICATED]);
+}
 export function setSessionUserAction(user) {
     store.dispatch(setSessionUser(user))
 }

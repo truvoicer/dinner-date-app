@@ -1,4 +1,4 @@
-import {getSessionObject} from "./session";
+import {getSessionLocalStorage, getSessionObject} from "./session";
 import {buildRequestUrl} from "./helpers/api-helpers";
 import {apiConfig} from "../../config/api/config";
 import {isSet} from "../helpers/utils-helper";
@@ -11,11 +11,20 @@ const apiRequest = axios.create({
     baseURL: apiConfig.baseUrl,
 });
 
+export const validateTokenRequest = () => {
+    const requestData = {
+        method: "get",
+        url: `${apiConfig.endpoints.auth}/token/validate`,
+        headers: {'Authorization': sprintf("Bearer %s", getSessionLocalStorage().access_token)}
+    }
+    return apiRequest.request(requestData);
+}
+
 export const fetchSessionUser = () => {
     const requestData = {
         method: "get",
         url: `${apiConfig.endpoints.session}/user/detail`,
-        headers: {'Authorization': sprintf("Bearer %s", getSessionObject().access_token)}
+        headers: {'Authorization': sprintf("Bearer %s", getSessionLocalStorage().access_token)}
     }
     return apiRequest.request(requestData);
 }
@@ -46,35 +55,17 @@ export const fetchRequest = ({endpoint, operation = "", args = [], data={}, onSu
     // })
 }
 
-// export const postRequest = ({endpoint, operation, requestData, args = [], method = "post", headers = {}, onSuccess, onError}) => {
-//     const request = {
-//         method: method,
-//         url: buildRequestUrl({endpoint: endpoint, operation: operation, args: args}),
-//         data: requestData,
-//         headers: {
-//             'Authorization': sprintf("Bearer %s", getSessionObject().access_token),
-//             ...headers
-//         }
-//     }
-//     responseHandler({
-//         promise: apiRequest.request(request),
-//         onError: onError,
-//         onSuccess: onSuccess
-//     })
-// }
 export const postRequest = ({endpoint, operation, requestData, args = [], headers = {}}) => {
     const request = {
         method: "post",
         url: buildRequestUrl({endpoint: endpoint, operation: operation, args: args}),
         data: requestData,
         headers: {
-            'Authorization': sprintf("Bearer %s", getSessionObject().access_token),
+            'Authorization': sprintf("Bearer %s", getSessionLocalStorage().access_token),
             ...headers
         }
     }
-    responseHandler({
-        promise: apiRequest.request(request)
-    })
+    return apiRequest.request(request);
 }
 
 export const responseHandler = ({promise, action, errorAction}) => {

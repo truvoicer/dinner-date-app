@@ -5,14 +5,21 @@ import {
     setSessionUserAction
 } from "../redux/actions/session-actions";
 import {setSessionAuthenticating} from "../redux/reducers/session-reducer";
+import {isNotEmpty} from "../helpers/utils-helper";
+import {ROLE_ANONYMOUS} from "../../config/constants/access-control/roles-constants";
 
-export const setTokenStorage = (data) => {
+export const setTokenStorage = ({data}) => {
     setSessionLocalStorage(data);
 }
-export const setSessionState = (data) => {
+export const setSessionState = ({data}) => {
     setSessionAuthenticatedAction(true);
     setSessionAuthenticatingAction(false);
     setSessionUserAction(data.user);
+}
+export const setAnonSessionState = () => {
+    setSessionAuthenticatedAction(false);
+    setSessionAuthenticatingAction(false);
+    setSessionUserAction({roles: [ROLE_ANONYMOUS]});
 }
 
 // Sets user details in localStorage
@@ -33,7 +40,13 @@ export const logout = (redirectUrl) => {
     localStorage.setItem("redirect_url", redirectUrl);
     console.log(redirectUrl)
 }
-
+export const isLocalStorageTokenValid = () => {
+    const getLocalStorage = getSessionLocalStorage();
+    if (!isNotEmpty(getLocalStorage?.access_token) || !isNotEmpty(getLocalStorage?.expires_at)) {
+        return false;
+    }
+    return Date.now() < getLocalStorage?.expires_at;
+}
 export const getSessionLocalStorage = () => {
     return {
         access_token: localStorage.getItem('access_token'),

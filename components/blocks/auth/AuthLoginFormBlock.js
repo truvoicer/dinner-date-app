@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import Link from 'next/link';
 import FullWidthSection from "../../layout/sections/FullWidthSection";
 import {getRouteItem} from "../../../library/helpers/page-helper";
-import {HOME_VIEW, LOGIN_VIEW, SIGNUP_VIEW} from "../../../config/views/constants/view-constants";
+import {ACCOUNT_VIEW, HOME_VIEW, LOGIN_VIEW, SIGNUP_VIEW} from "../../../config/constants/views/view-constants";
 import store from "../../../library/redux/store";
 import {Formik} from "formik";
 import {AUTH_LOGIN_REQUESTED} from "../../../library/redux/sagas/session/auth-saga";
@@ -14,19 +14,15 @@ import {
 } from "../../../library/redux/constants/session-constants";
 import {isObjectEmpty} from "../../../library/helpers/utils-helper";
 import {useRouter} from "next/router";
+import {isAuthenticated} from "../../../library/redux/actions/session-actions";
 
 const AuthLoginFormBlock = ({session}) => {
     const router = useRouter();
 
     useEffect(() => {
-        if (
-            session[SESSION_AUTHENTICATING] ||
-            !session[SESSION_AUTHENTICATED] ||
-            isObjectEmpty(session[SESSION_USER])
-        ) {
-            return;
+        if (isAuthenticated()) {
+            router.replace(getRouteItem(ACCOUNT_VIEW).href);
         }
-        router.replace(getRouteItem(HOME_VIEW).href);
     }, [session[SESSION_AUTHENTICATED], session[SESSION_AUTHENTICATING], session[SESSION_USER]])
 
     const submitHandler = (values, { setSubmitting }) => {

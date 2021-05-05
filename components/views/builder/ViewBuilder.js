@@ -1,16 +1,17 @@
 import React from 'react';
-import {getComponent, getRouteItem, getViewBlocksConfig} from "../../../library/helpers/page-helper";
+import {getComponent, getRouteItem} from "../../../library/helpers/page-helper";
+import AuthWrapper from "../../layout/auth/AuthWrapper";
 
 const ViewBuilder = ({pageName}) => {
-    const getRouteName = getRouteItem(pageName)?.name;
+    const getRoute = getRouteItem(pageName);
     return (
-        <>
-            {getRouteName && getViewBlocksConfig(getRouteName).map((section, index) => (
-                <React.Fragment key={index}>
+        <AuthWrapper accessControlConfig={getRoute?.access_control}>
+            {getRoute?.viewConfig?.blocks && getRoute.viewConfig.blocks.map((section, index) => (
+                <AuthWrapper key={index} accessControlConfig={section?.access_control}>
                     {getComponent(section.component)}
-                </React.Fragment>
+                </AuthWrapper>
             ))}
-        </>
+        </AuthWrapper>
     );
 };
 

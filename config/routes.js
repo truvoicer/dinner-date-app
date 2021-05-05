@@ -8,7 +8,14 @@ import {
     HOME_VIEW, LOGIN_VIEW,
     MEMBERS_VIEW, PROFILE_VIEW,
     SEARCH_MEMBERS_VIEW, SIGNUP_VIEW
-} from "./views/constants/view-constants";
+} from "./constants/views/view-constants";
+import {ROLE_ADMIN, ROLE_ANONYMOUS, ROLE_SUPER_ADMIN, ROLE_USER} from "./constants/access-control/roles-constants";
+import {
+    MEMBERSHIP_BRONZE,
+    MEMBERSHIP_FREE,
+    MEMBERSHIP_GOLD, MEMBERSHIP_PLATINUM,
+    MEMBERSHIP_SILVER
+} from "./constants/access-control/membership-constants";
 
 export const routes = [
     {
@@ -16,25 +23,41 @@ export const routes = [
         label: "Home",
         href: "/",
         showInHeader: true,
-        blocksConfig: homeViewConfig
+        viewConfig: homeViewConfig,
+        access_control: {
+            roles: [ROLE_ANONYMOUS, ROLE_USER, ROLE_ADMIN, ROLE_SUPER_ADMIN],
+            memberships: [MEMBERSHIP_FREE, MEMBERSHIP_BRONZE, MEMBERSHIP_SILVER, MEMBERSHIP_GOLD, MEMBERSHIP_PLATINUM]
+        }
     },
     {
         name: MEMBERS_VIEW,
         label: "Members",
         href: "/members",
         showInHeader: true,
+        access_control: {
+            roles: [ROLE_USER, ROLE_ADMIN, ROLE_SUPER_ADMIN],
+            memberships: [MEMBERSHIP_FREE, MEMBERSHIP_BRONZE, MEMBERSHIP_SILVER, MEMBERSHIP_GOLD, MEMBERSHIP_PLATINUM]
+        },
         subRoutes: [
             {
                 name: SEARCH_MEMBERS_VIEW,
                 label: "Search Members",
                 href: "/members/search",
                 showInHeader: true,
+                access_control: {
+                    roles: [ROLE_USER, ROLE_ADMIN, ROLE_SUPER_ADMIN],
+                    memberships: [MEMBERSHIP_FREE, MEMBERSHIP_BRONZE, MEMBERSHIP_SILVER, MEMBERSHIP_GOLD, MEMBERSHIP_PLATINUM]
+                }
             },
             {
                 name: ALL_MEMBERS_VIEW,
                 label: "All Members",
                 href: "/members/list",
                 showInHeader: true,
+                access_control: {
+                    roles: [ROLE_USER, ROLE_ADMIN, ROLE_SUPER_ADMIN],
+                    memberships: [MEMBERSHIP_FREE, MEMBERSHIP_BRONZE, MEMBERSHIP_SILVER, MEMBERSHIP_GOLD, MEMBERSHIP_PLATINUM]
+                }
             },
         ]
     },
@@ -43,12 +66,20 @@ export const routes = [
         label: "Community",
         href: "/community",
         showInHeader: true,
+        access_control: {
+            roles: [ROLE_ANONYMOUS, ROLE_USER, ROLE_ADMIN, ROLE_SUPER_ADMIN],
+            memberships: [MEMBERSHIP_FREE, MEMBERSHIP_BRONZE, MEMBERSHIP_SILVER, MEMBERSHIP_GOLD, MEMBERSHIP_PLATINUM]
+        },
         subRoutes: [
             {
                 name: BLOG_VIEW,
                 label: "Blog",
                 href: "/community/blog",
                 showInHeader: true,
+                access_control: {
+                    roles: [ROLE_ANONYMOUS, ROLE_USER, ROLE_ADMIN, ROLE_SUPER_ADMIN],
+                    memberships: [MEMBERSHIP_FREE, MEMBERSHIP_BRONZE, MEMBERSHIP_SILVER, MEMBERSHIP_GOLD, MEMBERSHIP_PLATINUM]
+                }
             },
         ]
     },
@@ -57,12 +88,20 @@ export const routes = [
         label: "Account",
         href: "/account",
         showInHeader: true,
+        access_control: {
+            roles: [ROLE_USER, ROLE_ADMIN, ROLE_SUPER_ADMIN],
+            memberships: [MEMBERSHIP_FREE, MEMBERSHIP_BRONZE, MEMBERSHIP_SILVER, MEMBERSHIP_GOLD, MEMBERSHIP_PLATINUM]
+        },
         subRoutes: [
             {
                 name: PROFILE_VIEW,
                 label: "Profile",
                 href: "/account/profile",
                 showInHeader: true,
+                access_control: {
+                    roles: [ROLE_USER, ROLE_ADMIN, ROLE_SUPER_ADMIN],
+                    memberships: [MEMBERSHIP_FREE, MEMBERSHIP_BRONZE, MEMBERSHIP_SILVER, MEMBERSHIP_GOLD, MEMBERSHIP_PLATINUM]
+                }
             },
         ]
     },
@@ -71,13 +110,21 @@ export const routes = [
         label: "Login",
         href: "/login",
         showInHeader: false,
-        blocksConfig: loginViewConfig
+        viewConfig: loginViewConfig,
+        access_control: {
+            roles: [ROLE_ANONYMOUS, ROLE_USER, ROLE_ADMIN, ROLE_SUPER_ADMIN],
+            memberships: [MEMBERSHIP_FREE, MEMBERSHIP_BRONZE, MEMBERSHIP_SILVER, MEMBERSHIP_GOLD, MEMBERSHIP_PLATINUM]
+        }
     },
     {
         name: SIGNUP_VIEW,
         label: "Sign Up",
         href: "/signup",
         showInHeader: false,
-        blocksConfig: signUpViewConfig
+        viewConfig: signUpViewConfig,
+        access_control: {
+            roles: [ROLE_ANONYMOUS, ROLE_USER, ROLE_ADMIN, ROLE_SUPER_ADMIN],
+            memberships: [MEMBERSHIP_FREE, MEMBERSHIP_BRONZE, MEMBERSHIP_SILVER, MEMBERSHIP_GOLD, MEMBERSHIP_PLATINUM]
+        }
     },
 ];

@@ -2,12 +2,14 @@
 // worker Saga: will be fired on USER_FETCH_REQUESTED actions
 import {call, put, takeEvery} from "redux-saga/effects";
 import {fetchSessionUser} from "../../../api/middleware";
-import {setSessionState, setTokenStorage} from "../../../api/session";
+import {setAnonSessionState, setSessionState, setTokenStorage} from "../../../api/session";
 
 export const USER_FETCH_SUCCEEDED = "USER_FETCH_SUCCEEDED";
 export const USER_FETCH_FAILED = "USER_FETCH_FAILED";
 export const USER_FETCH_REQUESTED = "USER_FETCH_REQUESTED";
-export const SET_SESSION_REQUESTED = "SET_SESSION_REQUESTED";
+export const SET_SESSION_LOCAL_STORAGE_REQUESTED = "SET_SESSION_LOCAL_STORAGE_REQUESTED";
+export const SET_SESSION_STATE_REQUESTED = "SET_SESSION_STATE_REQUESTED";
+export const SET_ANON_SESSION_STATE_REQUESTED = "SET_ANON_SESSION_STATE_REQUESTED";
 
 function* fetchUser(action) {
     console.log(action)
@@ -19,14 +21,15 @@ function* fetchUser(action) {
     }
 }
 
-function* setSession({payload}) {
-    setTokenStorage(payload.data)
-    setSessionState(payload.data)
-}
-
 export function* fetchUserSaga() {
     yield takeEvery(USER_FETCH_REQUESTED, fetchUser);
 }
-export function* setSessionSaga() {
-    yield takeEvery(SET_SESSION_REQUESTED, setSession);
+export function* setSessionLocalStorageSaga() {
+    yield takeEvery(SET_SESSION_LOCAL_STORAGE_REQUESTED, setTokenStorage);
+}
+export function* setSessionStateSaga() {
+    yield takeEvery(SET_SESSION_STATE_REQUESTED, setSessionState);
+}
+export function* setAnonSessionStateSaga() {
+    yield takeEvery(SET_ANON_SESSION_STATE_REQUESTED, setAnonSessionState);
 }
