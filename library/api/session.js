@@ -11,6 +11,10 @@ import {ROLE_ANONYMOUS} from "../../config/constants/access-control/roles-consta
 export const setTokenStorage = ({data}) => {
     setSessionLocalStorage(data);
 }
+
+export const setSessionUserState = ({data}) => {
+    setSessionUserAction(data);
+}
 export const setSessionState = ({data}) => {
     setSessionAuthenticatedAction(true);
     setSessionAuthenticatingAction(false);
@@ -36,7 +40,6 @@ export const logout = (redirectUrl) => {
     // Clear access token and ID token from local storage
     localStorage.removeItem('access_token');
     localStorage.removeItem('expires_at');
-    setSessionLoginRedirectAction(redirectUrl);
     localStorage.setItem("redirect_url", redirectUrl);
     console.log(redirectUrl)
 }

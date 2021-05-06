@@ -1,8 +1,8 @@
 import {routes} from "../../config/routes";
 
-export const getComponent = (component) => {
+export const getComponent = ({component, props = {}}) => {
     const Component = component;
-    return <Component />
+    return <Component {...props}/>
 }
 
 export const getRouteItem = (pageName) => {

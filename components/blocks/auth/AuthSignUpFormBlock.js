@@ -7,7 +7,13 @@ import {
 } from "../../../library/redux/constants/session-constants";
 import {isObjectEmpty} from "../../../library/helpers/utils-helper";
 import {getRouteItem} from "../../../library/helpers/page-helper";
-import {ACCOUNT_VIEW, HOME_VIEW, LOGIN_VIEW, SIGNUP_VIEW} from "../../../config/constants/views/view-constants";
+import {
+    ACCOUNT_VIEW,
+    HOME_VIEW,
+    LOGIN_VIEW,
+    PROFILE_VIEW,
+    SIGNUP_VIEW
+} from "../../../config/constants/views/view-constants";
 import store from "../../../library/redux/store";
 import {AUTH_LOGIN_REQUESTED, AUTH_SIGNUP_REQUESTED} from "../../../library/redux/sagas/session/auth-saga";
 import FullWidthSection from "../../layout/sections/FullWidthSection";
@@ -21,7 +27,7 @@ const AuthSignUpFormBlock = ({session}) => {
 
     useEffect(() => {
         if (isAuthenticated()) {
-            router.replace(getRouteItem(ACCOUNT_VIEW).href);
+            router.replace(getRouteItem(PROFILE_VIEW).href);
 
         }
     }, [session[SESSION_AUTHENTICATED], session[SESSION_AUTHENTICATING], session[SESSION_USER]])

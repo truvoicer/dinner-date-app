@@ -1,10 +1,12 @@
 export const HOME_VIEW = "home";
 export const LOGIN_VIEW = "login";
 export const SIGNUP_VIEW = "signup";
+export const LOGOUT_VIEW = "logout";
 export const MEMBERS_VIEW = "members";
 export const SEARCH_MEMBERS_VIEW = "search_members";
 export const ALL_MEMBERS_VIEW = "all_members";
 export const COMMUNITY_VIEW = "community";
 export const BLOG_VIEW = "blog";
 export const ACCOUNT_VIEW = "account";
+export const ACCOUNT_SETTINGS_VIEW = "account_settings";
 export const PROFILE_VIEW = "profile";

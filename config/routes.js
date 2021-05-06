@@ -2,10 +2,11 @@ import {homeViewConfig} from "./views/home-view-config";
 import {loginViewConfig} from "./views/login-view-config";
 import {signUpViewConfig} from "./views/signup-view-config";
 import {
+    ACCOUNT_SETTINGS_VIEW,
     ACCOUNT_VIEW,
     ALL_MEMBERS_VIEW, BLOG_VIEW,
     COMMUNITY_VIEW,
-    HOME_VIEW, LOGIN_VIEW,
+    HOME_VIEW, LOGIN_VIEW, LOGOUT_VIEW,
     MEMBERS_VIEW, PROFILE_VIEW,
     SEARCH_MEMBERS_VIEW, SIGNUP_VIEW
 } from "./constants/views/view-constants";
@@ -16,6 +17,10 @@ import {
     MEMBERSHIP_GOLD, MEMBERSHIP_PLATINUM,
     MEMBERSHIP_SILVER
 } from "./constants/access-control/membership-constants";
+import {profileViewConfig} from "./views/profile-view-config";
+import {logout} from "../library/api/session";
+import {sessionLogoutHandler} from "../library/redux/actions/session-actions";
+import {getRouteItem} from "../library/helpers/page-helper";
 
 export const routes = [
     {
@@ -88,6 +93,7 @@ export const routes = [
         label: "Account",
         href: "/account",
         showInHeader: true,
+        viewConfig: loginViewConfig,
         access_control: {
             roles: [ROLE_USER, ROLE_ADMIN, ROLE_SUPER_ADMIN],
             memberships: [MEMBERSHIP_FREE, MEMBERSHIP_BRONZE, MEMBERSHIP_SILVER, MEMBERSHIP_GOLD, MEMBERSHIP_PLATINUM]
@@ -96,8 +102,34 @@ export const routes = [
             {
                 name: PROFILE_VIEW,
                 label: "Profile",
-                href: "/account/profile",
+                href: "/profile",
                 showInHeader: true,
+                viewConfig: profileViewConfig,
+                access_control: {
+                    roles: [ROLE_USER, ROLE_ADMIN, ROLE_SUPER_ADMIN],
+                    memberships: [MEMBERSHIP_FREE, MEMBERSHIP_BRONZE, MEMBERSHIP_SILVER, MEMBERSHIP_GOLD, MEMBERSHIP_PLATINUM]
+                }
+            },
+            {
+                name: ACCOUNT_SETTINGS_VIEW,
+                label: "Settings",
+                href: "/account/settings",
+                showInHeader: true,
+                viewConfig: loginViewConfig,
+                access_control: {
+                    roles: [ROLE_USER, ROLE_ADMIN, ROLE_SUPER_ADMIN],
+                    memberships: [MEMBERSHIP_FREE, MEMBERSHIP_BRONZE, MEMBERSHIP_SILVER, MEMBERSHIP_GOLD, MEMBERSHIP_PLATINUM]
+                }
+            },
+            {
+                name: LOGOUT_VIEW,
+                label: "Logout",
+                href: "/account/logout",
+                showInHeader: true,
+                override: (router, event) => {
+                    sessionLogoutHandler();
+                    router.replace(getRouteItem(LOGIN_VIEW).href)
+                },
                 access_control: {
                     roles: [ROLE_USER, ROLE_ADMIN, ROLE_SUPER_ADMIN],
                     memberships: [MEMBERSHIP_FREE, MEMBERSHIP_BRONZE, MEMBERSHIP_SILVER, MEMBERSHIP_GOLD, MEMBERSHIP_PLATINUM]

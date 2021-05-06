@@ -1,8 +1,8 @@
 import { all } from 'redux-saga/effects'
 import {
-    fetchUserSaga,
+    fetchSessionUserSaga, fetchSessionUserSuccessSaga,
     setAnonSessionStateSaga,
-    setSessionLocalStorageSaga,
+    setSessionLocalStorageSaga, setSessionPagePathSaga,
     setSessionStateSaga
 } from "./session/session-saga";
 import {
@@ -15,7 +15,7 @@ import {
 
 export default function* rootSaga() {
     yield all([
-        fetchUserSaga(),
+        fetchSessionUserSaga(),
         authLoginSaga(),
         authLoginSuccessSaga(),
         authValidationSaga(),
@@ -24,6 +24,8 @@ export default function* rootSaga() {
         setSessionStateSaga(),
         authSignupSaga(),
         authSignupSuccessSaga(),
-        authSignupFailSaga()
+        authSignupFailSaga(),
+        fetchSessionUserSuccessSaga(),
+        setSessionPagePathSaga(),
     ])
 }

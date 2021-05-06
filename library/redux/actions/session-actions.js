@@ -2,10 +2,16 @@ import store from "../store"
 import {
     setSessionAuthenticated,
     setSessionAuthenticating,
-    setSessionError, setSessionLoginRedirect,
+    setSessionError, setSessionLoginRedirect, setSessionPagePath,
     setSessionUser
 } from "../reducers/session-reducer";
-import {SESSION_AUTHENTICATED, SESSION_AUTHENTICATING, SESSION_STATE_KEY} from "../constants/session-constants";
+import {
+    SESSION_AUTHENTICATED,
+    SESSION_AUTHENTICATING,
+    SESSION_PAGE_PATH,
+    SESSION_STATE_KEY
+} from "../constants/session-constants";
+import {logout, setAnonSessionState} from "../../api/session";
 
 export function isAuthenticated() {
     const sessionState = store.getState()[SESSION_STATE_KEY];
@@ -20,10 +26,16 @@ export function setSessionAuthenticatedAction(status) {
 export function setSessionAuthenticatingAction(status) {
     store.dispatch(setSessionAuthenticating(status))
 }
-export function setSessionLoginRedirectAction(url) {
-    store.dispatch(setSessionLoginRedirect(url))
+export function setSessionPagePathAction({path}) {
+    store.dispatch(setSessionPagePath(path))
 }
 export function setSessionErrorAction(error) {
     store.dispatch(setSessionError(error))
+}
+
+export const sessionLogoutHandler = () => {
+    const sessionState = store.getState()[SESSION_STATE_KEY];
+    setAnonSessionState();
+    logout(sessionState[SESSION_PAGE_PATH])
 }
 

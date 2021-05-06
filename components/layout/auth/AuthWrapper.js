@@ -21,7 +21,7 @@ const AuthWrapper = ({session, children, accessControlConfig}) => {
             session[SESSION_AUTHENTICATING] &&
             !session[SESSION_AUTHENTICATED]
         ) {
-            store.dispatch({type: AUTH_VALIDATION_REQUESTED})
+            store.dispatch({type: AUTH_VALIDATION_REQUESTED, payload: AUTH_VALIDATION_REQUESTED})
         }
     }, [session[SESSION_AUTHENTICATED], session[SESSION_AUTHENTICATING]])
 

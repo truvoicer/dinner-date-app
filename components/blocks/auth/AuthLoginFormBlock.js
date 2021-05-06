@@ -2,7 +2,13 @@ import React, {useEffect} from 'react';
 import Link from 'next/link';
 import FullWidthSection from "../../layout/sections/FullWidthSection";
 import {getRouteItem} from "../../../library/helpers/page-helper";
-import {ACCOUNT_VIEW, HOME_VIEW, LOGIN_VIEW, SIGNUP_VIEW} from "../../../config/constants/views/view-constants";
+import {
+    ACCOUNT_VIEW,
+    HOME_VIEW,
+    LOGIN_VIEW,
+    PROFILE_VIEW,
+    SIGNUP_VIEW
+} from "../../../config/constants/views/view-constants";
 import store from "../../../library/redux/store";
 import {Formik} from "formik";
 import {AUTH_LOGIN_REQUESTED} from "../../../library/redux/sagas/session/auth-saga";
@@ -21,7 +27,7 @@ const AuthLoginFormBlock = ({session}) => {
 
     useEffect(() => {
         if (isAuthenticated()) {
-            router.replace(getRouteItem(ACCOUNT_VIEW).href);
+            router.replace(getRouteItem(PROFILE_VIEW).href);
         }
     }, [session[SESSION_AUTHENTICATED], session[SESSION_AUTHENTICATING], session[SESSION_USER]])
 
