@@ -1,14 +1,14 @@
-import React, {useEffect, useState} from 'react';
-import {Formik, useFormikContext} from "formik";
-import EditableField from "./EditableField";
+import React from 'react';
+import {useFormikContext} from "formik";
 import {isSet} from "../../../library/helpers/utils-helper";
 
-const EditableTextField = (props) => {
+const EditableTextAreaField = (props) => {
         const formik = useFormikContext();
+
         return (
-            <div className={"editable-field--form--text"}>
+            <div className={"editable-field--form--textarea"}>
                 {isSet(formik) &&
-                <input
+                <textarea
                     name={props.field}
                     value={formik.values[props.field] || ""}
                     onBlur={formik.handleBlur}
@@ -20,4 +20,4 @@ const EditableTextField = (props) => {
     }
 ;
 
-export default EditableTextField;
+export default EditableTextAreaField;

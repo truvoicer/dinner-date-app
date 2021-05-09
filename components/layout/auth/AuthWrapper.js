@@ -10,7 +10,7 @@ import {isNotEmpty, isObjectEmpty} from "../../../library/helpers/utils-helper";
 import {getRouteItem} from "../../../library/helpers/page-helper";
 import {HOME_VIEW} from "../../../config/constants/views/view-constants";
 import store from "../../../library/redux/store";
-import {AUTH_LOGIN_REQUESTED, AUTH_VALIDATION_REQUESTED} from "../../../library/redux/sagas/session/auth-saga";
+import {AUTH_LOGIN_REQUESTED, AUTH_VALIDATION_REQUESTED} from "../../../library/redux/sagas/auth/auth-sagas";
 import {accessControlChecker} from "../../../library/helpers/access-control-helper";
 
 const AuthWrapper = ({session, children, accessControlConfig}) => {

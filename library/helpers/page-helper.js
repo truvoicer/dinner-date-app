@@ -1,6 +1,10 @@
 import {routes} from "../../config/routes";
+import {isSet} from "./utils-helper";
 
 export const getComponent = ({component, props = {}}) => {
+    if (!isSet(component)) {
+        return null;
+    }
     const Component = component;
     return <Component {...props}/>
 }

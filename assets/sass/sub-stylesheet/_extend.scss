@@ -534,3 +534,60 @@ Tags: community, couple, creative, dating, groups, love template, matching, memb
 %pr-30 {
     padding-right: 30px;
 }
+
+%form-input {
+    @extend %p-5;
+    background: $body-color;
+    @extend %w-100;
+    @extend %mb-30;
+    @extend %border-radius-2;
+    border: none;
+    border: 1px solid transparent;
+
+    &:focus-visible {
+        border: 1px solid rgba($theme-color, $alpha: .50);
+        outline: none;
+    }
+
+    @include breakpoint(sm) {
+        width: calc(100% / 2 - 10px);
+    }
+}
+
+%form-textarea {
+    background: $body-color;
+    @extend %w-100;
+    @extend %border-radius-2;
+    padding: 10px 15px;
+    border: 1px solid transparent;
+
+    &:focus-visible {
+        border: 1px solid rgba($theme-color, $alpha: .50);
+        outline: none;
+    }
+}
+%form-select {
+    outline: none;
+    @extend %p-5;
+    @extend %pl-15;
+    @extend %pr-30;
+    @extend %border-radius-2;
+    background-color: $body-color !important;
+    border: none;
+}
+%form-submit-button {
+    &.lab-btn {
+        @extend %mt-30;
+        background: $theme-color;
+        outline: none;
+        border: none;
+        @include border-radius(3px);
+        box-shadow: 0 5px 5px rgba($theme-color, $alpha: .30);
+        @extend %pointer;
+
+        &:hover {
+            box-shadow: none;
+            transform: translateY(-3px);
+        }
+    }
+}

@@ -11,7 +11,7 @@ import {
 } from "../../../config/constants/views/view-constants";
 import store from "../../../library/redux/store";
 import {Formik} from "formik";
-import {AUTH_LOGIN_REQUESTED} from "../../../library/redux/sagas/session/auth-saga";
+import {AUTH_LOGIN_REQUESTED} from "../../../library/redux/sagas/auth/auth-sagas";
 import {connect} from "react-redux";
 import {
     SESSION_AUTHENTICATED,

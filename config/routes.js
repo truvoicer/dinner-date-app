@@ -21,6 +21,7 @@ import {profileViewConfig} from "./views/profile-view-config";
 import {logout} from "../library/api/session";
 import {sessionLogoutHandler} from "../library/redux/actions/session-actions";
 import {getRouteItem} from "../library/helpers/page-helper";
+import {memberListViewConfig} from "./views/member-list-view-config";
 
 export const routes = [
     {
@@ -39,6 +40,7 @@ export const routes = [
         label: "Members",
         href: "/members",
         showInHeader: true,
+        viewConfig: memberListViewConfig,
         access_control: {
             roles: [ROLE_USER, ROLE_ADMIN, ROLE_SUPER_ADMIN],
             memberships: [MEMBERSHIP_FREE, MEMBERSHIP_BRONZE, MEMBERSHIP_SILVER, MEMBERSHIP_GOLD, MEMBERSHIP_PLATINUM]
@@ -59,6 +61,7 @@ export const routes = [
                 label: "All Members",
                 href: "/members/list",
                 showInHeader: true,
+                viewConfig: memberListViewConfig,
                 access_control: {
                     roles: [ROLE_USER, ROLE_ADMIN, ROLE_SUPER_ADMIN],
                     memberships: [MEMBERSHIP_FREE, MEMBERSHIP_BRONZE, MEMBERSHIP_SILVER, MEMBERSHIP_GOLD, MEMBERSHIP_PLATINUM]

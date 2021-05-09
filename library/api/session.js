@@ -1,5 +1,6 @@
 import React from 'react'
 import {
+    sessionLogoutHandler,
     setSessionAuthenticatedAction, setSessionAuthenticatingAction,
     setSessionLoginRedirectAction,
     setSessionUserAction

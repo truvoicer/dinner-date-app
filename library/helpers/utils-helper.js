@@ -19,7 +19,28 @@ export const formatDate = (dateString, formatString = "Do MMMM YYYY") => {
     }
     return dateString
 }
-
+export const calculateDateDifference = (date, as = "years") => {
+    const now = new moment();
+    const before = new moment(date);
+    const timeDiff = now.diff(before)
+    switch (as) {
+        case "seconds":
+            return Math.round(moment.duration(timeDiff).asSeconds());
+        case "minutes":
+            return Math.round(moment.duration(timeDiff).asMinutes());
+        case "hours":
+            return Math.round(moment.duration(timeDiff).asHours());
+        case "days":
+            return Math.round(moment.duration(timeDiff).asDays());
+        case "weeks":
+            return Math.round(moment.duration(timeDiff).asWeeks());
+        case "months":
+            return Math.round(moment.duration(timeDiff).asMonths());
+        case "years":
+        default:
+            return Math.round(moment.duration(timeDiff).asYears());
+    }
+}
 export const isEmpty = (object) => {
     for(let key in object) {
         if(object.hasOwnProperty(key))

@@ -1,0 +1,54 @@
+.editable-field {
+  display: flex;
+
+  &--label {
+    p {
+      width: auto !important;
+    }
+  }
+
+  &--full-width {
+
+  }
+
+  &--submit {
+    margin-left: 10px;
+    cursor: pointer;
+  }
+
+  &--trigger {
+    margin-left: 10px;
+    cursor: pointer;
+  }
+
+  &--form {
+    input {
+      @extend %form-input;
+      width: 100%;
+      margin-bottom: 0;
+    }
+
+    textarea {
+      @extend %form-textarea;
+      width: 100%;
+      margin-bottom: 0;
+    }
+
+    select {
+      @extend %form-select
+    }
+
+    button {
+      &[type=submit] {
+        @extend %form-submit-button;
+        width: 100%;
+        margin-bottom: 0;
+      }
+    }
+
+    &--textarea {
+      width: 100%
+    }
+  }
+
+}

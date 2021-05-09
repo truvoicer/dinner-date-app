@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import Header from "./headers/Header";
 import Footer from "./footers/Footer";
 import {useRouter} from "next/router";
-import {SET_SESSION_PAGE_PATH} from "../../library/redux/sagas/session/session-saga";
+import {SET_SESSION_PAGE_PATH} from "../../library/redux/sagas/session/session-sagas";
 import store from "../../library/redux/store";
 
 const FullLayout = ({children}) => {

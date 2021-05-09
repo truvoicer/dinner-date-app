@@ -1,4 +1,4 @@
-import ProfileForm from "../../components/forms/ProfileForm";
+import ProfileForm from "../../components/blocks/profile/ProfileBlock";
 
 export const profileTabsConfig = {
     defaultTab: "profile",
@@ -7,6 +7,6 @@ export const profileTabsConfig = {
             name: "profile",
             label: "Profile",
             component: ProfileForm
-        }
+        },
     ]
 }

@@ -15,7 +15,7 @@ import {
     SIGNUP_VIEW
 } from "../../../config/constants/views/view-constants";
 import store from "../../../library/redux/store";
-import {AUTH_LOGIN_REQUESTED, AUTH_SIGNUP_REQUESTED} from "../../../library/redux/sagas/session/auth-saga";
+import {AUTH_LOGIN_REQUESTED, AUTH_SIGNUP_REQUESTED} from "../../../library/redux/sagas/auth/auth-sagas";
 import FullWidthSection from "../../layout/sections/FullWidthSection";
 import {Formik} from "formik";
 import Link from "next/link";
