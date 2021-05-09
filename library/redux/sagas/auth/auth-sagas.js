@@ -1,6 +1,6 @@
 
 // worker Saga: will be fired on USER_FETCH_REQUESTED actions
-import {all, call, put, takeEvery} from "redux-saga/effects";
+import {all, call, put, takeLatest} from "redux-saga/effects";
 import {
     authLogin,
     authLoginSuccess,
@@ -18,25 +18,25 @@ export const AUTH_LOGIN_FAILED = "AUTH_LOGIN_FAILED";
 export const AUTH_VALIDATION_REQUESTED = "AUTH_VALIDATION_REQUESTED";
 
 function* authLoginSaga() {
-    yield takeEvery(AUTH_LOGIN_REQUESTED, authLogin);
+    yield takeLatest(AUTH_LOGIN_REQUESTED, authLogin);
 }
 
 function* authLoginSuccessSaga() {
-    yield takeEvery(AUTH_LOGIN_SUCCEEDED, authLoginSuccess);
+    yield takeLatest(AUTH_LOGIN_SUCCEEDED, authLoginSuccess);
 }
 
 function* authValidationSaga() {
-    yield takeEvery(AUTH_VALIDATION_REQUESTED, authValidation);
+    yield takeLatest(AUTH_VALIDATION_REQUESTED, authValidation);
 }
 
 function* authSignupSaga() {
-    yield takeEvery(AUTH_SIGNUP_REQUESTED, authSignup);
+    yield takeLatest(AUTH_SIGNUP_REQUESTED, authSignup);
 }
 function* authSignupSuccessSaga() {
-    yield takeEvery(AUTH_SIGNUP_SUCCEEDED, authSignupSuccess);
+    yield takeLatest(AUTH_SIGNUP_SUCCEEDED, authSignupSuccess);
 }
 function* authSignupFailSaga() {
-    yield takeEvery(AUTH_LOGIN_FAILED, authSignupFailed);
+    yield takeLatest(AUTH_LOGIN_FAILED, authSignupFailed);
 }
 export default function* authSagas() {
     yield all([

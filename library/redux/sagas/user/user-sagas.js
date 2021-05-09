@@ -1,8 +1,8 @@
 
 // worker Saga: will be fired on USER_FETCH_REQUESTED actions
-import {all, call, put, takeEvery} from "redux-saga/effects";
+import {all, call, put, takeLatest} from "redux-saga/effects";
 import {setSessionUserState} from "../../../api/session";
-import {fetchUser, updateUserProfile} from "./user-saga-tasks";
+import {fetchUser, updateMedia, updateUserProfile} from "./user-saga-tasks";
 
 export const SESSION_USER_FETCH_SUCCEEDED = "SESSION_USER_FETCH_SUCCEEDED";
 export const SESSION_USER_FETCH_FAILED = "SESSION_USER_FETCH_FAILED";
@@ -12,19 +12,30 @@ export const SESSION_USER_PROFILE_UPDATE_SUCCEEDED = "SESSION_USER_PROFILE_UPDAT
 export const SESSION_USER_PROFILE_UPDATE_FAILED = "SESSION_USER_PROFILE_UPDATE_FAILED";
 export const SESSION_USER_PROFILE_UPDATE_REQUESTED = "SESSION_USER_PROFILE_UPDATE_REQUESTED";
 
+export const SESSION_USER_PROFILE_MEDIA_SUCCEEDED = "SESSION_USER_PROFILE_MEDIA_SUCCEEDED";
+export const SESSION_USER_PROFILE_MEDIA_FAILED = "SESSION_USER_PROFILE_MEDIA_FAILED";
+export const SESSION_USER_PROFILE_MEDIA_REQUESTED = "SESSION_USER_PROFILE_MEDIA_REQUESTED";
+
 function* fetchSessionUserSuccessSaga() {
-    yield takeEvery(SESSION_USER_FETCH_SUCCEEDED, setSessionUserState);
+    yield takeLatest(SESSION_USER_FETCH_SUCCEEDED, setSessionUserState);
 }
 
 function* fetchSessionUserSaga() {
-    yield takeEvery(SESSION_USER_FETCH_REQUESTED, fetchUser);
+    yield takeLatest(SESSION_USER_FETCH_REQUESTED, fetchUser);
 }
 
 function* sessionUserUpdateSaga() {
-    yield takeEvery(SESSION_USER_PROFILE_UPDATE_REQUESTED, updateUserProfile);
+    yield takeLatest(SESSION_USER_PROFILE_UPDATE_REQUESTED, updateUserProfile);
 }
 function* sessionUserUpdateSuccessSaga() {
-    yield takeEvery(SESSION_USER_PROFILE_UPDATE_SUCCEEDED, setSessionUserState);
+    yield takeLatest(SESSION_USER_PROFILE_UPDATE_SUCCEEDED, setSessionUserState);
+}
+
+function* sessionUserMediaRequestedSaga() {
+    yield takeLatest(SESSION_USER_PROFILE_MEDIA_REQUESTED, updateMedia);
+}
+function* sessionUserMediaSuccessSaga() {
+    yield takeLatest(SESSION_USER_PROFILE_MEDIA_SUCCEEDED, setSessionUserState);
 }
 
 export default function* userSagas() {
@@ -32,6 +43,8 @@ export default function* userSagas() {
        fetchSessionUserSaga(),
        fetchSessionUserSuccessSaga(),
         sessionUserUpdateSaga(),
-        sessionUserUpdateSuccessSaga()
+        sessionUserUpdateSuccessSaga(),
+        sessionUserMediaRequestedSaga(),
+        sessionUserMediaSuccessSaga(),
     ]);
 }

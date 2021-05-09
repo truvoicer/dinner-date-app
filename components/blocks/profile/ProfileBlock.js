@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import {connect} from "react-redux";
-import EditableTextField from "../../forms/editable-fields/EditableTextField";
 import {
     SESSION_AUTHENTICATED,
     SESSION_AUTHENTICATING,
@@ -9,44 +8,58 @@ import {
 import store from "../../../library/redux/store";
 import {SESSION_USER_FETCH_REQUESTED} from "../../../library/redux/sagas/session/session-sagas";
 import {getUserProfileValue} from "../../../library/helpers/user-helper";
-import {apiConfig} from "../../../config/api/config";
-import {buildRequestUrl} from "../../../library/api/helpers/api-helpers";
 import EditableField from "../../forms/editable-fields/EditableField";
 import {
     SECTION_FIELDS_LIST,
     SECTION_FIELDS_SINGLE,
     USER_PROFILE_UPDATE
 } from "../../../config/api/editable-fields/editable-fields-constants";
-import EditableSelectField from "../../forms/editable-fields/EditableSelectField";
-import {isSet, uCaseFirst} from "../../../library/helpers/utils-helper";
-import EditableDateField from "../../forms/editable-fields/EditableDateField";
-import moment from "moment";
-import EditableTextAreaField from "../../forms/editable-fields/EditableTextAreaField";
+import {isNotEmpty, isObjectEmpty, isSet, uCaseFirst} from "../../../library/helpers/utils-helper";
 import {profileFormFieldList} from "../../../config/api/editable-fields/lists/profile-form-field-list";
 import {getExtraFieldProps} from "../../../config/api/editable-fields/editable-fields-config";
+import {isAuthenticated} from "../../../library/redux/actions/session-actions";
+import {MEMBERS_SINGLE, MEMBERS_STATE_KEY} from "../../../library/redux/constants/members-constants";
+import {MEMBERS_SINGLE_FETCH_REQUESTED} from "../../../library/redux/sagas/member/member-sagas";
 
-const ProfileBlock = ({session}) => {
+const ProfileBlock = ({session, members, editable = false, user = null}) => {
+    console.log(user, editable)
     const [showForm, setShowForm] = useState(false);
+    const [targetUser, setTargetUser] = useState(null);
     useEffect(() => {
-        store.dispatch({type: SESSION_USER_FETCH_REQUESTED, payload: SESSION_USER_FETCH_REQUESTED})
+        if (!isAuthenticated()) {
+            return;
+        }
+        if (editable) {
+            store.dispatch({type: SESSION_USER_FETCH_REQUESTED, payload: SESSION_USER_FETCH_REQUESTED})
+        } else if (!editable && isNotEmpty(user)) {
+            store.dispatch({type: MEMBERS_SINGLE_FETCH_REQUESTED, payload: {username: user}})
+        }
     }, [session[SESSION_AUTHENTICATING], session[SESSION_AUTHENTICATED]]);
+
     useEffect(() => {
-        if (isSet(session[SESSION_USER].user_profile)) {
-            console.log(session[SESSION_USER].user_profile)
-            setShowForm(true)
+        if (editable && isSet(session[SESSION_USER].user_profile)) {
+            setTargetUser(session[SESSION_USER]);
+            setShowForm(true);
         }
     }, [session[SESSION_USER].user_profile]);
+    //
+    useEffect(() => {
+        if (!editable && !isObjectEmpty(members[MEMBERS_SINGLE])) {
+            // console.log(members[MEMBERS_SINGLE])
+            setTargetUser(members[MEMBERS_SINGLE])
+            setShowForm(true)
+        }
+    }, [members[MEMBERS_SINGLE]]);
 
     return (
         <div>
             <div className="row">
                 <div className="col-xl-8">
                     <article>
-                        {showForm && profileFormFieldList(getUserProfileValue)
+                        {showForm && profileFormFieldList(getUserProfileValue.bind(targetUser))
                             .map((block, blockIndex) => {
                                 switch (block?.sectionType) {
                                     case "SECTION_FIELDS_LIST":
-
                                 }
                                 return (
                                     <div key={blockIndex} className="info-card mb-20">
@@ -59,7 +72,7 @@ const ProfileBlock = ({session}) => {
                                                 {block.sections.map((section, sectionIndex) => (
                                                     <li key={sectionIndex}>
                                                         <p className="info-name">{section.label}</p>
-                                                        {isSet(section?.configName)
+                                                        {isSet(section?.configName) && editable
                                                             ?
                                                             <EditableField
                                                                 className={section.className}
@@ -78,7 +91,7 @@ const ProfileBlock = ({session}) => {
                                             }
                                             {block?.sectionType === SECTION_FIELDS_SINGLE && block.sections.map((section, sectionIndex) => (
                                                 <React.Fragment key={sectionIndex}>
-                                                    {isSet(section?.configName)
+                                                    {isSet(section?.configName) && editable
                                                         ?
                                                         <EditableField
                                                             className={section.className}
@@ -379,7 +392,8 @@ const ProfileBlock = ({session}) => {
 
 function mapStateToProps(state) {
     return {
-        session: state[SESSION_STATE_KEY]
+        session: state[SESSION_STATE_KEY],
+        members: state[MEMBERS_STATE_KEY]
     }
 }
 

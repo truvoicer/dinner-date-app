@@ -7,12 +7,10 @@ import {
     MEMBERSHIP_GOLD, MEMBERSHIP_PLATINUM,
     MEMBERSHIP_SILVER
 } from "../constants/access-control/membership-constants";
-import AuthLoginView from "../../components/views/auth/AuthLoginView";
 import {LOGIN_VIEW} from "../constants/views/view-constants";
 
 export const loginViewConfig = {
     name: LOGIN_VIEW,
-    component: AuthLoginView,
     blocks: [
         {
             name: "page_header_block",

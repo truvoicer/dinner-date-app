@@ -3,6 +3,7 @@ export const LOGIN_VIEW = "login";
 export const SIGNUP_VIEW = "signup";
 export const LOGOUT_VIEW = "logout";
 export const MEMBERS_VIEW = "members";
+export const MEMBER_PROFILE_VIEW = "member_profile";
 export const SEARCH_MEMBERS_VIEW = "search_members";
 export const ALL_MEMBERS_VIEW = "all_members";
 export const COMMUNITY_VIEW = "community";

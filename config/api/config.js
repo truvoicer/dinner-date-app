@@ -6,5 +6,7 @@ export const apiConfig =
         auth: "/auth",
         session: "/session",
         user: "/user",
+        member: "/member",
+        media: "/media",
     }
 }

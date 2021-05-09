@@ -6,7 +6,7 @@ import {
     ACCOUNT_VIEW,
     ALL_MEMBERS_VIEW, BLOG_VIEW,
     COMMUNITY_VIEW,
-    HOME_VIEW, LOGIN_VIEW, LOGOUT_VIEW,
+    HOME_VIEW, LOGIN_VIEW, LOGOUT_VIEW, MEMBER_PROFILE_VIEW,
     MEMBERS_VIEW, PROFILE_VIEW,
     SEARCH_MEMBERS_VIEW, SIGNUP_VIEW
 } from "./constants/views/view-constants";
@@ -62,6 +62,17 @@ export const routes = [
                 href: "/members/list",
                 showInHeader: true,
                 viewConfig: memberListViewConfig,
+                access_control: {
+                    roles: [ROLE_USER, ROLE_ADMIN, ROLE_SUPER_ADMIN],
+                    memberships: [MEMBERSHIP_FREE, MEMBERSHIP_BRONZE, MEMBERSHIP_SILVER, MEMBERSHIP_GOLD, MEMBERSHIP_PLATINUM]
+                }
+            },
+            {
+                name: MEMBER_PROFILE_VIEW,
+                label: "All Members",
+                href: "/members/profile/%s",
+                showInHeader: false,
+                viewConfig: profileViewConfig,
                 access_control: {
                     roles: [ROLE_USER, ROLE_ADMIN, ROLE_SUPER_ADMIN],
                     memberships: [MEMBERSHIP_FREE, MEMBERSHIP_BRONZE, MEMBERSHIP_SILVER, MEMBERSHIP_GOLD, MEMBERSHIP_PLATINUM]

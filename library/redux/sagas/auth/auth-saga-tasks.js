@@ -1,6 +1,6 @@
 
 // worker Saga: will be fired on USER_FETCH_REQUESTED actions
-import {call, put} from "redux-saga/effects";
+import {call, put, takeLatest} from "redux-saga/effects";
 import {authLoginRequest, postRequest, validateTokenRequest} from "../../../api/middleware";
 import {
     SET_ANON_SESSION_STATE_REQUESTED,

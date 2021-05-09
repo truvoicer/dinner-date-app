@@ -5,13 +5,11 @@ import {
     MEMBERSHIP_SILVER
 } from "../constants/access-control/membership-constants";
 import {ALL_MEMBERS_VIEW, HOME_VIEW} from "../constants/views/view-constants";
-import MemberListView from "../../components/views/members/MemberListView";
 import MemberListBlock from "../../components/blocks/members/MemberListBLock";
 import PageHeaderBlock from "../../components/blocks/PageHeaderBlock";
 
 export const memberListViewConfig = {
     name: ALL_MEMBERS_VIEW,
-    component: MemberListView,
     blocks: [
         {
             name: "page_header_block",

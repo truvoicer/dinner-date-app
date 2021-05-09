@@ -1,11 +1,12 @@
 import React from 'react';
 import FullWidthLayout from "../../components/layout/FullWidthLayout";
-import AuthLoginView from "../../components/views/auth/AuthLoginView";
+import {LOGIN_VIEW} from "../../config/constants/views/view-constants";
+import ViewBuilder from "../../components/views/builder/ViewBuilder";
 
 const LoginPage = () => {
     return (
         <FullWidthLayout>
-            <AuthLoginView />
+            <ViewBuilder pageName={LOGIN_VIEW} />
         </FullWidthLayout>
     );
 };

@@ -1,8 +1,42 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import FullWidthSection from "../../layout/sections/FullWidthSection";
 import FullWidthListFilter from "../../forms/filters/FullWidthListFilter";
+import {
+    SESSION_AUTHENTICATED,
+    SESSION_STATE_KEY,
+    SESSION_USER
+} from "../../../library/redux/constants/session-constants";
+import {isAuthenticated} from "../../../library/redux/actions/session-actions";
+import store from "../../../library/redux/store";
+import {MEMBERS_LIST_FETCH_REQUESTED} from "../../../library/redux/sagas/member/member-sagas";
+import {connect} from "react-redux";
+import {
+    MEMBERS_SEARCH,
+    MEMBERS_SEARCH_RESULTS,
+    MEMBERS_STATE_KEY
+} from "../../../library/redux/constants/members-constants";
+import {getUserMediaValue} from "../../../library/helpers/user-helper";
+import {getRouteItem} from "../../../library/helpers/page-helper";
+import {MEMBER_PROFILE_VIEW, PROFILE_VIEW} from "../../../config/constants/views/view-constants";
+import Link from "next/link"
 
-const MemberListBlock = () => {
+const MemberListBlock = ({session, members}) => {
+    const [showList, setShowList] = useState(false);
+
+    useEffect(() => {
+        console.log(isAuthenticated())
+        if (isAuthenticated()) {
+            const params = {
+                limit: 50
+            };
+            store.dispatch({type: MEMBERS_LIST_FETCH_REQUESTED, payload: params})
+        }
+    }, [session[SESSION_AUTHENTICATED]]);
+
+    const getMemberProfileUrl = (username) => {
+        return getRouteItem(MEMBER_PROFILE_VIEW).href.replace("%s", username)
+    }
+
     return (
         <FullWidthSection
             className={"member-page-section"}
@@ -26,267 +60,38 @@ const MemberListBlock = () => {
                         </div>
                     </li>
                 </ul>
-                <div className="row g-3 row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 justify-content-center">
-                    <div className="col">
-                        <div className="lab-item member-item style-1 style-2">
-                            <div className="lab-inner">
-                                <div className="lab-thumb">
-                                    <img src="/images/member/01.jpg" alt="member-img"/>
-                                </div>
-                                <div className="lab-content">
-                                    <h6><a href="profile.html">Tenma Shyna</a></h6>
-                                    <p>Active 1 Day</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col">
-                        <div className="lab-item member-item style-1 style-2">
-                            <div className="lab-inner">
-                                <div className="lab-thumb">
-                                    <img src="/images/member/02.jpg" alt="member-img"/>
-                                </div>
-                                <div className="lab-content">
-                                    <h6><a href="profile.html">Maya Statham</a></h6>
-                                    <p>Active 1 Day</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col">
-                        <div className="lab-item member-item style-1 style-2">
-                            <div className="lab-inner">
-                                <div className="lab-thumb">
-                                    <img src="/images/member/03.jpg" alt="member-img"/>
-                                </div>
-                                <div className="lab-content">
-                                    <h6><a href="profile.html">Cristina Maria</a></h6>
-                                    <p>Active 1 Day</p>
+
+                <div
+                    className="row g-3 row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 justify-content-center">
+                    {members[MEMBERS_SEARCH][MEMBERS_SEARCH_RESULTS].map((member, memberIndex) => (
+                        <div className="col" key={memberIndex}>
+                            <div className="lab-item member-item style-1 style-2">
+                                <div className="lab-inner">
+                                    <div className="lab-thumb">
+                                        <img
+                                            src={
+                                                getUserMediaValue({
+                                                    files: member?.files,
+                                                    mediaCategory: "profile_pic"
+                                                })
+                                                ||
+                                                "/images/member/01.jpg"
+                                            }
+                                            alt="member-img"
+                                        />
+                                    </div>
+                                    <div className="lab-content">
+                                        <h6>
+                                            <Link href={getMemberProfileUrl(member.username)}>
+                                                <a>{member.username}</a>
+                                            </Link>
+                                        </h6>
+                                        <p>Active 1 Day</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div className="col">
-                        <div className="lab-item member-item style-1 style-2">
-                            <div className="lab-inner">
-                                <div className="lab-thumb">
-                                    <img src="/images/member/04.jpg" alt="member-img"/>
-                                </div>
-                                <div className="lab-content">
-                                    <h6><a href="profile.html">Gaurav-Singh</a></h6>
-                                    <p>Active 1 Day</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col">
-                        <div className="lab-item member-item style-1 style-2">
-                            <div className="lab-inner">
-                                <div className="lab-thumb">
-                                    <img src="/images/member/05.jpg" alt="member-img"/>
-                                </div>
-                                <div className="lab-content">
-                                    <h6><a href="profile.html">Gihan-Fernando</a></h6>
-                                    <p>Active 1 Day</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col">
-                        <div className="lab-item member-item style-1 style-2">
-                            <div className="lab-inner">
-                                <div className="lab-thumb">
-                                    <img src="/images/member/06.jpg" alt="member-img"/>
-                                </div>
-                                <div className="lab-content">
-                                    <h6><a href="profile.html">Andrea Guido</a></h6>
-                                    <p>Active 1 Day</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col">
-                        <div className="lab-item member-item style-1 style-2">
-                            <div className="lab-inner">
-                                <div className="lab-thumb">
-                                    <img src="/images/member/07.jpg" alt="member-img"/>
-                                </div>
-                                <div className="lab-content">
-                                    <h6><a href="profile.html">Sweet Admin</a></h6>
-                                    <p>Active 1 Day</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col">
-                        <div className="lab-item member-item style-1 style-2">
-                            <div className="lab-inner">
-                                <div className="lab-thumb">
-                                    <img src="/images/member/08.jpg" alt="member-img"/>
-                                </div>
-                                <div className="lab-content">
-                                    <h6><a href="profile.html">Gyan-Baffour</a></h6>
-                                    <p>Active 1 Day</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col">
-                        <div className="lab-item member-item style-1 style-2">
-                            <div className="lab-inner">
-                                <div className="lab-thumb">
-                                    <img src="/images/member/09.jpg" alt="member-img"/>
-                                </div>
-                                <div className="lab-content">
-                                    <h6><a href="profile.html">Zeahra Maria</a></h6>
-                                    <p>Active 1 Day</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col">
-                        <div className="lab-item member-item style-1 style-2">
-                            <div className="lab-inner">
-                                <div className="lab-thumb">
-                                    <img src="/images/member/10.jpg" alt="member-img"/>
-                                </div>
-                                <div className="lab-content">
-                                    <h6><a href="profile.html">Andrea Guido</a></h6>
-                                    <p>Active 1 Day</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col">
-                        <div className="lab-item member-item style-1 style-2">
-                            <div className="lab-inner">
-                                <div className="lab-thumb">
-                                    <img src="/images/member/11.jpg" alt="member-img"/>
-                                </div>
-                                <div className="lab-content">
-                                    <h6><a href="profile.html">Andrea Guido</a></h6>
-                                    <p>Active 1 Day</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col">
-                        <div className="lab-item member-item style-1 style-2">
-                            <div className="lab-inner">
-                                <div className="lab-thumb">
-                                    <img src="/images/member/12.jpg" alt="member-img"/>
-                                </div>
-                                <div className="lab-content">
-                                    <h6><a href="profile.html">Andrea Guido</a></h6>
-                                    <p>Active 1 Day</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col">
-                        <div className="lab-item member-item style-1 style-2">
-                            <div className="lab-inner">
-                                <div className="lab-thumb">
-                                    <img src="/images/member/13.jpg" alt="member-img"/>
-                                </div>
-                                <div className="lab-content">
-                                    <h6><a href="profile.html">Andrea Guido</a></h6>
-                                    <p>Active 1 Day</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col">
-                        <div className="lab-item member-item style-1 style-2">
-                            <div className="lab-inner">
-                                <div className="lab-thumb">
-                                    <img src="/images/member/14.jpg" alt="member-img"/>
-                                </div>
-                                <div className="lab-content">
-                                    <h6><a href="profile.html">Andrea Guido</a></h6>
-                                    <p>Active 1 Day</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col">
-                        <div className="lab-item member-item style-1 style-2">
-                            <div className="lab-inner">
-                                <div className="lab-thumb">
-                                    <img src="/images/member/15.jpg" alt="member-img"/>
-                                </div>
-                                <div className="lab-content">
-                                    <h6><a href="profile.html">Andrea Guido</a></h6>
-                                    <p>Active 1 Day</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col">
-                        <div className="lab-item member-item style-1 style-2">
-                            <div className="lab-inner">
-                                <div className="lab-thumb">
-                                    <img src="/images/member/16.jpg" alt="member-img"/>
-                                </div>
-                                <div className="lab-content">
-                                    <h6><a href="profile.html">Andrea Guido</a></h6>
-                                    <p>Active 1 Day</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col">
-                        <div className="lab-item member-item style-1 style-2">
-                            <div className="lab-inner">
-                                <div className="lab-thumb">
-                                    <img src="/images/member/17.jpg" alt="member-img"/>
-                                </div>
-                                <div className="lab-content">
-                                    <h6><a href="profile.html">Andrea Guido</a></h6>
-                                    <p>Active 1 Day</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col">
-                        <div className="lab-item member-item style-1 style-2">
-                            <div className="lab-inner">
-                                <div className="lab-thumb">
-                                    <img src="/images/member/18.jpg" alt="member-img"/>
-                                </div>
-                                <div className="lab-content">
-                                    <h6><a href="profile.html">Andrea Guido</a></h6>
-                                    <p>Active 1 Day</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col">
-                        <div className="lab-item member-item style-1 style-2">
-                            <div className="lab-inner">
-                                <div className="lab-thumb">
-                                    <img src="/images/member/19.jpg" alt="member-img"/>
-                                </div>
-                                <div className="lab-content">
-                                    <h6><a href="profile.html">Andrea Guido</a></h6>
-                                    <p>Active 1 Day</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col">
-                        <div className="lab-item member-item style-1 style-2">
-                            <div className="lab-inner">
-                                <div className="lab-thumb">
-                                    <img src="/images/member/20.jpg" alt="member-img"/>
-                                </div>
-                                <div className="lab-content">
-                                    <h6><a href="profile.html">Andrea Guido</a></h6>
-                                    <p>Active 1 Day</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    ))}
                 </div>
                 <div className="paginations">
                     <ul className="lab-ul d-flex flex-wrap justify-content-center mb-1">
@@ -318,4 +123,14 @@ const MemberListBlock = () => {
     );
 };
 
-export default MemberListBlock;
+function mapStateToProps(state) {
+    return {
+        session: state[SESSION_STATE_KEY],
+        members: state[MEMBERS_STATE_KEY]
+    }
+}
+
+export default connect(
+    mapStateToProps,
+    null
+)(MemberListBlock);

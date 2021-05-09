@@ -1,22 +1,96 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
+import FileUploadField from "../forms/upload/FileUpload/FileUploadField";
+import store from "../../library/redux/store";
+import {SESSION_USER_PROFILE_MEDIA_REQUESTED} from "../../library/redux/sagas/user/user-sagas";
+import {getUserMediaValue} from "../../library/helpers/user-helper";
+import {SESSION_STATE_KEY, SESSION_USER} from "../../library/redux/constants/session-constants";
+import {connect} from "react-redux";
+import {isNotEmpty, isSet} from "../../library/helpers/utils-helper";
 
-const ImageBannerBlock = () => {
+const ImageBannerBlock = ({session}) => {
+    const [profilePic, setProfilePic] = useState("images/profile/Profile.jpg")
+    const [profileCover, setProfileCover] = useState("images/profile/cover.jpg")
+    const fileUploadHandler = ({name, file}) => {
+        store.dispatch({
+            type: SESSION_USER_PROFILE_MEDIA_REQUESTED,
+            payload: {
+                type: "image",
+                media_category: name,
+                file: file
+            }
+        })
+    }
+
+    useEffect(() => {
+        const files = session[SESSION_USER]?.files;
+        const getProfileCover = getUserMediaValue({
+            files: files,
+            mediaCategory: "profile_cover"
+        });
+        if (isNotEmpty(getProfileCover)) {
+            setProfileCover(getProfileCover)
+        }
+        const getProfilePic = getUserMediaValue({
+            files: files,
+            mediaCategory: "profile_pic"
+        });
+        if (isNotEmpty(getProfilePic)) {
+            setProfilePic(getProfilePic)
+        }
+    }, [session[SESSION_USER]]);
+
     return (
         <>
             <div className="profile-item">
-                <div className="profile-cover">
-                    <img src="/images/profile/cover.jpg" alt="cover-pic" />
-                        <div className="edit-photo custom-upload">
-                            <div className="file-btn">
-                                <i className="icofont-camera"/>
-                                Edit Photo
-                            </div>
-                            <input type="file" />
+                <div
+                    className="profile-cover"
+                    style={{
+                        backgroundImage: `url(${profileCover})`,
+                        backgroundSize: "contain",
+                        height: 240
+                    }}
+                >
+                    <FileUploadField
+                    name={"profile_cover"}
+                    callback={fileUploadHandler}
+                    acceptedFilesMessage={"Accepted"}
+                    allowedFileTypes={[
+                        {mime_type: "image/jpeg"},
+                        {mime_type: "image/png"},
+                        {mime_type: "image/jpg"}
+                    ]}
+                    showDropzone={true}
+                >
+                    <div className="edit-photo custom-upload">
+                        <div className="file-btn">
+                            <i className="icofont-camera"/>
+                            Edit Photo
                         </div>
+                    </div>
+                </FileUploadField>
                 </div>
                 <div className="profile-information">
-                    <div className="profile-pic">
-                        <img src="images/profile/Profile.jpg" alt="DP" />
+                    <div
+                        className="profile-pic"
+                        style={{
+                            backgroundImage: `url(${profilePic})`,
+                            backgroundSize: "contain",
+                            backgroundRepeat: "no-repeat",
+                            backgroundColor: "#210053",
+                            backgroundPosition: "center"
+                        }}
+                    >
+                        <FileUploadField
+                            name={"profile_pic"}
+                            callback={fileUploadHandler}
+                            acceptedFilesMessage={"Accepted"}
+                            allowedFileTypes={[
+                                {mime_type: "image/jpeg"},
+                                {mime_type: "image/png"},
+                                {mime_type: "image/jpg"}
+                            ]}
+                            showDropzone={true}
+                        >
                             <div className="custom-upload">
                                 <div className="file-btn">
                                         <span className="d-none d-lg-inline-block">
@@ -27,8 +101,8 @@ const ImageBannerBlock = () => {
                                         <i className="icofont-plus"/>
                                     </span>
                                 </div>
-                                <input type="file" />
                             </div>
+                        </FileUploadField>
                     </div>
                     <div className="profile-name">
                         <h4>William Smith</h4>
@@ -72,8 +146,8 @@ const ImageBannerBlock = () => {
                 <div className="lab-inner">
                     <div className="lab-thumb">
                         <a href="#">
-                            <img src="images/profile/Profile.jpg" alt="profile" />
-                            </a>
+                            <img src="images/profile/Profile.jpg" alt="profile"/>
+                        </a>
                     </div>
                     <div className="lab-content">
                         <div className="profile-name">
@@ -127,4 +201,14 @@ const ImageBannerBlock = () => {
     );
 };
 
-export default ImageBannerBlock;
+function mapStateToProps(state) {
+    return {
+        session: state[SESSION_STATE_KEY]
+    }
+}
+
+export default connect(
+    mapStateToProps,
+    null
+)(ImageBannerBlock);
+

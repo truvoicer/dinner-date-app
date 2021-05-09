@@ -1,10 +1,12 @@
 import FullWidthLayout from "../components/layout/FullWidthLayout";
-import HomeView from "../components/views/HomeView";
+import {HOME_VIEW} from "../config/constants/views/view-constants";
+import ViewBuilder from "../components/views/builder/ViewBuilder";
+import React from "react";
 
 export default function Home() {
   return (
       <FullWidthLayout>
-        <HomeView />
+          <ViewBuilder pageName={HOME_VIEW} />
       </FullWidthLayout>
   )
 }

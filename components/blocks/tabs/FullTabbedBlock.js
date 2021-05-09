@@ -5,7 +5,7 @@ import FullWidthSection from "../../layout/sections/FullWidthSection";
 import ImageBannerBlock from "../ImageBannerBlock";
 import {getComponent} from "../../../library/helpers/page-helper";
 
-const FullTabbedBlock = ({config}) => {
+const FullTabbedBlock = (props) => {
     return (
         <FullWidthSection
             className={"profile-section padding-tb"}
@@ -13,10 +13,10 @@ const FullTabbedBlock = ({config}) => {
             <div className="member-profile">
                 <ImageBannerBlock/>
                 <div className="profile-details">
-                    <Tab.Container id="left-tabs-example" defaultActiveKey={config.defaultTab}>
+                    <Tab.Container id="left-tabs-example" defaultActiveKey={props.config.defaultTab}>
                         <div className="profile-nav">
                             <Nav variant="tabs">
-                                {config.tabs.map((tab, tabIndex) => {
+                                {props.config.tabs.map((tab, tabIndex) => {
                                     if (Array.isArray(tab?.subs)) {
                                         return (
                                             <div key={tabIndex} className="dropdown">
@@ -63,14 +63,22 @@ const FullTabbedBlock = ({config}) => {
                             </Nav>
                         </div>
                         <Tab.Content>
-                            {config.tabs.map((tab, tabIndex) => (
+                            {props.config.tabs.map((tab, tabIndex) => (
                                 <Tab.Pane
                                     id={tab.name}
                                     className="fade"
                                     key={tabIndex}
                                     eventKey={tab.name}
                                 >
-                                    {getComponent(tab)}
+                                    {getComponent({
+                                        component: tab.component,
+                                        props: {
+                                            ...props,
+                                            ...(() => {
+                                                return tab?.props || {};
+                                            })
+                                        }
+                                    })}
                                 </Tab.Pane>
                             ))}
                         </Tab.Content>

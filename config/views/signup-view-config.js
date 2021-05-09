@@ -7,12 +7,10 @@ import {
     MEMBERSHIP_GOLD, MEMBERSHIP_PLATINUM,
     MEMBERSHIP_SILVER
 } from "../constants/access-control/membership-constants";
-import HomeView from "../../components/views/HomeView";
 import {SIGNUP_VIEW} from "../constants/views/view-constants";
 
 export const signUpViewConfig = {
     name: SIGNUP_VIEW,
-    component: HomeView,
     blocks: [
         {
             name: "page_header_block",

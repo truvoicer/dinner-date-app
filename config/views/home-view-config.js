@@ -6,12 +6,10 @@ import {
     MEMBERSHIP_GOLD, MEMBERSHIP_PLATINUM,
     MEMBERSHIP_SILVER
 } from "../constants/access-control/membership-constants";
-import HomeView from "../../components/views/HomeView";
 import {HOME_VIEW} from "../constants/views/view-constants";
 
 export const homeViewConfig = {
     name: HOME_VIEW,
-    component: HomeView,
     blocks: [
         {
             name: "hero_banner",

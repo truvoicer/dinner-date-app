@@ -1,8 +1,8 @@
 import {routes} from "../../config/routes";
-import {isSet} from "./utils-helper";
+import {isNotEmpty, isSet} from "./utils-helper";
 
 export const getComponent = ({component, props = {}}) => {
-    if (!isSet(component)) {
+    if (!isNotEmpty(component)) {
         return null;
     }
     const Component = component;

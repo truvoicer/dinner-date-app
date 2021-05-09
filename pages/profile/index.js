@@ -1,11 +1,12 @@
 import React from 'react';
 import FullWidthLayout from "../../components/layout/FullWidthLayout";
-import ProfileView from "../../components/views/profile/ProfileView";
+import {PROFILE_VIEW} from "../../config/constants/views/view-constants";
+import ViewBuilder from "../../components/views/builder/ViewBuilder";
 
 const ProfilePage = () => {
     return (
         <FullWidthLayout>
-            <ProfileView />
+            <ViewBuilder editable={true} pageName={PROFILE_VIEW} />
         </FullWidthLayout>
     );
 };
