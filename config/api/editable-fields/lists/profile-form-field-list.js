@@ -8,7 +8,7 @@ import EditableTextAreaField from "../../../../components/forms/editable-fields/
 import moment from "moment";
 import EditableMeasurementField from "../../../../components/forms/editable-fields/EditableMeasurementField";
 
-export const profileFormFieldList = (getUserProfileValue) => {
+export const profileFormFieldList = (targetUser) => {
     return [
         {
             title: "Base Info",
@@ -19,7 +19,7 @@ export const profileFormFieldList = (getUserProfileValue) => {
                     className: "info-details",
                     configName: USER_PROFILE_UPDATE,
                     field: "first_name",
-                    value: getUserProfileValue("first_name"),
+                    value: getUserProfileValue("first_name", targetUser),
                     fieldComponent: EditableTextField
                 },
                 {
@@ -27,7 +27,7 @@ export const profileFormFieldList = (getUserProfileValue) => {
                     className: "info-details",
                     configName: USER_PROFILE_UPDATE,
                     field: "last_name",
-                    value: getUserProfileValue("last_name"),
+                    value: getUserProfileValue("last_name", targetUser),
                     fieldComponent: EditableTextField
                 },
                 {
@@ -35,7 +35,7 @@ export const profileFormFieldList = (getUserProfileValue) => {
                     className: "info-details",
                     configName: USER_PROFILE_UPDATE,
                     field: "gender",
-                    value: uCaseFirst(getUserProfileValue("gender")),
+                    value: uCaseFirst(getUserProfileValue("gender", targetUser)),
                     fieldComponent: EditableSelectField,
                     options: [
                         {value: "male", label: "Man"},
@@ -49,7 +49,7 @@ export const profileFormFieldList = (getUserProfileValue) => {
                     className: "info-details",
                     configName: USER_PROFILE_UPDATE,
                     field: "gender_preference",
-                    value: uCaseFirst(getUserProfileValue("gender_preference")),
+                    value: uCaseFirst(getUserProfileValue("gender_preference", targetUser)),
                     fieldComponent: EditableSelectField,
                     options: [
                         {value: "male", label: "Man"},
@@ -63,7 +63,7 @@ export const profileFormFieldList = (getUserProfileValue) => {
                     className: "info-details",
                     configName: USER_PROFILE_UPDATE,
                     field: "marital_status",
-                    value: uCaseFirst(getUserProfileValue("marital_status")),
+                    value: uCaseFirst(getUserProfileValue("marital_status", targetUser)),
                     fieldComponent: EditableSelectField,
                     options: [
                         {value: "single", label: "Single"},
@@ -76,14 +76,14 @@ export const profileFormFieldList = (getUserProfileValue) => {
                 {
                     label: "Age",
                     className: "info-details",
-                    value: calculateDateDifference(getUserProfileValue("dob")),
+                    value: calculateDateDifference(getUserProfileValue("dob", targetUser)),
                 },
                 {
                     label: "Date of Birth",
                     className: "info-details",
                     configName: USER_PROFILE_UPDATE,
                     field: "dob",
-                    value: getUserProfileValue("dob"),
+                    value: getUserProfileValue("dob", targetUser),
                     fieldComponent: EditableDateField
                 },
                 {
@@ -91,7 +91,7 @@ export const profileFormFieldList = (getUserProfileValue) => {
                     className: "info-details",
                     configName: USER_PROFILE_UPDATE,
                     field: "address",
-                    value: getUserProfileValue("address"),
+                    value: getUserProfileValue("address", targetUser),
                     fieldComponent: EditableTextField
                 },
             ]
@@ -106,7 +106,7 @@ export const profileFormFieldList = (getUserProfileValue) => {
                     configName: USER_PROFILE_UPDATE,
                     fullWidth: true,
                     field: "summary",
-                    value: getUserProfileValue("summary"),
+                    value: getUserProfileValue("summary", targetUser),
                     fieldComponent: EditableTextAreaField
                 },
             ]
@@ -120,7 +120,7 @@ export const profileFormFieldList = (getUserProfileValue) => {
                     className: "info-details",
                     configName: USER_PROFILE_UPDATE,
                     field: "partner_qualities",
-                    value: getUserProfileValue("partner_qualities"),
+                    value: getUserProfileValue("partner_qualities", targetUser),
                     fieldComponent: EditableTextField
                 },
                 {
@@ -128,7 +128,7 @@ export const profileFormFieldList = (getUserProfileValue) => {
                     className: "info-details",
                     configName: USER_PROFILE_UPDATE,
                     field: "smoking_preference",
-                    value: uCaseFirst(getUserProfileValue("smoking_preference")),
+                    value: uCaseFirst(getUserProfileValue("smoking_preference", targetUser)),
                     fieldComponent: EditableSelectField,
                     options: [
                         {value: true, label: "Yes"},
@@ -147,7 +147,7 @@ export const profileFormFieldList = (getUserProfileValue) => {
                     className: "info-details",
                     configName: USER_PROFILE_UPDATE,
                     field: "interests",
-                    value: getUserProfileValue("interests"),
+                    value: getUserProfileValue("interests", targetUser),
                     fieldComponent: EditableTextField
                 },
                 {
@@ -155,7 +155,7 @@ export const profileFormFieldList = (getUserProfileValue) => {
                     className: "info-details",
                     configName: USER_PROFILE_UPDATE,
                     field: "hobbies",
-                    value: getUserProfileValue("hobbies"),
+                    value: getUserProfileValue("hobbies", targetUser),
                     fieldComponent: EditableTextField
                 },
                 {
@@ -163,7 +163,7 @@ export const profileFormFieldList = (getUserProfileValue) => {
                     className: "info-details",
                     configName: USER_PROFILE_UPDATE,
                     field: "smoking_status",
-                    value: uCaseFirst(getUserProfileValue("smoking_status")),
+                    value: uCaseFirst(getUserProfileValue("smoking_status", targetUser)),
                     fieldComponent: EditableSelectField,
                     options: [
                         {value: "full_smoker", label: "I'm a regular smoker"},
@@ -176,7 +176,7 @@ export const profileFormFieldList = (getUserProfileValue) => {
                     className: "info-details",
                     configName: USER_PROFILE_UPDATE,
                     field: "languages",
-                    value: getUserProfileValue("languages"),
+                    value: getUserProfileValue("languages", targetUser),
                     fieldComponent: EditableTextField
                 },
                 {
@@ -188,8 +188,8 @@ export const profileFormFieldList = (getUserProfileValue) => {
                         unit: "weight_unit"
                     },
                     value: {
-                        amount: getUserProfileValue("weight"),
-                        unit: getUserProfileValue("weight_unit")
+                        amount: getUserProfileValue("weight", targetUser),
+                        unit: getUserProfileValue("weight_unit", targetUser)
                     },
                     options: [
                         {value: "kg", label: "KG"},
@@ -208,8 +208,8 @@ export const profileFormFieldList = (getUserProfileValue) => {
                         unit: "height_unit"
                     },
                     value: {
-                        amount: getUserProfileValue("height"),
-                        unit: getUserProfileValue("height_unit")
+                        amount: getUserProfileValue("height", targetUser),
+                        unit: getUserProfileValue("height_unit", targetUser)
                     },
                     options: [
                         {value: "cm", label: "CM"},

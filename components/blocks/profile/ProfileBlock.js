@@ -45,18 +45,18 @@ const ProfileBlock = ({session, members, editable = false, user = null}) => {
     //
     useEffect(() => {
         if (!editable && !isObjectEmpty(members[MEMBERS_SINGLE])) {
-            // console.log(members[MEMBERS_SINGLE])
+            console.log(members[MEMBERS_SINGLE])
             setTargetUser(members[MEMBERS_SINGLE])
             setShowForm(true)
         }
     }, [members[MEMBERS_SINGLE]]);
-
+    console.log(targetUser)
     return (
         <div>
             <div className="row">
                 <div className="col-xl-8">
                     <article>
-                        {showForm && profileFormFieldList(getUserProfileValue.bind(targetUser))
+                        {showForm && profileFormFieldList(targetUser)
                             .map((block, blockIndex) => {
                                 switch (block?.sectionType) {
                                     case "SECTION_FIELDS_LIST":
