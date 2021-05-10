@@ -3,12 +3,14 @@ import sessionSagas from "./session/session-sagas";
 import authSagas from "./auth/auth-sagas";
 import userSagas from "./user/user-sagas";
 import memberSagas from "./member/member-sagas";
+import localeSagas from "./locale/locale-sagas";
 
 export default function* rootSaga() {
     yield all([
         authSagas(),
         sessionSagas(),
         userSagas(),
-        memberSagas()
+        memberSagas(),
+        localeSagas()
     ])
 }

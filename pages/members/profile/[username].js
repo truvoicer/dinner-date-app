@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import FullWidthLayout from "../../../components/layout/FullWidthLayout";
 import {useRouter} from "next/router";
-import {PROFILE_VIEW} from "../../../config/constants/views/view-constants";
+import {MEMBER_PROFILE_VIEW} from "../../../config/constants/views/view-constants";
 import ViewBuilder from "../../../components/views/builder/ViewBuilder";
 import {isNotEmpty} from "../../../library/helpers/utils-helper";
 
@@ -17,7 +17,7 @@ const MemberProfilePage = () => {
     return (
         <FullWidthLayout>
             {showForm &&
-                <ViewBuilder user={router.query.username} editable={false} pageName={PROFILE_VIEW}/>
+                <ViewBuilder username={router.query.username}  pageName={MEMBER_PROFILE_VIEW}/>
             }
         </FullWidthLayout>
     );

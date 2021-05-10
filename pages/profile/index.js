@@ -6,7 +6,7 @@ import ViewBuilder from "../../components/views/builder/ViewBuilder";
 const ProfilePage = () => {
     return (
         <FullWidthLayout>
-            <ViewBuilder editable={true} pageName={PROFILE_VIEW} />
+            <ViewBuilder  pageName={PROFILE_VIEW} />
         </FullWidthLayout>
     );
 };

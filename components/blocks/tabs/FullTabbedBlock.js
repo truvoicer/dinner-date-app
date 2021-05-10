@@ -2,8 +2,9 @@ import React from 'react';
 import {Nav, Tab} from 'react-bootstrap';
 import Link from "next/link";
 import FullWidthSection from "../../layout/sections/FullWidthSection";
-import ImageBannerBlock from "../ImageBannerBlock";
+import EditProfileBannerBlock from "../profile/EditProfileBannerBlock";
 import {getComponent} from "../../../library/helpers/page-helper";
+import {isSet} from "../../../library/helpers/utils-helper";
 
 const FullTabbedBlock = (props) => {
     return (
@@ -11,7 +12,10 @@ const FullTabbedBlock = (props) => {
             className={"profile-section padding-tb"}
         >
             <div className="member-profile">
-                <ImageBannerBlock/>
+                {isSet(props?.headerComponent) && getComponent({
+                    component: props.headerComponent,
+                    props: props
+                })}
                 <div className="profile-details">
                     <Tab.Container id="left-tabs-example" defaultActiveKey={props.config.defaultTab}>
                         <div className="profile-nav">

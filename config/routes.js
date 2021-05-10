@@ -17,11 +17,12 @@ import {
     MEMBERSHIP_GOLD, MEMBERSHIP_PLATINUM,
     MEMBERSHIP_SILVER
 } from "./constants/access-control/membership-constants";
-import {profileViewConfig} from "./views/profile-view-config";
+import {editProfileViewConfig} from "./views/edit-profile-view-config";
 import {logout} from "../library/api/session";
 import {sessionLogoutHandler} from "../library/redux/actions/session-actions";
 import {getRouteItem} from "../library/helpers/page-helper";
 import {memberListViewConfig} from "./views/member-list-view-config";
+import {viewProfileViewConfig} from "./views/view-profile-view-config";
 
 export const routes = [
     {
@@ -72,7 +73,7 @@ export const routes = [
                 label: "All Members",
                 href: "/members/profile/%s",
                 showInHeader: false,
-                viewConfig: profileViewConfig,
+                viewConfig: viewProfileViewConfig,
                 access_control: {
                     roles: [ROLE_USER, ROLE_ADMIN, ROLE_SUPER_ADMIN],
                     memberships: [MEMBERSHIP_FREE, MEMBERSHIP_BRONZE, MEMBERSHIP_SILVER, MEMBERSHIP_GOLD, MEMBERSHIP_PLATINUM]
@@ -118,7 +119,7 @@ export const routes = [
                 label: "Profile",
                 href: "/profile",
                 showInHeader: true,
-                viewConfig: profileViewConfig,
+                viewConfig: editProfileViewConfig,
                 access_control: {
                     roles: [ROLE_USER, ROLE_ADMIN, ROLE_SUPER_ADMIN],
                     memberships: [MEMBERSHIP_FREE, MEMBERSHIP_BRONZE, MEMBERSHIP_SILVER, MEMBERSHIP_GOLD, MEMBERSHIP_PLATINUM]

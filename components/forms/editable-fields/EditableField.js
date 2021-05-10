@@ -7,6 +7,7 @@ import {getComponent} from "../../../library/helpers/page-helper";
 import {getEditableFieldAction} from "../../../config/api/editable-fields/editable-fields-config";
 import store from "../../../library/redux/store";
 import {isObject} from "../../../library/helpers/utils-helper";
+import {getValueLabel} from "../../../library/helpers/user-helper";
 
 const EditableField = (props) => {
     const defaultFormValuesObject = {
@@ -50,28 +51,7 @@ const EditableField = (props) => {
         }
         store.dispatch({type: action, payload: requestData})
     }
-    const getValueLabel = () => {
-        if (!isObject(props.field)) {
-            return (
-                <div className={"editable-field--label"}>
-                <p className="info-details">{props.value}</p>
-                </div>
-            )
-        } else {
-            return (
-                <div className={"editable-field--label d-flex"}>
-                {Object.keys(props.field).map((key, index) => (
-                    <p
-                        key={index}
-                        className={`info-details ${(index === (Object.keys(props.field).length - 1))? "mx-1" : ""}`}
-                    >
-                        {props.value[key]}
-                    </p>
-                ))}
-                </div>
-            );
-        }
-    }
+    const labelValues = getValueLabel({field: props.field, value: props.value});
     return (
         <Formik
             enableReinitialize={true}
@@ -92,7 +72,18 @@ const EditableField = (props) => {
                         <Form onSubmit={handleSubmit}>
                             {!values.showForm
                                 ?
-                                getValueLabel()
+                                <>
+                                    <div className={`editable-field--label ${labelValues.length > 1 ? "d-flex" : ""}`}>
+                                        {labelValues.map((value, index) => (
+                                            <p
+                                                key={index}
+                                                className={`info-details ${(index === (labelValues.length - 1)) ? "mx-1" : ""}`}
+                                            >
+                                                {value || ""}
+                                            </p>
+                                        ))}
+                                    </div>
+                                </>
                                 :
                                 <>
                                     {getComponent({

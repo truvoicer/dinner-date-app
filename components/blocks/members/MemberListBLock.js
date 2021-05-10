@@ -24,7 +24,6 @@ const MemberListBlock = ({session, members}) => {
     const [showList, setShowList] = useState(false);
 
     useEffect(() => {
-        console.log(isAuthenticated())
         if (isAuthenticated()) {
             const params = {
                 limit: 50

@@ -7,10 +7,11 @@ import {
 } from "../constants/access-control/membership-constants";
 import {HOME_VIEW, PROFILE_VIEW} from "../constants/views/view-constants";
 import FullTabbedBlock from "../../components/blocks/tabs/FullTabbedBlock";
-import {profileTabsConfig} from "../tabs/profile-tabs-config";
+import {editProfileTabsConfig} from "../tabs/edit-profile-tabs-config";
 import PageHeaderBlock from "../../components/blocks/PageHeaderBlock";
+import EditProfileBannerBlock from "../../components/blocks/profile/EditProfileBannerBlock";
 
-export const profileViewConfig = {
+export const editProfileViewConfig = {
     name: PROFILE_VIEW,
     blocks: [
         {
@@ -28,7 +29,8 @@ export const profileViewConfig = {
             name: "full_tabbed_block",
             component: FullTabbedBlock,
             props: {
-              config: profileTabsConfig
+                config: editProfileTabsConfig,
+                headerComponent: EditProfileBannerBlock
             },
             access_control: {
                 roles: [ROLE_ANONYMOUS, ROLE_USER, ROLE_ADMIN, ROLE_SUPER_ADMIN],

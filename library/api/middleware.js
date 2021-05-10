@@ -39,14 +39,12 @@ export const authLoginRequest = ({payload, type, errorAction}) => {
 }
 
 export const fetchRequest = ({endpoint, operation = "", args = [], data={}, onSuccess, onError}) => {
-    console.log(endpoint)
     const request = {
         method: "get",
         url: buildRequestUrl({endpoint: endpoint, operation: operation, args: args}),
         params: data,
         headers: {'Authorization': sprintf("Bearer %s", getSessionLocalStorage().access_token)}
     }
-    console.log(request)
     return apiRequest.request(request);
 }
 

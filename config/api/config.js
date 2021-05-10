@@ -8,5 +8,6 @@ export const apiConfig =
         user: "/user",
         member: "/member",
         media: "/media",
+        locale: "/locale"
     }
 }

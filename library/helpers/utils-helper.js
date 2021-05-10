@@ -92,3 +92,7 @@ export const getAcceptedFileExtString = (allowedExtArray = null, allowedMessage)
     const joinAcceptedFiles = allowedExtArray.map(type => type.extension).join(", ");
     return allowedMessage.replace("[accepted]", joinAcceptedFiles)
 }
+
+export const range = (start, stop, step) => {
+    return Array.from({length: (stop - start) / step + 1}, (_, i) => start + (i * step))
+};

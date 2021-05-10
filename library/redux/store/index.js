@@ -13,13 +13,16 @@ import {globalApiReducer} from "../reducers/global-reducer";
 import mySaga from '../sagas/sagas'
 import {MEMBERS_STATE_KEY} from "../constants/members-constants";
 import {membersReducer} from "../reducers/members-reducer";
+import {LOCALE_STATE_KEY} from "../constants/locale-constants";
+import {localeReducer} from "../reducers/locale-reducer";
 const sagaMiddleware = createSagaMiddleware()
 
 const reducer = {
     [SESSION_STATE_KEY]: sessionApiReducer,
     [BREADCRUMBS_STATE_KEY]: breadcrumbsApiReducer,
     [GLOBAL_STATE_KEY]: globalApiReducer,
-    [MEMBERS_STATE_KEY]: membersReducer
+    [MEMBERS_STATE_KEY]: membersReducer,
+    [LOCALE_STATE_KEY]: localeReducer
 }
 const store = configureStore({
     reducer,
