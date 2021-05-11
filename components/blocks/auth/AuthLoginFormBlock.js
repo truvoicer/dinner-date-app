@@ -7,9 +7,7 @@ import {
     PROFILE_VIEW,
     SIGNUP_VIEW
 } from "../../../config/constants/views/view-constants";
-import store from "../../../library/redux/store";
 import {Formik} from "formik";
-import {AUTH_LOGIN_REQUESTED} from "../../../library/redux/sagas/auth/auth-sagas";
 import {connect} from "react-redux";
 import {
     SESSION_AUTHENTICATED,
@@ -18,41 +16,21 @@ import {
 } from "../../../library/redux/constants/session-constants";
 import {useRouter} from "next/router";
 import {isAuthenticated} from "../../../library/redux/actions/session-actions";
-import Modal from "react-bootstrap/Modal";
-import Button from "react-bootstrap/Button";
-import {GlobalContext} from "../../contexts/GlobalContext";
 import {GLOBAL_STATE_KEY} from "../../../library/redux/constants/global-constants";
-import {addGlobalModalAction, showModalAction} from "../../../library/redux/actions/global-actions";
+import store from "../../../library/redux/store";
+import {AUTH_LOGIN_REQUESTED} from "../../../library/redux/sagas/auth/auth-sagas";
 
 const AuthLoginFormBlock = ({session, global}) => {
     const router = useRouter();
-    const globalContext = useContext(GlobalContext);
     useEffect(() => {
         if (isAuthenticated()) {
             router.replace(getRouteItem(PROFILE_VIEW).href);
         }
-        addGlobalModalAction({name: "modal1"})
-        addGlobalModalAction({name: "modal2", size: "sm"})
-        addGlobalModalAction({name: "modal3"})
     }, [session[SESSION_AUTHENTICATED], session[SESSION_AUTHENTICATING], session[SESSION_USER]])
 
     const submitHandler = (values, { setSubmitting }) => {
         setSubmitting(true)
-        globalContext.showModal({name: "modal1", component: (
-            <>
-            <h2 style={{color: "#000000"}}>MODAL 1</h2>
-                <button
-                    onClick={() => {
-                        showModalAction({name: "modal2"})
-                    }}
-                >
-                    Click
-                </button>
-            </>
-        )});
-        globalContext.showModal({name: "modal2", component: (<h2 style={{color: "#000000"}}>MODAL 33333</h2>)});
-        showModalAction({name: "modal1"})
-        // store.dispatch({type: AUTH_LOGIN_REQUESTED, payload: values})
+        store.dispatch({type: AUTH_LOGIN_REQUESTED, payload: values})
     }
     return (
         <FullWidthSection
