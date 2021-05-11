@@ -4,7 +4,7 @@ import {createSlice} from "@reduxjs/toolkit";
 import {
     GLOBAL_ALERT, GLOBAL_ALERT_SHOW,
     GLOBAL_ALERT_TEXT, GLOBAL_ALERT_TIMEOUT,
-    GLOBAL_ALERT_VARIANT,
+    GLOBAL_ALERT_VARIANT, GLOBAL_MODALS,
     GLOBAL_STATE_KEY,
     GLOBAL_TOAST, GLOBAL_TOAST_SHOW,
     GLOBAL_TOAST_TEXT, GLOBAL_TOAST_TIMEOUT,
@@ -18,12 +18,8 @@ const defaultState = {
         [GLOBAL_ALERT_SHOW]: false,
         [GLOBAL_ALERT_TIMEOUT]: 6000,
     },
-    [GLOBAL_TOAST]: {
-        [GLOBAL_TOAST_TITLE]: "",
-        [GLOBAL_TOAST_TEXT]: "",
-        [GLOBAL_TOAST_SHOW]: false,
-        [GLOBAL_TOAST_TIMEOUT]: 6000,
-    },
+    [GLOBAL_TOAST]: [],
+    [GLOBAL_MODALS]: [],
 };
 
 const defaultReducers = {
@@ -39,6 +35,9 @@ const defaultReducers = {
     setShowGlobalToast: (state, action) => {
         state[GLOBAL_TOAST][GLOBAL_TOAST_SHOW] = action.payload;
     },
+    setGlobalModals: (state, action) => {
+        state[GLOBAL_MODALS] = action.payload;
+    },
 };
 
 export const globalApiSlice = createSlice({
@@ -48,4 +47,4 @@ export const globalApiSlice = createSlice({
 });
 
 export const globalApiReducer = globalApiSlice.reducer;
-export const { setGlobalAlert, setGlobalToast, setShowGlobalAlert, setShowGlobalToast } = globalApiSlice.actions;
+export const { setGlobalAlert, setGlobalToast, setGlobalModals, setShowGlobalAlert, setShowGlobalToast } = globalApiSlice.actions;
