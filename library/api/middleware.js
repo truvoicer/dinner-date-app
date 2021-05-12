@@ -38,6 +38,15 @@ export const authLoginRequest = ({payload, type, errorAction}) => {
     return apiRequest.request(request);
 }
 
+export const externalProviderAuthRequest = ({payload}) => {
+    const request = {
+        method: "post",
+        url: process.env.NEXT_PUBLIC_API_URL + apiConfig.endpoints.auth + "/external/provider/auth",
+        data: payload,
+    }
+    return apiRequest.request(request);
+}
+
 export const fetchRequest = ({endpoint, operation = "", args = [], data={}, onSuccess, onError}) => {
     const request = {
         method: "get",

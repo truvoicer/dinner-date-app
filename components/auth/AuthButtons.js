@@ -28,7 +28,7 @@ const AuthButtons = ({session}) => {
                                 globalContext.showModal({
                                     name: "login_form",
                                     component: (<AuthLoginFormBlock />),
-                                    size: "lg"
+                                    size: "md"
                                 })
                             }}
                         >
@@ -44,7 +44,7 @@ const AuthButtons = ({session}) => {
                                 globalContext.showModal({
                                     name: "login_form",
                                     component: (<AuthSignUpFormBlock />),
-                                    size: "lg"
+                                    size: "md"
                                 })
                             }}
                         >

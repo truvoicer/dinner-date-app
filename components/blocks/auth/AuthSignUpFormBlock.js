@@ -5,14 +5,9 @@ import {
     SESSION_AUTHENTICATING, SESSION_STATE_KEY,
     SESSION_USER
 } from "../../../library/redux/constants/session-constants";
-import {isObjectEmpty} from "../../../library/helpers/utils-helper";
 import {getRouteItem} from "../../../library/helpers/page-helper";
 import {
-    ACCOUNT_VIEW,
-    HOME_VIEW,
-    LOGIN_VIEW,
     PROFILE_VIEW,
-    SIGNUP_VIEW
 } from "../../../config/constants/views/view-constants";
 import store from "../../../library/redux/store";
 import {AUTH_LOGIN_REQUESTED, AUTH_SIGNUP_REQUESTED} from "../../../library/redux/sagas/auth/auth-sagas";
@@ -21,6 +16,9 @@ import {Formik} from "formik";
 import Link from "next/link";
 import {connect} from "react-redux";
 import {isAuthenticated} from "../../../library/redux/actions/session-actions";
+import {faFacebook, faInstagram, faLinkedin, faPinterest, faTwitter} from "@fortawesome/free-brands-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import AuthSocialIconsMenu from "../../menus/AuthSocialIconsMenu";
 
 const AuthSignUpFormBlock = ({session}) => {
     const router = useRouter();
@@ -142,23 +140,7 @@ const AuthSignUpFormBlock = ({session}) => {
                 <span className="d-block cate pt-10">Are you a member? <a href="login.html">Login</a></span>
                 <span className="or"><span>or</span></span>
                 <h5 className="subtitle">Register With Social Media</h5>
-                <ul className="social-media social-color justify-content-center d-flex lab-ul">
-                    <li>
-                        <a href="#" className="facebook"><i className="icofont-facebook"></i></a>
-                    </li>
-                    <li>
-                        <a href="#" className="twitter"><i className="icofont-twitter"></i></a>
-                    </li>
-                    <li>
-                        <a href="#" className="linkedin"><i className="icofont-linkedin"></i></a>
-                    </li>
-                    <li>
-                        <a href="#" className="instagram"><i className="icofont-instagram"></i></a>
-                    </li>
-                    <li>
-                        <a href="#" className="pinterest"><i className="icofont-pinterest"></i></a>
-                    </li>
-                </ul>
+                <AuthSocialIconsMenu />
             </div>
         </FullWidthSection>
     );

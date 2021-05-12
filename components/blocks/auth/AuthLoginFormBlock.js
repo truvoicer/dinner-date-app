@@ -19,6 +19,7 @@ import {isAuthenticated} from "../../../library/redux/actions/session-actions";
 import {GLOBAL_STATE_KEY} from "../../../library/redux/constants/global-constants";
 import store from "../../../library/redux/store";
 import {AUTH_LOGIN_REQUESTED} from "../../../library/redux/sagas/auth/auth-sagas";
+import AuthSocialIconsMenu from "../../menus/AuthSocialIconsMenu";
 
 const AuthLoginFormBlock = ({session, global}) => {
     const router = useRouter();
@@ -122,34 +123,7 @@ const AuthLoginFormBlock = ({session, global}) => {
                         </span>
 
                         <h5 className="subtitle">Login With Social Media</h5>
-                        <ul className="social-media social-color lab-ul d-flex justify-content-center">
-                            <li>
-
-                                <a href="#" className="facebook">
-                                    <i className="icofont-facebook"/>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" className="twitter">
-                                    <i className="icofont-twitter"/>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" className="linkedin">
-                                    <i className="icofont-linkedin"/>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" className="instagram">
-                                    <i className="icofont-instagram"/>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" className="pinterest">
-                                    <i className="icofont-pinterest"/>
-                                </a>
-                            </li>
-                        </ul>
+                        <AuthSocialIconsMenu />
                     </div>
 
         </FullWidthSection>

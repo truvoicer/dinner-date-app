@@ -7,7 +7,7 @@ import {
     authSignup,
     authSignupFailed,
     authSignupSuccess,
-    authValidation
+    authValidation, externalProviderAuth
 } from "./auth-saga-tasks";
 export const AUTH_SIGNUP_REQUESTED = "AUTH_SIGNUP_REQUESTED";
 export const AUTH_SIGNUP_SUCCEEDED = "AUTH_LOGIN_SUCCEEDED";
@@ -16,6 +16,18 @@ export const AUTH_LOGIN_SUCCEEDED = "AUTH_LOGIN_SUCCEEDED";
 export const AUTH_LOGIN_REQUESTED = "AUTH_LOGIN_REQUESTED";
 export const AUTH_LOGIN_FAILED = "AUTH_LOGIN_FAILED";
 export const AUTH_VALIDATION_REQUESTED = "AUTH_VALIDATION_REQUESTED";
+
+export const EXTERNAL_PROVIDER_AUTH_SUCCEEDED = "EXTERNAL_PROVIDER_AUTH_SUCCEEDED";
+export const EXTERNAL_PROVIDER_AUTH_REQUESTED = "EXTERNAL_PROVIDER_AUTH_REQUESTED";
+export const EXTERNAL_PROVIDER_AUTH_FAILED = "EXTERNAL_PROVIDER_AUTH_FAILED";
+
+function* externalProviderAuthSaga() {
+    yield takeLatest(EXTERNAL_PROVIDER_AUTH_REQUESTED, externalProviderAuth);
+}
+
+function* externalProviderAuthSuccessSaga() {
+    yield takeLatest(EXTERNAL_PROVIDER_AUTH_SUCCEEDED, authLoginSuccess);
+}
 
 function* authLoginSaga() {
     yield takeLatest(AUTH_LOGIN_REQUESTED, authLogin);
@@ -46,5 +58,7 @@ export default function* authSagas() {
         authSignupSaga(),
         authSignupSuccessSaga(),
         authSignupFailSaga(),
+        externalProviderAuthSaga(),
+        externalProviderAuthSuccessSaga(),
     ]);
 }

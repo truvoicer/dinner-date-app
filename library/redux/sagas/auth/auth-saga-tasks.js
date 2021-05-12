@@ -9,7 +9,24 @@ import {
 } from "../session/session-sagas";
 import {isLocalStorageTokenValid} from "../../../api/session";
 import {apiConfig} from "../../../../config/api/config";
-import {AUTH_LOGIN_FAILED, AUTH_LOGIN_SUCCEEDED, AUTH_SIGNUP_FAILED, AUTH_SIGNUP_SUCCEEDED} from "./auth-sagas";
+import {
+    AUTH_LOGIN_FAILED,
+    AUTH_LOGIN_SUCCEEDED,
+    AUTH_SIGNUP_FAILED,
+    AUTH_SIGNUP_SUCCEEDED, EXTERNAL_PROVIDER_AUTH_FAILED,
+    EXTERNAL_PROVIDER_AUTH_SUCCEEDED
+} from "./auth-sagas";
+
+export function* externalProviderAuth(action) {
+    try {
+        console.log(action)
+        // const {data} = yield call(externalProviderAuthRequest, action);
+        // yield put({type: EXTERNAL_PROVIDER_AUTH_SUCCEEDED, payload: data});
+    } catch (e) {
+        yield put({type: EXTERNAL_PROVIDER_AUTH_FAILED, message: e.message});
+        console.log("error", e.message)
+    }
+}
 
 export function* authLogin(action) {
     try {

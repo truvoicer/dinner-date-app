@@ -931,3 +931,12 @@
 .breadcrumb {
     background-color: transparent;
 }
+
+.global {
+    &--modal-content {
+        background-color: transparent;
+        .modal-body {
+            padding: 0
+        }
+    }
+}

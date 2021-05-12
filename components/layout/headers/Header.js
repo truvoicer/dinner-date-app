@@ -1,5 +1,5 @@
 import React from 'react';
-import SocialIconsMenu from "../../menus/SocialIconsMenu";
+import HeaderSocialIconsMenu from "../../menus/HeaderSocialIconsMenu";
 import HeaderMenu from "../../menus/HeaderMenu";
 import AuthButtons from "../../auth/AuthButtons";
 import HeaderTopLeftMenu from "../../menus/HeaderTopLeftMenu";
@@ -11,7 +11,7 @@ const Header = () => {
                 <div className="container">
                     <div className="header-top-area">
                         <HeaderTopLeftMenu />
-                        <SocialIconsMenu />
+                        <HeaderSocialIconsMenu />
                     </div>
                 </div>
             </div>

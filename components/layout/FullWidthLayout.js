@@ -63,41 +63,45 @@ const FullLayout = ({children, global}) => {
     })
     return (
         <GlobalContext.Provider value={globalContext}>
-        <div className={"dinner-date-app"}>
-            <Header />
-            {children}
-            <Footer />
-            {modalComponents.map((modal, index) => {
-                return (
-                    <Modal
-                        key={index}
-                        show={modal.show}
-                        size={modal.size}
-                        onHide={() => {
-                            closeModal(modal.name)
-                        }}
-                    >
-                        <Modal.Header closeButton>
-                            <Modal.Title>{modal.name}</Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>{getModalComponent(modal.name)}</Modal.Body>
-                        <Modal.Footer>
-                            <Button variant="secondary" onClick={() => {
+            <div className={"dinner-date-app"}>
+                <Header/>
+                {children}
+                <Footer/>
+                {modalComponents.map((modal, index) => {
+                    return (
+                        <Modal
+                            key={index}
+                            show={modal.show}
+                            size={modal.size}
+                            onHide={() => {
                                 closeModal(modal.name)
-                            }}>
-                                Close
-                            </Button>
-                            <Button variant="primary" onClick={() => {
-                                console.log("save")
-                            }}>
-                                Save Changes
-                            </Button>
-                        </Modal.Footer>
-                    </Modal>
-                );
-            })}
-
-        </div>
+                            }}
+                            contentClassName={"global--modal-content"}
+                        >
+                            {modal?.header &&
+                            <Modal.Header closeButton>
+                                <Modal.Title>{modal.name}</Modal.Title>
+                            </Modal.Header>
+                            }
+                            <Modal.Body>{getModalComponent(modal.name)}</Modal.Body>
+                            {modal?.footer &&
+                            <Modal.Footer>
+                                <Button variant="secondary" onClick={() => {
+                                    closeModal(modal.name)
+                                }}>
+                                    Close
+                                </Button>
+                                <Button variant="primary" onClick={() => {
+                                    console.log("save")
+                                }}>
+                                    Save Changes
+                                </Button>
+                            </Modal.Footer>
+                            }
+                        </Modal>
+                    );
+                })}
+            </div>
         </GlobalContext.Provider>
     );
 };
@@ -107,6 +111,7 @@ function mapStateToProps(state) {
         global: state[GLOBAL_STATE_KEY]
     };
 }
+
 export default connect(
     mapStateToProps,
     null
