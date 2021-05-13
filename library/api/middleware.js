@@ -1,8 +1,9 @@
 import {getSessionLocalStorage, getSessionObject} from "./session";
 import {buildRequestUrl} from "./helpers/api-helpers";
 import {apiConfig} from "../../config/api/config";
-import {isSet} from "../helpers/utils-helper";
+import {isNotEmpty, isSet} from "../helpers/utils-helper";
 import store from "../redux/store";
+import {sessionLogoutHandler} from "../redux/actions/session-actions";
 
 const sprintf = require("sprintf-js").sprintf;
 const axios = require("axios");
@@ -10,12 +11,23 @@ const axios = require("axios");
 const apiRequest = axios.create({
     baseURL: apiConfig.baseUrl,
 });
-
+const getAuthHeader = () => {
+    let tokenProvider = getSessionLocalStorage()?.token_provider;
+    if (!isNotEmpty(tokenProvider)) {
+        sessionLogoutHandler()
+        console.error("token provider invalid");
+        return;
+    }
+    return {
+        'Authorization': sprintf("Bearer %s", getSessionLocalStorage().access_token),
+        'Token-Provider': tokenProvider
+    };
+}
 export const validateTokenRequest = () => {
     const requestData = {
         method: "get",
         url: `${apiConfig.endpoints.auth}/token/validate`,
-        headers: {'Authorization': sprintf("Bearer %s", getSessionLocalStorage().access_token)}
+        headers: getAuthHeader()
     }
     return apiRequest.request(requestData);
 }
@@ -24,7 +36,7 @@ export const fetchSessionUser = () => {
     const requestData = {
         method: "get",
         url: `${apiConfig.endpoints.session}/user/detail`,
-        headers: {'Authorization': sprintf("Bearer %s", getSessionLocalStorage().access_token)}
+        headers: getAuthHeader()
     }
     return apiRequest.request(requestData);
 }
@@ -41,7 +53,7 @@ export const authLoginRequest = ({payload, type, errorAction}) => {
 export const externalProviderAuthRequest = ({payload}) => {
     const request = {
         method: "post",
-        url: process.env.NEXT_PUBLIC_API_URL + apiConfig.endpoints.auth + "/external/provider/auth",
+        url: process.env.NEXT_PUBLIC_API_URL + apiConfig.endpoints.auth + "/external/provider",
         data: payload,
     }
     return apiRequest.request(request);
@@ -52,7 +64,7 @@ export const fetchRequest = ({endpoint, operation = "", args = [], data={}, onSu
         method: "get",
         url: buildRequestUrl({endpoint: endpoint, operation: operation, args: args}),
         params: data,
-        headers: {'Authorization': sprintf("Bearer %s", getSessionLocalStorage().access_token)}
+        headers: getAuthHeader()
     }
     return apiRequest.request(request);
 }
@@ -63,7 +75,7 @@ export const postRequest = ({endpoint, operation, requestData, args = [], header
         url: buildRequestUrl({endpoint: endpoint, operation: operation, args: args}),
         data: requestData,
         headers: {
-            'Authorization': sprintf("Bearer %s", getSessionLocalStorage().access_token),
+            ...getAuthHeader(),
             ...headers
         }
     }
@@ -81,8 +93,8 @@ export function fileUploadApiRequest({endpoint, operation, requestData = {}, arg
         url: buildRequestUrl({endpoint: endpoint, operation: operation, args: args}),
         data: formValues,
         headers: {
-            'Authorization': sprintf("Bearer %s", getSessionLocalStorage().access_token),
-            'Content-Type': 'multipart/form-data',
+            ...getAuthHeader(),
+            ...{'Content-Type': 'multipart/form-data'},
             ...headers
         }
     }

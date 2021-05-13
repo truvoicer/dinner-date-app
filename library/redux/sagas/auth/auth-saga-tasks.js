@@ -1,7 +1,12 @@
 
 // worker Saga: will be fired on USER_FETCH_REQUESTED actions
 import {call, put, takeLatest} from "redux-saga/effects";
-import {authLoginRequest, postRequest, validateTokenRequest} from "../../../api/middleware";
+import {
+    authLoginRequest,
+    externalProviderAuthRequest,
+    postRequest,
+    validateTokenRequest
+} from "../../../api/middleware";
 import {
     SET_ANON_SESSION_STATE_REQUESTED,
     SET_SESSION_LOCAL_STORAGE_REQUESTED,
@@ -20,8 +25,8 @@ import {
 export function* externalProviderAuth(action) {
     try {
         console.log(action)
-        // const {data} = yield call(externalProviderAuthRequest, action);
-        // yield put({type: EXTERNAL_PROVIDER_AUTH_SUCCEEDED, payload: data});
+        const {data} = yield call(externalProviderAuthRequest, action);
+        yield put({type: EXTERNAL_PROVIDER_AUTH_SUCCEEDED, payload: data});
     } catch (e) {
         yield put({type: EXTERNAL_PROVIDER_AUTH_FAILED, message: e.message});
         console.log("error", e.message)

@@ -10,6 +10,7 @@ import {isNotEmpty} from "../helpers/utils-helper";
 import {ROLE_ANONYMOUS} from "../../config/constants/access-control/roles-constants";
 
 export const setTokenStorage = ({data}) => {
+    console.log(data)
     setSessionLocalStorage(data);
 }
 
@@ -28,9 +29,10 @@ export const setAnonSessionState = () => {
 }
 
 // Sets user details in localStorage
-export const setSessionLocalStorage = ({access_token, expires_at}) => {
+export const setSessionLocalStorage = ({token_provider, access_token, expires_at}) => {
     // Set the time that the access token will expire at
     let expiresAt = JSON.stringify((expires_at * 1000) + new Date().getTime());
+    localStorage.setItem('token_provider', token_provider);
     localStorage.setItem('access_token', access_token);
     localStorage.setItem('expires_at', expiresAt);
     // navigate to the home route
@@ -39,6 +41,7 @@ export const setSessionLocalStorage = ({access_token, expires_at}) => {
 // removes user details from localStorage
 export const logout = (redirectUrl) => {
     // Clear access token and ID token from local storage
+    localStorage.removeItem('token_provider');
     localStorage.removeItem('access_token');
     localStorage.removeItem('expires_at');
     localStorage.setItem("redirect_url", redirectUrl);
@@ -53,6 +56,7 @@ export const isLocalStorageTokenValid = () => {
 }
 export const getSessionLocalStorage = () => {
     return {
+        token_provider: localStorage.getItem('token_provider'),
         access_token: localStorage.getItem('access_token'),
         expires_at: JSON.parse(localStorage.getItem('expires_at'))
     }
