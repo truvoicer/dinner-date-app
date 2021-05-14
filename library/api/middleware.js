@@ -11,28 +11,32 @@ const axios = require("axios");
 const apiRequest = axios.create({
     baseURL: apiConfig.baseUrl,
 });
-const getAuthHeader = () => {
+const getTokenProvider = () => {
     let tokenProvider = getSessionLocalStorage()?.token_provider;
     if (!isNotEmpty(tokenProvider)) {
         sessionLogoutHandler()
         console.error("token provider invalid");
-        return;
+        return false;
     }
+    return tokenProvider;
+}
+const getAuthHeader = () => {
     return {
         'Authorization': sprintf("Bearer %s", getSessionLocalStorage().access_token),
-        'Token-Provider': tokenProvider
+        'Token-Provider': getTokenProvider() || null
     };
 }
 export const validateTokenRequest = () => {
     const requestData = {
         method: "get",
-        url: `${apiConfig.endpoints.auth}/token/validate`,
+        url:  `${apiConfig.endpoints.auth}/token/validate`,
         headers: getAuthHeader()
     }
     return apiRequest.request(requestData);
 }
 
 export const fetchSessionUser = () => {
+
     const requestData = {
         method: "get",
         url: `${apiConfig.endpoints.session}/user/detail`,

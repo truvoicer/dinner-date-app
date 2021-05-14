@@ -24,7 +24,6 @@ import {
 
 export function* externalProviderAuth(action) {
     try {
-        console.log(action)
         const {data} = yield call(externalProviderAuthRequest, action);
         yield put({type: EXTERNAL_PROVIDER_AUTH_SUCCEEDED, payload: data});
     } catch (e) {
