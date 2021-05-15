@@ -1,7 +1,7 @@
 import {SECTION_FIELDS_LIST, SECTION_FIELDS_SINGLE, USER_PROFILE_UPDATE} from "../editable-fields-constants";
 import EditableTextField from "../../../../components/forms/editable-fields/EditableTextField";
 import EditableSelectField from "../../../../components/forms/editable-fields/EditableSelectField";
-import {calculateDateDifference, uCaseFirst} from "../../../../library/helpers/utils-helper";
+import {calculateDateDifference, isNotEmpty, uCaseFirst} from "../../../../library/helpers/utils-helper";
 import EditableDateField from "../../../../components/forms/editable-fields/EditableDateField";
 import EditableTextAreaField from "../../../../components/forms/editable-fields/EditableTextAreaField";
 import EditableMeasurementField from "../../../../components/forms/editable-fields/EditableMeasurementField";
@@ -11,14 +11,19 @@ import {
     getWeightUnitValue,
     getWeightValue
 } from "../../../../library/helpers/user-helper";
+import store from "../../../../library/redux/store";
+import {LOCALE_COUNTRIES, LOCALE_STATE_KEY} from "../../../../library/redux/constants/locale-constants";
 
 export const editProfileFormFieldList = (getUserProfileValue) => {
+    const countryList = store.getState()[LOCALE_STATE_KEY][LOCALE_COUNTRIES];
+    const country = getUserProfileValue("country");
     return [
         {
             title: "Base Info",
             sectionType: SECTION_FIELDS_LIST,
             sections: [
                 {
+                    ucFirst: true,
                     label: "First Name",
                     className: "info-details",
                     configName: USER_PROFILE_UPDATE,
@@ -27,6 +32,7 @@ export const editProfileFormFieldList = (getUserProfileValue) => {
                     fieldComponent: EditableTextField
                 },
                 {
+                    ucFirst: true,
                     label: "Last Name",
                     className: "info-details",
                     configName: USER_PROFILE_UPDATE,
@@ -35,11 +41,12 @@ export const editProfileFormFieldList = (getUserProfileValue) => {
                     fieldComponent: EditableTextField
                 },
                 {
+                    ucFirst: true,
                     label: "I'm a",
                     className: "info-details",
                     configName: USER_PROFILE_UPDATE,
                     field: "gender",
-                    value: uCaseFirst(getUserProfileValue("gender")),
+                    value: getUserProfileValue("gender"),
                     fieldComponent: EditableSelectField,
                     options: [
                         {value: "male", label: "Man"},
@@ -49,11 +56,12 @@ export const editProfileFormFieldList = (getUserProfileValue) => {
                     ]
                 },
                 {
+                    ucFirst: true,
                     label: "Looking for a",
                     className: "info-details",
                     configName: USER_PROFILE_UPDATE,
                     field: "gender_preference",
-                    value: uCaseFirst(getUserProfileValue("gender_preference")),
+                    value: getUserProfileValue("gender_preference"),
                     fieldComponent: EditableSelectField,
                     options: [
                         {value: "male", label: "Man"},
@@ -63,11 +71,12 @@ export const editProfileFormFieldList = (getUserProfileValue) => {
                     ]
                 },
                 {
+                    ucFirst: true,
                     label: "Marital Status",
                     className: "info-details",
                     configName: USER_PROFILE_UPDATE,
                     field: "marital_status",
-                    value: uCaseFirst(getUserProfileValue("marital_status")),
+                    value: getUserProfileValue("marital_status"),
                     fieldComponent: EditableSelectField,
                     options: [
                         {value: "single", label: "Single"},
@@ -91,12 +100,31 @@ export const editProfileFormFieldList = (getUserProfileValue) => {
                     fieldComponent: EditableDateField
                 },
                 {
+                    ucFirst: true,
                     label: "Address",
                     className: "info-details",
                     configName: USER_PROFILE_UPDATE,
                     field: "address",
                     value: getUserProfileValue("address"),
                     fieldComponent: EditableTextField
+                },
+                {
+                    ucFirst: true,
+                    label: "Country",
+                    className: "info-details",
+                    configName: USER_PROFILE_UPDATE,
+                    field: "country",
+                    value: isNotEmpty(country)? {
+                        value: country.id,
+                        label: country.name
+                    } : null,
+                    fieldComponent: EditableSelectField,
+                    options: countryList.map(country => {
+                        return {
+                            value: country.id,
+                            label: country.name
+                        }
+                    })
                 },
             ]
         },
@@ -105,6 +133,7 @@ export const editProfileFormFieldList = (getUserProfileValue) => {
             sectionType: SECTION_FIELDS_SINGLE,
             sections: [
                 {
+                    ucFirst: true,
                     label: "Summary",
                     className: "info-details",
                     configName: USER_PROFILE_UPDATE,
@@ -120,6 +149,7 @@ export const editProfileFormFieldList = (getUserProfileValue) => {
             sectionType: SECTION_FIELDS_LIST,
             sections: [
                 {
+                    ucFirst: true,
                     label: "Things I'm looking for",
                     className: "info-details",
                     configName: USER_PROFILE_UPDATE,
@@ -128,11 +158,12 @@ export const editProfileFormFieldList = (getUserProfileValue) => {
                     fieldComponent: EditableTextField
                 },
                 {
+                    ucFirst: true,
                     label: "Smoking Preference",
                     className: "info-details",
                     configName: USER_PROFILE_UPDATE,
                     field: "smoking_preference",
-                    value: uCaseFirst(getUserProfileValue("smoking_preference")),
+                    value: getUserProfileValue("smoking_preference"),
                     fieldComponent: EditableSelectField,
                     options: [
                         {value: true, label: "Yes"},
@@ -147,6 +178,7 @@ export const editProfileFormFieldList = (getUserProfileValue) => {
             sectionType: SECTION_FIELDS_LIST,
             sections: [
                 {
+                    ucFirst: true,
                     label: "Interest",
                     className: "info-details",
                     configName: USER_PROFILE_UPDATE,
@@ -155,6 +187,7 @@ export const editProfileFormFieldList = (getUserProfileValue) => {
                     fieldComponent: EditableTextField
                 },
                 {
+                    ucFirst: true,
                     label: "Hobbies",
                     className: "info-details",
                     configName: USER_PROFILE_UPDATE,
@@ -163,11 +196,12 @@ export const editProfileFormFieldList = (getUserProfileValue) => {
                     fieldComponent: EditableTextField
                 },
                 {
+                    ucFirst: true,
                     label: "Smoking",
                     className: "info-details",
                     configName: USER_PROFILE_UPDATE,
                     field: "smoking_status",
-                    value: uCaseFirst(getUserProfileValue("smoking_status")),
+                    value: getUserProfileValue("smoking_status"),
                     fieldComponent: EditableSelectField,
                     options: [
                         {value: "full_smoker", label: "I'm a regular smoker"},
@@ -176,6 +210,7 @@ export const editProfileFormFieldList = (getUserProfileValue) => {
                     ]
                 },
                 {
+                    ucFirst: true,
                     label: "Languages",
                     className: "info-details",
                     configName: USER_PROFILE_UPDATE,

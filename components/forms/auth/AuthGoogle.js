@@ -1,5 +1,5 @@
-import React  from "react";
-import { GoogleLogin } from 'react-google-login';
+import React from "react";
+import {GoogleLogin} from 'react-google-login';
 import {connect} from "react-redux";
 import {SESSION_STATE_KEY} from "../../../library/redux/constants/session-constants";
 import {googleLoginConfig} from "../../../config/google/google-config";
@@ -8,6 +8,8 @@ import {faGoogle} from "@fortawesome/free-brands-svg-icons";
 import {isNotEmpty, isObject, isObjectEmpty} from "../../../library/helpers/utils-helper";
 import store from "../../../library/redux/store";
 import {EXTERNAL_PROVIDER_AUTH_REQUESTED} from "../../../library/redux/sagas/auth/auth-sagas";
+import {validateResponse} from "../../../library/api/helpers/api-helpers";
+
 const requiredProfileFields = [
     "email",
     "name",
@@ -18,26 +20,13 @@ const requiredTokenFields = [
     "token_type", "access_token", "scope", "expires_at", "expires_in", "id_token"
 ];
 
-const validateResponse = (requiredFields, object, type) => {
-    const requestData = {};
-    for(let i = 0;i<requiredFields.length;i++) {
-        let key = requiredFields[i];
-        if (isNotEmpty(object[key])) {
-            requestData[key] = object[key];
-        } else {
-            console.error(`${type} field [${key}] not valid`);
-            return false;
-        }
-    }
-    return requestData;
-}
 const AuthGoogle = ({session}) => {
     const providerName = "google";
 
     const onSuccess = (response) => {
         const tokenObj = response?.tokenObj;
         const profileObj = response?.profileObj;
-        console.log(response)
+
         if (!isNotEmpty(profileObj) && isObject(profileObj) && isObjectEmpty(profileObj)) {
             console.error("Error fetching profile data from google")
         }

@@ -6,7 +6,7 @@ import {faSave} from '@fortawesome/free-solid-svg-icons'
 import {getComponent} from "../../../library/helpers/page-helper";
 import {getEditableFieldAction} from "../../../config/api/editable-fields/editable-fields-config";
 import store from "../../../library/redux/store";
-import {isObject} from "../../../library/helpers/utils-helper";
+import {isNotEmpty, isObject, uCaseFirst} from "../../../library/helpers/utils-helper";
 import {getValueLabel} from "../../../library/helpers/user-helper";
 
 const EditableField = (props) => {
@@ -16,7 +16,14 @@ const EditableField = (props) => {
     const getInitialFormValues = () => {
         let initialValues = {};
         if (!isObject(props.field)) {
-            initialValues[props.field] = props.value;
+            if (isObject(props.value) && isNotEmpty(props.value?.value)) {
+                initialValues[props.field] = props.value.value;
+            } else if (isObject(props.value)) {
+                console.warn(`Field error, value object not set properly.`, props.value);
+                initialValues[props.field] = "";
+            } else {
+                initialValues[props.field] = props.value;
+            }
         } else {
             Object.keys(props.field).map(key => {
                 initialValues[key] = props.value[key];
@@ -51,6 +58,16 @@ const EditableField = (props) => {
         }
         store.dispatch({type: action, payload: requestData})
     }
+    const getSingleLabelValue = (value) => {
+        if (!isNotEmpty(value)) {
+            return value;
+        }
+        if (props?.ucFirst === false) {
+            return value;
+        } else {
+            return uCaseFirst(value)
+        }
+    }
     const labelValues = getValueLabel({field: props.field, value: props.value});
     return (
         <Formik
@@ -79,7 +96,7 @@ const EditableField = (props) => {
                                                 key={index}
                                                 className={`info-details ${(index === (labelValues.length - 1)) ? "mx-1" : ""}`}
                                             >
-                                                {value || ""}
+                                                {getSingleLabelValue(value) || ""}
                                             </p>
                                         ))}
                                     </div>

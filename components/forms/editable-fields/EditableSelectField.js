@@ -4,19 +4,9 @@ import EditableField from "./EditableField";
 import {isSet} from "../../../library/helpers/utils-helper";
 
 const EditableSelectField = (props) => {
-    const formik = useFormikContext();
-    const getFieldProps = () => {
-        if (isSet(formik)) {
-            return {
-                value: formik.values[props.field],
-                onBlur: formik.handleBlur,
-                onChange: formik.handleChange
-            }
-        }
-        return {};
-    }
+        const formik = useFormikContext();
+        console.log(formik.values[props.field])
         return (
-
             <div className={"editable-field--form--select"}>
                 {isSet(formik) &&
                 <select

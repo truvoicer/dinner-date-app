@@ -9,32 +9,32 @@ const AuthSocialIconsMenu = () => {
 
         <ul className="social-media social-color justify-content-center d-flex lab-ul">
             <li>
-                <a href="#" className="facebook">
+                <a className="facebook">
                     <AuthFacebook />
                 </a>
             </li>
             <li>
-                <a href="#" className="facebook">
+                <a className="facebook">
                     <AuthGoogle />
                 </a>
             </li>
             <li>
-                <a href="#" className="twitter">
+                <a className="twitter">
                     <FontAwesomeIcon icon={faTwitter} />
                 </a>
             </li>
             <li>
-                <a href="#" className="linkedin">
+                <a className="linkedin">
                     <FontAwesomeIcon icon={faLinkedin} />
                 </a>
             </li>
             <li>
-                <a href="#" className="instagram">
+                <a className="instagram">
                     <FontAwesomeIcon icon={faInstagram} />
                 </a>
             </li>
             <li>
-                <a href="#" className="pinterest">
+                <a className="pinterest">
                     <FontAwesomeIcon icon={faPinterest} />
                 </a>
             </li>

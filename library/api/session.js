@@ -1,11 +1,8 @@
 import React from 'react'
 import {
-    sessionLogoutHandler,
     setSessionAuthenticatedAction, setSessionAuthenticatingAction,
-    setSessionLoginRedirectAction,
     setSessionUserAction
 } from "../redux/actions/session-actions";
-import {setSessionAuthenticating} from "../redux/reducers/session-reducer";
 import {isNotEmpty} from "../helpers/utils-helper";
 import {ROLE_ANONYMOUS} from "../../config/constants/access-control/roles-constants";
 

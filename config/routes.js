@@ -141,7 +141,7 @@ export const routes = [
                 label: "Logout",
                 href: "/account/logout",
                 showInHeader: true,
-                override: (router, event) => {
+                override: (router, globalContext, event) => {
                     sessionLogoutHandler();
                     router.replace(getRouteItem(LOGIN_VIEW).href)
                 },

@@ -4,10 +4,11 @@ import {isNotEmpty, isObject, isSet} from "./utils-helper";
 import React from "react";
 import {MEMBERS_SINGLE, MEMBERS_STATE_KEY} from "../redux/constants/members-constants";
 
+
 export const getUserProfileValue = (field) => {
     const userState = store.getState()[SESSION_STATE_KEY][SESSION_USER];
     const userProfile = userState?.user_profile;
-    return (isSet(userProfile) && isSet(userProfile[field])) ? userProfile[field] : "";
+    return (isNotEmpty(userProfile) && isNotEmpty(userProfile[field])) ? userProfile[field] : "";
 }
 
 export const getSingleMemberProfileValue = (field) => {
@@ -29,10 +30,18 @@ export const getUserMediaValue = ({files, mediaCategory}) => {
 
 
 export const getValueLabel = ({field, value}) => {
-    // console.log(isObject(field), field, value)
     let valueLabel = [];
     if (!isObject(field)) {
-        valueLabel.push(value);
+        if (isObject(value) && isNotEmpty(value?.label)) {
+            valueLabel.push(value.label)
+        } else if (isObject(value) && isNotEmpty(value?.value)) {
+            valueLabel.push(value.value)
+        } else if (isObject(value)) {
+            console.warn(`Field error, value object not set properly.`, value);
+            valueLabel.push("Not Set")
+        } else {
+            valueLabel.push(value);
+        }
     } else {
         Object.keys(field).map((key, index) => {
             if (!isSet(value)) {

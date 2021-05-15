@@ -20,11 +20,14 @@ const getTokenProvider = () => {
     }
     return tokenProvider;
 }
-const getAuthHeader = () => {
-    return {
-        'Authorization': sprintf("Bearer %s", getSessionLocalStorage().access_token),
-        'Token-Provider': getTokenProvider() || null
+const getAuthHeader = (includeTokenProvider = true) => {
+    let headers = {
+        'Authorization': sprintf("Bearer %s", getSessionLocalStorage().access_token)
     };
+    if (includeTokenProvider) {
+        headers['Token-Provider'] = getTokenProvider() || null
+    }
+    return headers;
 }
 export const validateTokenRequest = () => {
     const requestData = {
@@ -63,7 +66,13 @@ export const externalProviderAuthRequest = ({payload}) => {
     return apiRequest.request(request);
 }
 
-export const fetchRequest = ({endpoint, operation = "", args = [], data={}, onSuccess, onError}) => {
+export const insecureFetchRequest = (requestConfig) => {
+    return fetchRequest({
+        ...requestConfig,
+        ...{includeTokenProvider: false}
+    })
+}
+export const fetchRequest = ({endpoint, operation = "", args = [], data={}, includeTokenProvider = true}) => {
     const request = {
         method: "get",
         url: buildRequestUrl({endpoint: endpoint, operation: operation, args: args}),
@@ -73,13 +82,19 @@ export const fetchRequest = ({endpoint, operation = "", args = [], data={}, onSu
     return apiRequest.request(request);
 }
 
-export const postRequest = ({endpoint, operation, requestData, args = [], headers = {}}) => {
+export const insecurePostRequest = (requestConfig) => {
+    return postRequest({
+        ...requestConfig,
+        ...{includeTokenProvider: false}
+    })
+}
+export const postRequest = ({endpoint, operation, requestData, args = [], headers = {}, includeTokenProvider = true}) => {
     const request = {
         method: "post",
         url: buildRequestUrl({endpoint: endpoint, operation: operation, args: args}),
         data: requestData,
         headers: {
-            ...getAuthHeader(),
+            ...getAuthHeader(includeTokenProvider),
             ...headers
         }
     }

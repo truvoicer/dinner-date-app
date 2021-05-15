@@ -20,6 +20,9 @@ export const formatDate = (dateString, formatString = "Do MMMM YYYY") => {
     return dateString
 }
 export const calculateDateDifference = (date, as = "years") => {
+    if (!isNotEmpty(date)) {
+        return null;
+    }
     const now = new moment();
     const before = new moment(date);
     const timeDiff = now.diff(before)
@@ -60,6 +63,9 @@ export const isNotEmpty = (item) => {
 export const uCaseFirst = (string) => {
     if (!isNotEmpty(string)) {
         return ""
+    }
+    if (!isNaN(string)) {
+        return string
     }
     return string.charAt(0).toUpperCase() + string.slice(1);
 }

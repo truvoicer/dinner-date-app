@@ -3,7 +3,7 @@
 import {call, put, takeLatest} from "redux-saga/effects";
 import {
     authLoginRequest,
-    externalProviderAuthRequest,
+    externalProviderAuthRequest, insecurePostRequest,
     postRequest,
     validateTokenRequest
 } from "../../../api/middleware";
@@ -63,7 +63,7 @@ export function* authLoginSuccess({payload}) {
 
 export function* authSignup(action) {
     try {
-        const {data} = yield call(postRequest, {
+        const {data} = yield call(insecurePostRequest, {
             endpoint: apiConfig.endpoints.auth,
             operation: "user/create",
             requestData: action.payload

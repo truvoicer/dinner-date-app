@@ -1,10 +1,9 @@
-
 // AUTH STATE
 import {createSlice} from "@reduxjs/toolkit";
 import {
     SESSION_AUTHENTICATED,
     SESSION_AUTHENTICATING,
-    SESSION_ERROR, SESSION_PAGE_PATH, SESSION_STATE_KEY,
+    SESSION_ERROR, SESSION_PAGE_PATH, SESSION_REDIRECT, SESSION_REDIRECT_ON, SESSION_REDIRECT_PATH, SESSION_STATE_KEY,
     SESSION_USER
 } from "../constants/session-constants";
 
@@ -13,6 +12,10 @@ const defaultState = {
     [SESSION_AUTHENTICATED]: false,
     [SESSION_AUTHENTICATING]: true,
     [SESSION_PAGE_PATH]: null,
+    [SESSION_REDIRECT]: {
+        [SESSION_REDIRECT_ON]: false,
+        [SESSION_REDIRECT_PATH]: "",
+    },
     [SESSION_ERROR]: {}
 };
 
@@ -29,6 +32,12 @@ const defaultReducers = {
     setSessionPagePath: (state, action) => {
         state[SESSION_PAGE_PATH] = action.payload;
     },
+    setSessionRedirectOn: (state, action) => {
+        state[SESSION_REDIRECT][SESSION_REDIRECT_ON] = action.payload;
+    },
+    setSessionRedirectPath: (state, action) => {
+        state[SESSION_REDIRECT][SESSION_REDIRECT_PATH] = action.payload;
+    },
     setSessionError: (state, action) => {
         state[SESSION_ERROR] = action.payload;
         console.error(state.error)
@@ -42,4 +51,12 @@ export const sessionApiSlice = createSlice({
 });
 
 export const sessionApiReducer = sessionApiSlice.reducer;
-export const { setSessionUser, setSessionAuthenticated, setSessionAuthenticating, setSessionPagePath, setSessionError } = sessionApiSlice.actions;
+export const {
+    setSessionUser,
+    setSessionAuthenticated,
+    setSessionAuthenticating,
+    setSessionPagePath,
+    setSessionRedirectPath,
+    setSessionRedirectOn,
+    setSessionError
+} = sessionApiSlice.actions;

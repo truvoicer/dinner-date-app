@@ -2,7 +2,7 @@ import store from "../store"
 import {
     setSessionAuthenticated,
     setSessionAuthenticating,
-    setSessionError, setSessionLoginRedirect, setSessionPagePath,
+    setSessionError, setSessionLoginRedirect, setSessionPagePath, setSessionRedirectOn, setSessionRedirectPath,
     setSessionUser
 } from "../reducers/session-reducer";
 import {
@@ -26,8 +26,11 @@ export function setSessionAuthenticatedAction(status) {
 export function setSessionAuthenticatingAction(status) {
     store.dispatch(setSessionAuthenticating(status))
 }
-export function setSessionPagePathAction({path}) {
-    store.dispatch(setSessionPagePath(path))
+export function setSessionRedirectPathAction({path}) {
+    store.dispatch(setSessionRedirectPath(path))
+}
+export function setSessionRedirectOnAction(on) {
+    store.dispatch(setSessionRedirectOn(on))
 }
 export function setSessionErrorAction(error) {
     store.dispatch(setSessionError(error))

@@ -28,63 +28,49 @@ const ViewProfileBlock = ({session, members, username = null}) => {
     }, [session[SESSION_AUTHENTICATING], session[SESSION_AUTHENTICATED]]);
 
     return (
-        <div>
-            <div className="row">
-                <div className="col-xl-8">
-                    <article>
-                        {editProfileFormFieldList(getSingleMemberProfileValue)
-                            .map((block, blockIndex) => {
-                                switch (block?.sectionType) {
-                                    case "SECTION_FIELDS_LIST":
+        <>
+            {editProfileFormFieldList(getSingleMemberProfileValue)
+                .map((block, blockIndex) => {
+                    switch (block?.sectionType) {
+                        case "SECTION_FIELDS_LIST":
+                    }
+                    return (
+                        <div key={blockIndex} className="info-card mb-20">
+                            <div className="info-card-title">
+                                <h6>{block.title}</h6>
+                            </div>
+                            <div className="info-card-content">
+                                {block?.sectionType === SECTION_FIELDS_LIST &&
+                                <ul className="info-list">
+                                    {block.sections.map((section, sectionIndex) => {
+                                        const labelValues = getValueLabel({field: section.field, value: section.value});
+                                        return (
+                                            <li key={sectionIndex}>
+                                                <p className="info-name">{section.label}</p>
+                                                <div className={`${labelValues.length > 1 ? "d-flex" : ""}`}>
+                                                    {labelValues.map((value, index) => {
+                                                        return (
+                                                            <p key={index} className={`info-details`}>
+                                                                {value || ""}
+                                                            </p>
+                                                        )
+                                                    })}
+                                                </div>
+                                            </li>
+                                        )
+                                    })}
+                                </ul>
                                 }
-                                return (
-                                    <div key={blockIndex} className="info-card mb-20">
-                                        <div className="info-card-title">
-                                            <h6>{block.title}</h6>
-                                        </div>
-                                        <div className="info-card-content">
-                                            {block?.sectionType === SECTION_FIELDS_LIST &&
-                                            <ul className="info-list">
-                                                {block.sections.map((section, sectionIndex) => {
-                                                    const labelValues = getValueLabel({field: section.field, value: section.value});
-                                                    return (
-                                                        <li key={sectionIndex}>
-                                                            <p className="info-name">{section.label}</p>
-                                                            <div className={`${labelValues.length > 1? "d-flex" : ""}`}>
-                                                                {labelValues.map((value, index) => {
-                                                                    return (
-                                                                        <p key={index} className={`info-details`}>
-                                                                            {value || ""}
-                                                                        </p>
-                                                                    )
-                                                                })}
-                                                            </div>
-                                                        </li>
-                                                    )
-                                                })}
-                                            </ul>
-                                            }
-                                            {block?.sectionType === SECTION_FIELDS_SINGLE && block.sections.map((section, sectionIndex) => (
-                                                <React.Fragment key={sectionIndex}>
-                                                    <p className="info-details">{section.value}</p>
-                                                </React.Fragment>
-                                            ))}
-                                        </div>
-                                    </div>
-                                )
-                            })}
-                    </article>
-                </div>
-
-                <div className="col-xl-4">
-                    <aside className="mt-5 mt-xl-0">
-                        <SearchMembersBoxWidget />
-                        <SuggestedMembersBoxWidget />
-                        <ActiveGroupsBoxWidget />
-                    </aside>
-                </div>
-            </div>
-        </div>
+                                {block?.sectionType === SECTION_FIELDS_SINGLE && block.sections.map((section, sectionIndex) => (
+                                    <React.Fragment key={sectionIndex}>
+                                        <p className="info-details">{section.value}</p>
+                                    </React.Fragment>
+                                ))}
+                            </div>
+                        </div>
+                    )
+                })}
+        </>
     );
 };
 

@@ -2,12 +2,11 @@ import React, {useEffect, useState} from 'react';
 import Header from "./headers/Header";
 import Footer from "./footers/Footer";
 import {useRouter} from "next/router";
-import {SET_SESSION_PAGE_PATH} from "../../library/redux/sagas/session/session-sagas";
+import {SET_SESSION_REDIRECT_PATH} from "../../library/redux/sagas/session/session-sagas";
 import store from "../../library/redux/store";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import {GlobalContext} from "../contexts/GlobalContext";
-import {SESSION_STATE_KEY} from "../../library/redux/constants/session-constants";
 import {
     GLOBAL_STATE_KEY
 } from "../../library/redux/constants/global-constants";
@@ -18,7 +17,7 @@ const FullLayout = ({children, global}) => {
     const [modalComponents, setModalComponents] = useState([]);
 
     useEffect(() => {
-        store.dispatch({type: SET_SESSION_PAGE_PATH, path: router.asPath})
+        store.dispatch({type: SET_SESSION_REDIRECT_PATH, path: router.asPath})
     }, [router.asPath]);
 
     const showModal = ({name, component, size = "md"}) => {

@@ -1,8 +1,6 @@
 // worker Saga: will be fired on USER_FETCH_REQUESTED actions
 import {call, put} from "redux-saga/effects";
 import {fetchSessionUser, fileUploadApiRequest, postRequest} from "../../../api/middleware";
-import {setAnonSessionState, setSessionState, setSessionUserState, setTokenStorage} from "../../../api/session";
-import {setSessionPagePathAction} from "../../actions/session-actions";
 import {SESSION_USER_FETCH_FAILED, SESSION_USER_FETCH_SUCCEEDED} from "../session/session-sagas";
 import {
     SESSION_USER_PROFILE_MEDIA_FAILED,

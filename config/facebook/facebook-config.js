@@ -1,3 +1,3 @@
 export const facebookLoginConfig = {
-    appId: ""
+    appId: "384912384983074"
 }

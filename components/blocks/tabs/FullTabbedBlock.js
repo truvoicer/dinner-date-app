@@ -5,6 +5,9 @@ import FullWidthSection from "../../layout/sections/FullWidthSection";
 import EditProfileBannerBlock from "../profile/EditProfileBannerBlock";
 import {getComponent} from "../../../library/helpers/page-helper";
 import {isSet} from "../../../library/helpers/utils-helper";
+import SearchMembersBoxWidget from "../../widgets/search/SearchMembersBoxWidget";
+import SuggestedMembersBoxWidget from "../../widgets/SuggestedMembersBoxWidget";
+import ActiveGroupsBoxWidget from "../../widgets/ActiveGroupsBoxWidget";
 
 const FullTabbedBlock = (props) => {
     return (
@@ -17,6 +20,7 @@ const FullTabbedBlock = (props) => {
                     props: props
                 })}
                 <div className="profile-details">
+
                     <Tab.Container id="left-tabs-example" defaultActiveKey={props.config.defaultTab}>
                         <div className="profile-nav">
                             <Nav variant="tabs">
@@ -74,19 +78,32 @@ const FullTabbedBlock = (props) => {
                                     key={tabIndex}
                                     eventKey={tab.name}
                                 >
-                                    {getComponent({
-                                        component: tab.component,
-                                        props: {
-                                            ...props,
-                                            ...(() => {
-                                                return tab?.props || {};
-                                            })
-                                        }
-                                    })}
+
+                                    <div>
+                                        <div className="row">
+                                            <div className="col-xl-8">
+                                                <article>
+                                                    {getComponent({
+                                                        component: tab.component,
+                                                        props: tab?.props
+                                                    })}
+                                                </article>
+                                            </div>
+
+                                            <div className="col-xl-4">
+                                                <aside className="mt-5 mt-xl-0">
+                                                    <SearchMembersBoxWidget/>
+                                                    <SuggestedMembersBoxWidget/>
+                                                    <ActiveGroupsBoxWidget/>
+                                                </aside>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </Tab.Pane>
                             ))}
                         </Tab.Content>
                     </Tab.Container>
+
                 </div>
 
             </div>
