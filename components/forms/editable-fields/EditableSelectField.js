@@ -12,7 +12,7 @@ const EditableSelectField = (props) => {
                 <select
                     name={props.field}
                     onChange={formik.handleChange}
-                    value={formik.values[props.field]}
+                    value={formik.values[props.field] || ""}
                 >
                     {props.options.map((option, index) => (
                         <option

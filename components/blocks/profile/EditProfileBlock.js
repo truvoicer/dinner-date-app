@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import {
     SESSION_AUTHENTICATED,
     SESSION_AUTHENTICATING,
-    SESSION_STATE_KEY,
+    SESSION_STATE_KEY, SESSION_USER,
 } from "../../../library/redux/constants/session-constants";
 import store from "../../../library/redux/store";
 import {SESSION_USER_FETCH_REQUESTED} from "../../../library/redux/sagas/session/session-sagas";
@@ -24,7 +24,7 @@ const EditProfileBlock = ({session, locale}) => {
         if (!isAuthenticated()) {
             return;
         }
-        store.dispatch({type: SESSION_USER_FETCH_REQUESTED, payload: SESSION_USER_FETCH_REQUESTED})
+        store.dispatch({type: SESSION_USER_FETCH_REQUESTED, payload: SESSION_USER_FETCH_REQUESTED, user: session[SESSION_USER]})
     }, [session[SESSION_AUTHENTICATING], session[SESSION_AUTHENTICATED]]);
 
     useEffect(() => {

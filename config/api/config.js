@@ -5,9 +5,9 @@ export const apiConfig =
         login: "/auth/login",
         auth: "/auth",
         session: "/session",
-        user: "/user",
+        user: "/user/%(user.id)d",
         member: "/member",
-        media: "/media",
+        media: "/user/%(user.id)d/media",
         locale: "/locale"
     }
 }

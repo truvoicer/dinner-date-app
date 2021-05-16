@@ -1,8 +1,10 @@
-import {SESSION_STATE_KEY, SESSION_USER} from "../redux/constants/session-constants";
+import {SESSION_STATE_KEY, SESSION_USER, SESSION_USER_MEDIA} from "../redux/constants/session-constants";
 import store from "../redux/store";
 import {isNotEmpty, isObject, isSet} from "./utils-helper";
 import React from "react";
 import {MEMBERS_SINGLE, MEMBERS_STATE_KEY} from "../redux/constants/members-constants";
+import {setSessionUserMedia} from "../redux/reducers/session-reducer";
+import {setSessionMediaDataAction} from "../redux/actions/session-actions";
 
 
 export const getUserProfileValue = (field) => {
@@ -88,4 +90,34 @@ export const getHeightUnitValue = (height_unit) => {
         default:
             return height_unit;
     }
+}
+
+export const processUserMedia = ({data}) => {
+    setSessionMediaDataAction({
+        mediaData: data
+    })
+}
+
+export const getUserMediaListByCategory = (categories) => {
+    const mediaState = {...store.getState()[SESSION_STATE_KEY][SESSION_USER_MEDIA]};
+
+    if (!Array.isArray(categories)) {
+        console.warn("Media category option is not an array.")
+        return [];
+    }
+    let list = [];
+    categories.forEach(category => {
+        if (isSet(mediaState[category]) && Array.isArray(mediaState[category])) {
+            list = [...list, ...mediaState[category]];
+        }
+    })
+    return list;
+}
+
+export const checkUserInAction = (action) => {
+    if (!isSet(action?.user)) {
+        console.error("User request object invalid")
+        return false;
+    }
+    return true;
 }

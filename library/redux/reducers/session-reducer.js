@@ -4,11 +4,12 @@ import {
     SESSION_AUTHENTICATED,
     SESSION_AUTHENTICATING,
     SESSION_ERROR, SESSION_PAGE_PATH, SESSION_REDIRECT, SESSION_REDIRECT_ON, SESSION_REDIRECT_PATH, SESSION_STATE_KEY,
-    SESSION_USER
+    SESSION_USER, SESSION_USER_MEDIA
 } from "../constants/session-constants";
 
 const defaultState = {
     [SESSION_USER]: {},
+    [SESSION_USER_MEDIA]: {},
     [SESSION_AUTHENTICATED]: false,
     [SESSION_AUTHENTICATING]: true,
     [SESSION_PAGE_PATH]: null,
@@ -22,6 +23,9 @@ const defaultState = {
 const defaultReducers = {
     setSessionUser: (state, action) => {
         state[SESSION_USER] = action.payload;
+    },
+    setSessionUserMedia: (state, action) => {
+        state[SESSION_USER_MEDIA] = action.payload;
     },
     setSessionAuthenticated: (state, action) => {
         state[SESSION_AUTHENTICATED] = action.payload;
@@ -53,6 +57,7 @@ export const sessionApiSlice = createSlice({
 export const sessionApiReducer = sessionApiSlice.reducer;
 export const {
     setSessionUser,
+    setSessionUserMedia,
     setSessionAuthenticated,
     setSessionAuthenticating,
     setSessionPagePath,

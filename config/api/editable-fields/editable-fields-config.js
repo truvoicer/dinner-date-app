@@ -1,12 +1,14 @@
 import {USER_PROFILE_UPDATE} from "./editable-fields-constants";
 import {SESSION_USER_PROFILE_UPDATE_REQUESTED} from "../../../library/redux/sagas/user/user-sagas";
 import {isSet} from "../../../library/helpers/utils-helper";
+import store from "../../../library/redux/store";
+import {SESSION_STATE_KEY, SESSION_USER} from "../../../library/redux/constants/session-constants";
 
 export const getEditableField = (name) => {
-    if (!isSet(editableFieldsConfig[name])) {
+    if (!isSet(editableFieldsConfig()[name])) {
         return false;
     }
-    return editableFieldsConfig[name];
+    return editableFieldsConfig()[name];
 }
 export const getEditableFieldAction = (name) => {
     const action = getEditableField(name)?.action;
@@ -16,6 +18,9 @@ export const getEditableFieldAction = (name) => {
     }
     return action;
 }
+export const getEditableFieldData = (name) => {
+    return getEditableField(name)?.data || {};
+}
 export const getExtraFieldProps = (field) => {
     const props = {};
     if (isSet(field?.options)) {
@@ -23,8 +28,14 @@ export const getExtraFieldProps = (field) => {
     }
     return props;
 }
-export const editableFieldsConfig = {
-    [USER_PROFILE_UPDATE]: {
-        action: SESSION_USER_PROFILE_UPDATE_REQUESTED,
+export const editableFieldsConfig = () => {
+    const userState = store.getState()[SESSION_STATE_KEY][SESSION_USER];
+    return {
+        [USER_PROFILE_UPDATE]: {
+            action: SESSION_USER_PROFILE_UPDATE_REQUESTED,
+            data: {
+                user: {...userState}
+            }
+        }
     }
 }

@@ -5,6 +5,7 @@ import {isSet} from "../../../library/helpers/utils-helper";
 
 const EditableTextField = (props) => {
         const formik = useFormikContext();
+    console.log(formik.values[props.field])
         return (
             <div className={"editable-field--form--text"}>
                 {isSet(formik) &&

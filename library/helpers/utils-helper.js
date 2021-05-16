@@ -78,7 +78,7 @@ export const isObjectEmpty = (object) => {
 }
 
 export const isObject = (object) => {
-    return typeof object === "object";
+    return typeof object === "object" && object !== null;
 }
 
 export const scrollToRef = (ref) => {

@@ -32,7 +32,6 @@ const PillsTabbedBlock = (props) => {
                                         )
                                     })}
                                 </Nav>
-                            </div>
                             <Tab.Content>
                                 {props.config.tabs.map((tab, tabIndex) => (
                                     <Tab.Pane
@@ -50,6 +49,7 @@ const PillsTabbedBlock = (props) => {
                                     </Tab.Pane>
                                 ))}
                             </Tab.Content>
+                            </div>
                         </Tab.Container>
                     </article>
                 </div>

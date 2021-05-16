@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import FileUploadField from "../../forms/upload/FileUpload/FileUploadField";
 import store from "../../../library/redux/store";
-import {SESSION_USER_PROFILE_MEDIA_REQUESTED} from "../../../library/redux/sagas/user/user-sagas";
+import {SESSION_USER_MEDIA_UPDATE_REQUESTED} from "../../../library/redux/sagas/user/user-sagas";
 import {getUserMediaValue} from "../../../library/helpers/user-helper";
 import {SESSION_STATE_KEY, SESSION_USER} from "../../../library/redux/constants/session-constants";
 import {connect} from "react-redux";

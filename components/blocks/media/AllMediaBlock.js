@@ -1,89 +1,71 @@
-import React from 'react';
+import React, {useEffect} from 'react';
+import store from "../../../library/redux/store";
+import {SESSION_USER_MEDIA_FETCH_REQUESTED} from "../../../library/redux/sagas/user/user-sagas";
+import {connect} from "react-redux";
+import {SESSION_STATE_KEY, SESSION_USER} from "../../../library/redux/constants/session-constants";
+import {isObjectEmpty} from "../../../library/helpers/utils-helper";
+import {getUserMediaListByCategory} from "../../../library/helpers/user-helper";
 
-const AllMediaBlock = () => {
+const AllMediaBlock = ({session}) => {
+    const MEDIA_CATEGORIES = [
+        "media_photo",
+        "media_audio",
+        "media_video"
+    ]
+
+    useEffect(() => {
+        if (!isObjectEmpty(session[SESSION_USER])) {
+            store.dispatch({
+                type: SESSION_USER_MEDIA_FETCH_REQUESTED,
+                payload: {
+                    media_category: MEDIA_CATEGORIES
+                },
+                user: session[SESSION_USER]
+            })
+        }
+    }, []);
+
     return (
         <>
-        <div className="media-title">
-            <h3>Album Lists</h3>
-        </div>
-        <div className="media-content">
-        <ul className="media-upload">
-            <li className="upload-now">
-                <div className="custom-upload">
-                    <div className="file-btn"><i
-                        className="icofont-upload-alt"></i>
-                        Upload
+            <div className="media-title">
+                <h3>Media Gallery</h3>
+            </div>
+            <div className="media-content">
+                <ul className="media-upload">
+                    <li className="upload-now">
+                        <div className="custom-upload">
+                            <div className="file-btn">
+                                <i className="icofont-upload-alt"/>
+                                Upload
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <div className="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 row-cols-xl-4 g-3">
+                    {getUserMediaListByCategory(MEDIA_CATEGORIES).map((file, index) => (
+                    <div className="col" key={index}>
+                        <div className="media-thumb">
+                            <img src={file.public_url} alt="img"/>
+                        </div>
                     </div>
-                    <input type="file" />
+                    ))}
                 </div>
-            </li>
-        </ul>
-        <div className="row g-4">
-            <div className="col-lg-4 col-sm-6">
-                <div className="album text-center">
-                    <div className="album-thumb">
-                        <a href="#">
-                            <img src="assets/images/member/02.jpg"
-                                 alt="album" />
-                        </a>
-                    </div>
-                    <div className="album-content">
-                        <h6>Private</h6>
-
-                    </div>
+                <div className="load-btn">
+                    <a href="#" className="lab-btn">
+                        Load More
+                        <i className="icofont-spinner"/>
+                    </a>
                 </div>
             </div>
-            <div className="col-lg-4 col-sm-6">
-                <div className="album text-center">
-                    <div className="album-thumb">
-                        <a href="#">
-                            <img src="assets/images/member/03.jpg"
-                                 alt="album" />
-                        </a>
-                    </div>
-                    <div className="album-content">
-                        <h6>Crush</h6>
-
-                    </div>
-                </div>
-            </div>
-            <div className="col-lg-4 col-sm-6">
-                <div className="album text-center">
-                    <div className="album-thumb">
-                        <a href="#">
-                            <img src="assets/images/member/06.jpg"
-                                 alt="album" />
-                        </a>
-                    </div>
-                    <div className="album-content">
-                        <h6>Public</h6>
-
-                    </div>
-                </div>
-            </div>
-            <div className="col-lg-4 col-sm-6">
-                <div className="album text-center">
-                    <div className="album-thumb">
-                        <a href="#">
-                            <img src="assets/images/member/08.jpg"
-                                 alt="album" />
-                        </a>
-                    </div>
-                    <div className="album-content">
-                        <h6>Favorite</h6>
-
-                    </div>
-                </div>
-            </div>
-
-        </div>
-        <div className="load-btn">
-            <a href="#" className="lab-btn">Load More<i
-                className="icofont-spinner"></i></a>
-        </div>
-    </div>
-            </>
+        </>
     );
 };
 
-export default AllMediaBlock;
+export default connect(
+    (state) => {
+        return {
+            session: state[SESSION_STATE_KEY]
+        }
+    },
+    null
+)(AllMediaBlock);

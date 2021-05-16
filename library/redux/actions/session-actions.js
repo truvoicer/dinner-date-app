@@ -2,16 +2,21 @@ import store from "../store"
 import {
     setSessionAuthenticated,
     setSessionAuthenticating,
-    setSessionError, setSessionLoginRedirect, setSessionPagePath, setSessionRedirectOn, setSessionRedirectPath,
+    setSessionError,
+    setSessionRedirectOn,
+    setSessionRedirectPath,
+    setSessionUserMedia,
     setSessionUser
 } from "../reducers/session-reducer";
 import {
     SESSION_AUTHENTICATED,
     SESSION_AUTHENTICATING,
     SESSION_PAGE_PATH,
-    SESSION_STATE_KEY
+    SESSION_STATE_KEY, SESSION_USER_MEDIA
 } from "../constants/session-constants";
 import {logout, setAnonSessionState} from "../../api/session";
+import produce from "immer";
+import {isNotEmpty, isSet} from "../../helpers/utils-helper";
 
 export function isAuthenticated() {
     const sessionState = store.getState()[SESSION_STATE_KEY];
@@ -20,6 +25,20 @@ export function isAuthenticated() {
 export function setSessionUserAction(user) {
     store.dispatch(setSessionUser(user))
 }
+
+export function setSessionMediaDataAction({mediaData = []}) {
+    const mediaState = {...store.getState()[SESSION_STATE_KEY][SESSION_USER_MEDIA]};
+    const nextState = produce(mediaState, (draftState) => {
+        mediaData.forEach(file => {
+            if (!Array.isArray(draftState[file.media_category])) {
+                draftState[file.media_category] = [];
+            }
+            draftState[file.media_category] = mediaData;
+        })
+    })
+    store.dispatch(setSessionUserMedia(nextState))
+}
+
 export function setSessionAuthenticatedAction(status) {
     store.dispatch(setSessionAuthenticated(status))
 }

@@ -17,6 +17,7 @@ const EditableDateField = (props) => {
             }
             return dob;
         }
+        console.log(getDateValue())
         return (
             <div className={"editable-field--form--datepicker"}>
                 {isSet(formik) &&
