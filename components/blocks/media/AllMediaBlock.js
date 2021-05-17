@@ -1,10 +1,10 @@
 import React, {useEffect} from 'react';
 import store from "../../../library/redux/store";
-import {SESSION_USER_MEDIA_FETCH_REQUESTED} from "../../../library/redux/sagas/user/user-sagas";
 import {connect} from "react-redux";
 import {SESSION_STATE_KEY, SESSION_USER} from "../../../library/redux/constants/session-constants";
 import {isObjectEmpty} from "../../../library/helpers/utils-helper";
 import {getUserMediaListByCategory} from "../../../library/helpers/user-helper";
+import {USER_MEDIA_FETCH_REQUESTED} from "../../../library/redux/sagas/media/media-sagas";
 
 const AllMediaBlock = ({session}) => {
     const MEDIA_CATEGORIES = [
@@ -16,7 +16,7 @@ const AllMediaBlock = ({session}) => {
     useEffect(() => {
         if (!isObjectEmpty(session[SESSION_USER])) {
             store.dispatch({
-                type: SESSION_USER_MEDIA_FETCH_REQUESTED,
+                type: USER_MEDIA_FETCH_REQUESTED,
                 payload: {
                     media_category: MEDIA_CATEGORIES
                 },

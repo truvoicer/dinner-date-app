@@ -6,7 +6,6 @@ import {isSet} from "../../../library/helpers/utils-helper";
 const EditableMeasurementField = (props) => {
     const formik = useFormikContext();
     return (
-
         <div className={"editable-field--form--select d-flex"}>
             {isSet(formik) &&
             <>

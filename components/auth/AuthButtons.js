@@ -8,6 +8,7 @@ import {GlobalContext} from "../contexts/GlobalContext";
 import AuthLoginFormBlock from "../blocks/auth/AuthLoginFormBlock";
 import AuthSignUpFormBlock from "../blocks/auth/AuthSignUpFormBlock";
 import {connect} from "react-redux";
+import {MODAL_COMPONENT, MODAL_NAME, MODAL_SIZE} from "../layout/layouts/global/objects/modal-object";
 
 const AuthButtons = ({session}) => {
     const globalContext = useContext(GlobalContext);
@@ -26,9 +27,9 @@ const AuthButtons = ({session}) => {
                            onClick={(e) => {
                                 e.preventDefault();
                                 globalContext.showModal({
-                                    name: "login_form",
-                                    component: (<AuthLoginFormBlock />),
-                                    size: "md"
+                                    [MODAL_NAME]: "login_form",
+                                    [MODAL_COMPONENT]: (<AuthLoginFormBlock />),
+                                    [MODAL_SIZE]: "md"
                                 })
                             }}
                         >
@@ -42,9 +43,9 @@ const AuthButtons = ({session}) => {
                             onClick={(e) => {
                                 e.preventDefault();
                                 globalContext.showModal({
-                                    name: "login_form",
-                                    component: (<AuthSignUpFormBlock />),
-                                    size: "md"
+                                    [MODAL_NAME]: "login_form",
+                                    [MODAL_COMPONENT]: (<AuthSignUpFormBlock />),
+                                    [MODAL_SIZE]: "md"
                                 })
                             }}
                         >

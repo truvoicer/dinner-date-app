@@ -1,18 +1,14 @@
 import React, {useEffect, useState} from 'react';
-import Header from "./headers/Header";
-import Footer from "./footers/Footer";
 import {useRouter} from "next/router";
-import {SET_SESSION_REDIRECT_PATH} from "../../library/redux/sagas/session/session-sagas";
-import store from "../../library/redux/store";
+import {SET_SESSION_REDIRECT_PATH} from "../../../../library/redux/sagas/session/session-sagas";
+import store from "../../../../library/redux/store";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
-import {GlobalContext} from "../contexts/GlobalContext";
-import {
-    GLOBAL_STATE_KEY
-} from "../../library/redux/constants/global-constants";
-import {connect} from "react-redux";
+import {GlobalContext} from "../../../contexts/GlobalContext";
+import {MODAL_COMPONENT, MODAL_FOOTER, MODAL_HEADER, MODAL_NAME, MODAL_SHOW, MODAL_SIZE} from "./objects/modal-object";
+import {modalObject} from "./objects/modal-object";
 
-const FullLayout = ({children, global}) => {
+const GlobalLayout = ({children}) => {
     const router = useRouter();
     const [modalComponents, setModalComponents] = useState([]);
 
@@ -20,21 +16,14 @@ const FullLayout = ({children, global}) => {
         store.dispatch({type: SET_SESSION_REDIRECT_PATH, path: router.asPath})
     }, [router.asPath]);
 
-    const showModal = ({name, component, size = "md"}) => {
+    const showModal = (object) => {
         setModalComponents(modalComponents => {
             const cloneModalComponents = [...modalComponents];
-            const index = cloneModalComponents.findIndex(modal => modal.name === name);
+            const index = cloneModalComponents.findIndex(modal => modal[MODAL_NAME] === object[MODAL_NAME]);
             if (index === -1) {
-                cloneModalComponents.push({
-                    name: name,
-                    component: component,
-                    size: size,
-                    show: true
-                })
+                cloneModalComponents.push({...modalObject, ...object})
             } else {
-                cloneModalComponents[index].component = component;
-                cloneModalComponents[index].size = size;
-                cloneModalComponents[index].show = true;
+                cloneModalComponents[index] = {...modalObject, ...object};
             }
             return cloneModalComponents;
         })
@@ -43,50 +32,47 @@ const FullLayout = ({children, global}) => {
     const closeModal = (name) => {
         setModalComponents(modalComponents => {
             const cloneModalComponents = [...modalComponents];
-            const index = cloneModalComponents.findIndex(modal => modal.name === name);
+            const index = cloneModalComponents.findIndex(modal => modal[MODAL_NAME] === name);
             if (index !== -1) {
-                cloneModalComponents[index].show = false;
+                cloneModalComponents[index][MODAL_SHOW] = false;
             }
             return cloneModalComponents;
         })
     }
     const getModalComponent = (name) => {
-        const getComponent = modalComponents.find(modal => modal.name === name);
+        const getComponent = modalComponents.find(modal => modal[MODAL_NAME] === name);
         if (!getComponent) {
             return null;
         }
-        return getComponent.component;
+        return getComponent[MODAL_COMPONENT];
     }
     const [globalContext] = useState({
         showModal: showModal
     })
     return (
         <GlobalContext.Provider value={globalContext}>
-            <div className={"dinner-date-app"}>
-                <Header/>
                 {children}
-                <Footer/>
                 {modalComponents.map((modal, index) => {
                     return (
                         <Modal
                             key={index}
-                            show={modal.show}
-                            size={modal.size}
+                            show={modal[MODAL_SHOW]}
+                            size={modal[MODAL_SIZE]}
                             onHide={() => {
-                                closeModal(modal.name)
+                                closeModal(modal[MODAL_NAME])
                             }}
                             contentClassName={"global--modal-content"}
                         >
-                            {modal?.header &&
+                            {modal[MODAL_HEADER] &&
                             <Modal.Header closeButton>
-                                <Modal.Title>{modal.name}</Modal.Title>
+                                <Modal.Title>{modal[MODAL_NAME]}</Modal.Title>
                             </Modal.Header>
                             }
-                            <Modal.Body>{getModalComponent(modal.name)}</Modal.Body>
-                            {modal?.footer &&
+                            <Modal.Body>{getModalComponent(modal[MODAL_NAME])}</Modal.Body>
+                            {modal[MODAL_FOOTER] &&
                             <Modal.Footer>
                                 <Button variant="secondary" onClick={() => {
-                                    closeModal(modal.name)
+                                    closeModal(modal[MODAL_NAME])
                                 }}>
                                     Close
                                 </Button>
@@ -100,18 +86,7 @@ const FullLayout = ({children, global}) => {
                         </Modal>
                     );
                 })}
-            </div>
         </GlobalContext.Provider>
     );
 };
-
-function mapStateToProps(state) {
-    return {
-        global: state[GLOBAL_STATE_KEY]
-    };
-}
-
-export default connect(
-    mapStateToProps,
-    null
-)(FullLayout);
+export default GlobalLayout

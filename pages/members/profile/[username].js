@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import FullWidthLayout from "../../../components/layout/FullWidthLayout";
+import FullWidthLayout from "../../../components/layout/layouts/FullWidthLayout";
 import {useRouter} from "next/router";
 import {MEMBER_PROFILE_VIEW} from "../../../config/constants/views/view-constants";
 import ViewBuilder from "../../../components/views/builder/ViewBuilder";

@@ -1,18 +1,18 @@
 import React, {useEffect, useState} from 'react';
 import FileUploadField from "../../forms/upload/FileUpload/FileUploadField";
 import store from "../../../library/redux/store";
-import {SESSION_USER_MEDIA_UPDATE_REQUESTED} from "../../../library/redux/sagas/user/user-sagas";
 import {getUserMediaValue} from "../../../library/helpers/user-helper";
 import {SESSION_STATE_KEY, SESSION_USER} from "../../../library/redux/constants/session-constants";
 import {connect} from "react-redux";
 import {isNotEmpty, isSet} from "../../../library/helpers/utils-helper";
+import {USER_MEDIA_UPDATE_REQUESTED} from "../../../library/redux/sagas/media/media-sagas";
 
 const EditProfileBannerBlock = ({session}) => {
     const [profilePic, setProfilePic] = useState("images/profile/Profile.jpg")
     const [profileCover, setProfileCover] = useState("images/profile/cover.jpg")
     const fileUploadHandler = ({name, file}) => {
         store.dispatch({
-            type: SESSION_USER_MEDIA_UPDATE_REQUESTED,
+            type: USER_MEDIA_UPDATE_REQUESTED,
             payload: {
                 upload_type: "profile",
                 type: "image",

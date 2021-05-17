@@ -1,14 +1,14 @@
 import React, {useEffect} from 'react';
 import FileUploadField from "../../forms/upload/FileUpload/FileUploadField";
 import store from "../../../library/redux/store";
-import {
-    SESSION_USER_MEDIA_FETCH_REQUESTED,
-    SESSION_USER_MEDIA_UPDATE_REQUESTED
-} from "../../../library/redux/sagas/user/user-sagas";
 import {isObjectEmpty} from "../../../library/helpers/utils-helper";
 import {SESSION_STATE_KEY, SESSION_USER} from "../../../library/redux/constants/session-constants";
 import {connect} from "react-redux";
 import {getUserMediaListByCategory} from "../../../library/helpers/user-helper";
+import {
+    USER_MEDIA_FETCH_REQUESTED,
+    USER_MEDIA_UPDATE_REQUESTED
+} from "../../../library/redux/sagas/media/media-sagas";
 
 const PhotosMediaBlock = ({session}) => {
     const MEDIA_CATEGORIES = [
@@ -16,7 +16,7 @@ const PhotosMediaBlock = ({session}) => {
     ];
     const fileUploadHandler   = ({name, file}) => {
         store.dispatch({
-            type: SESSION_USER_MEDIA_UPDATE_REQUESTED,
+            type: USER_MEDIA_UPDATE_REQUESTED,
             payload: {
                 upload_type: "media",
                 type: "image",
@@ -29,7 +29,7 @@ const PhotosMediaBlock = ({session}) => {
     useEffect(() => {
         if (!isObjectEmpty(session[SESSION_USER])) {
             store.dispatch({
-                type: SESSION_USER_MEDIA_FETCH_REQUESTED,
+                type: USER_MEDIA_FETCH_REQUESTED,
                 payload: {
                     media_category: MEDIA_CATEGORIES
                 },

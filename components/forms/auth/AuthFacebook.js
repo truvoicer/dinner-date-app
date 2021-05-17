@@ -18,8 +18,6 @@ const AuthFacebook = ({session}) => {
     const providerName = "facebook";
 
     const onSuccess = (response) => {
-        console.log(response)
-
         if (!isNotEmpty(response) && isObject(response) && isObjectEmpty(response)) {
             console.error("Error fetching profile data from facebook")
         }

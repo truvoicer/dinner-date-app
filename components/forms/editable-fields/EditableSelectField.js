@@ -5,14 +5,17 @@ import {isSet} from "../../../library/helpers/utils-helper";
 
 const EditableSelectField = (props) => {
         const formik = useFormikContext();
-        console.log(formik.values[props.field])
+        useEffect(() => {
+            formik.setFieldValue(props.field, formik.values[props.field] || props.options[0].value)
+        }, [formik.values[props.field]]);
+
         return (
             <div className={"editable-field--form--select"}>
                 {isSet(formik) &&
                 <select
                     name={props.field}
                     onChange={formik.handleChange}
-                    value={formik.values[props.field] || ""}
+                    value={formik.values[props.field] || props.options[0].value}
                 >
                     {props.options.map((option, index) => (
                         <option

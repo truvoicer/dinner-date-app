@@ -109,6 +109,9 @@ export const routes = [
         href: "/account",
         showInHeader: true,
         viewConfig: loginViewConfig,
+        override: (router, globalContext, event) => {
+            event.preventDefault()
+        },
         access_control: {
             roles: [ROLE_USER, ROLE_ADMIN, ROLE_SUPER_ADMIN],
             memberships: [MEMBERSHIP_FREE, MEMBERSHIP_BRONZE, MEMBERSHIP_SILVER, MEMBERSHIP_GOLD, MEMBERSHIP_PLATINUM]

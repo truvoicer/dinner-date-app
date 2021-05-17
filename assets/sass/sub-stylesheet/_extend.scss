@@ -591,3 +591,13 @@ Tags: community, couple, creative, dating, groups, love template, matching, memb
         }
     }
 }
+
+%primary-modal-wrap {
+    border-radius: 8px;
+    box-shadow: 0px 2px 4px 0px rgba($color:$theme-color, $alpha:.3);
+    @extend %bg-primary;
+    padding: 40px;
+    text-align: center;
+    max-width: 505px;
+    margin: 0 auto 15px;
+}

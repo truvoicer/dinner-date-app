@@ -1,0 +1,11 @@
+.primary-modal-wrapper {
+  @extend %primary-modal-wrap;
+}
+.primary-button {
+  @extend %form-submit-button;
+  line-height: 30px;
+}
+.primary-text-input {
+  @extend %form-input;
+  margin: 0;
+}

@@ -1,0 +1,162 @@
+$duration: 0.8s;
+.clean-checkbox-list {
+  margin: auto;
+  padding: 50px;
+  background: #484848;
+
+  /*Checkboxes styles*/
+  input[type="checkbox"] { display: none; }
+
+  input[type="checkbox"] + label {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 20px;
+    font: 14px/20px 'Open Sans', Arial, sans-serif;
+    color: #ddd;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+  }
+
+  input[type="checkbox"] + label:last-child { margin-bottom: 0; }
+
+  input[type="checkbox"] + label:before {
+    content: '';
+    display: block;
+    width: 20px;
+    height: 20px;
+    border: 1px solid #6cc0e5;
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: .6;
+    -webkit-transition: all .12s, border-color .08s;
+    transition: all .12s, border-color .08s;
+  }
+
+  input[type="checkbox"]:checked + label:before {
+    width: 10px;
+    top: -5px;
+    left: 5px;
+    border-radius: 0;
+    opacity: 1;
+    border-top-color: transparent;
+    border-left-color: transparent;
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
+  }
+}
+
+.animated-checkbox-list {
+  background: #FFF;
+  font-size: 20px;
+  max-width: 15em;
+  margin: auto;
+  padding: 0.5em 1em;
+  box-shadow: 0 5px 30px rgba(0, 0, 0, 0.2);
+  .animated-checkbox-list--row {
+    display: block;
+    position: relative;
+    padding: 1em 1em 1em 16%;
+    margin: 0 auto;
+    cursor: pointer;
+    border-bottom: solid 1px #ddd;
+
+    &:last-child { border-bottom: none; }
+  }
+
+  .animated-checkbox-list--row__state {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+  }
+
+  .animated-checkbox-list--row__text {
+    $acolor: #1B4A4E;
+    color: saturate($acolor, 15%);
+    transition: all $duration/2 linear $duration/2;
+  }
+
+  .animated-checkbox-list--row__icon {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: auto;
+    margin: auto;
+
+    fill: none;
+    stroke: #27FDC7;
+    stroke-width: 2;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+  }
+
+
+  .animated-checkbox-list--row__line,
+  .animated-checkbox-list--row__box,
+  .animated-checkbox-list--row__check {
+    transition: stroke-dashoffset $duration cubic-bezier(.9,.0,.5,1);
+  }
+
+
+  .animated-checkbox-list--row__circle {
+    stroke: #27FDC7;
+    stroke-dasharray: 1 6;
+    stroke-width: 0;
+
+    transform-origin: 13.5px 12.5px;
+    transform: scale(0.4) rotate(0deg);
+    animation: none $duration linear; //cubic-bezier(.08,.56,.04,.98);
+
+    @keyframes explode {
+      //0% { stroke-width: 0; transform: scale(0.5) rotate(0deg); }
+      30% {
+        stroke-width: 3;
+        stroke-opacity: 1;
+        transform: scale(0.8) rotate(40deg);
+        //animation-timing-function: cubic-bezier(.89,.01,.95,.51);
+      }
+      100% {
+        stroke-width: 0;
+        stroke-opacity: 0;
+        transform: scale(1.1) rotate(60deg);
+        //animation-timing-function: cubic-bezier(.08,.56,.04,.98);
+      }
+    }
+  }
+
+  .animated-checkbox-list--row__box {
+    stroke-dasharray: 56.1053, 56.1053; stroke-dashoffset: 0;
+    transition-delay: $duration * 0.2;
+  }
+  .animated-checkbox-list--row__check {
+    stroke: #27FDC7;
+    stroke-dasharray: 9.8995, 9.8995; stroke-dashoffset: 9.8995;
+    transition-duration: $duration * 0.4;
+  }
+  .animated-checkbox-list--row__line {
+    stroke-dasharray: 168, 1684;
+    stroke-dashoffset: 168;
+  }
+  .animated-checkbox-list--row__circle {
+    animation-delay: $duration * 0.7;
+    animation-duration: $duration * 0.7;
+  }
+
+  .animated-checkbox-list--row__state:checked {
+
+    ~ .animated-checkbox-list--row__text { transition-delay: 0s; color: #5EBEC1; opacity: 0.6; }
+
+    ~ .animated-checkbox-list--row__icon .animated-checkbox-list--row__box { stroke-dashoffset: 56.1053; transition-delay: 0s; }
+    ~ .animated-checkbox-list--row__icon .animated-checkbox-list--row__line { stroke-dashoffset: -8; }
+    ~ .animated-checkbox-list--row__icon .animated-checkbox-list--row__check { stroke-dashoffset: 0; transition-delay: $duration * 0.6; }
+    ~ .animated-checkbox-list--row__icon .animated-checkbox-list--row__circle { animation-name: explode; }
+
+  }
+}
+

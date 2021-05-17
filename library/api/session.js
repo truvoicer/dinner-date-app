@@ -7,7 +7,6 @@ import {isNotEmpty} from "../helpers/utils-helper";
 import {ROLE_ANONYMOUS} from "../../config/constants/access-control/roles-constants";
 
 export const setTokenStorage = ({data}) => {
-    console.log(data)
     setSessionLocalStorage(data);
 }
 

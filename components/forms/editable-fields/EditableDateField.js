@@ -5,7 +5,6 @@ import {isSet} from "../../../library/helpers/utils-helper";
 import moment from "moment";
 import "react-datepicker/dist/react-datepicker.css";
 
-
 const EditableDateField = (props) => {
         const formik = useFormikContext();
         const getDateValue = () => {
@@ -17,7 +16,6 @@ const EditableDateField = (props) => {
             }
             return dob;
         }
-        console.log(getDateValue())
         return (
             <div className={"editable-field--form--datepicker"}>
                 {isSet(formik) &&
