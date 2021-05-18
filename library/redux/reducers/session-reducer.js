@@ -4,12 +4,15 @@ import {
     SESSION_AUTHENTICATED,
     SESSION_AUTHENTICATING,
     SESSION_ERROR, SESSION_PAGE_PATH, SESSION_REDIRECT, SESSION_REDIRECT_ON, SESSION_REDIRECT_PATH, SESSION_STATE_KEY,
-    SESSION_USER, SESSION_USER_MEDIA
+    SESSION_USER, SESSION_USER_MEDIA, SESSION_USER_MEDIA_COLLECTIONS, SESSION_USER_MEDIA_FILES
 } from "../constants/session-constants";
 
 const defaultState = {
     [SESSION_USER]: {},
-    [SESSION_USER_MEDIA]: {},
+    [SESSION_USER_MEDIA]: {
+        [SESSION_USER_MEDIA_COLLECTIONS]: {},
+        [SESSION_USER_MEDIA_FILES]: {}
+    },
     [SESSION_AUTHENTICATED]: false,
     [SESSION_AUTHENTICATING]: true,
     [SESSION_PAGE_PATH]: null,
@@ -24,8 +27,11 @@ const defaultReducers = {
     setSessionUser: (state, action) => {
         state[SESSION_USER] = action.payload;
     },
-    setSessionUserMedia: (state, action) => {
-        state[SESSION_USER_MEDIA] = action.payload;
+    setSessionUserMediaCollections: (state, action) => {
+        state[SESSION_USER_MEDIA][SESSION_USER_MEDIA_COLLECTIONS] = action.payload;
+    },
+    setSessionUserMediaFiles: (state, action) => {
+        state[SESSION_USER_MEDIA][SESSION_USER_MEDIA_FILES] = action.payload;
     },
     setSessionAuthenticated: (state, action) => {
         state[SESSION_AUTHENTICATED] = action.payload;
@@ -57,7 +63,8 @@ export const sessionApiSlice = createSlice({
 export const sessionApiReducer = sessionApiSlice.reducer;
 export const {
     setSessionUser,
-    setSessionUserMedia,
+    setSessionUserMediaCollections,
+    setSessionUserMediaFiles,
     setSessionAuthenticated,
     setSessionAuthenticating,
     setSessionPagePath,

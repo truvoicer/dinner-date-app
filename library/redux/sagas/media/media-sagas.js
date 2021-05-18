@@ -1,7 +1,7 @@
 import {all, takeLatest} from "redux-saga/effects";
-import {processUserMedia} from "../../../helpers/user-helper";
+import {processUserMediaCollections, processUserMediaFiles} from "../../../helpers/user-helper";
 import {setSessionUserState} from "../../../api/session";
-import {fetchUserMedia, mediaCollectionRequest, updateMedia} from "./media-saga-tasks";
+import {fetchUserMedia, mediaCollectionFetch, mediaCollectionRequest, updateMedia} from "./media-saga-tasks";
 
 export const USER_MEDIA_UPDATE_SUCCEEDED = "USER_MEDIA_UPDATE_SUCCEEDED";
 export const USER_MEDIA_UPDATE_FAILED = "USER_MEDIA_UPDATE_FAILED";
@@ -18,6 +18,10 @@ export const USER_MEDIA_FETCH_REQUESTED = "USER_MEDIA_FETCH_REQUESTED";
 export const MEDIA_COLLECTION_REQUEST_SUCCEEDED = "MEDIA_COLLECTION_REQUEST_SUCCEEDED";
 export const MEDIA_COLLECTION_REQUEST_FAILED = "MEDIA_COLLECTION_REQUEST_FAILED";
 export const MEDIA_COLLECTION_REQUEST = "MEDIA_COLLECTION_REQUEST";
+
+export const MEDIA_COLLECTION_FETCH_SUCCEEDED = "MEDIA_COLLECTION_FETCH_SUCCEEDED";
+export const MEDIA_COLLECTION_FETCH_FAILED = "MEDIA_COLLECTION_FETCH_FAILED";
+export const MEDIA_COLLECTION_FETCH_REQUESTED = "MEDIA_COLLECTION_FETCH_REQUESTED";
 
 function* sessionUserMediaUpdateRequestedSaga() {
     yield takeLatest(USER_MEDIA_UPDATE_REQUESTED, updateMedia);
@@ -40,7 +44,7 @@ function* sessionUserMediaFetchRequestedSaga() {
 }
 
 function* sessionUserMediaFetchSuccessSaga() {
-    yield takeLatest(USER_MEDIA_FETCH_SUCCEEDED, processUserMedia);
+    yield takeLatest(USER_MEDIA_FETCH_SUCCEEDED, processUserMediaFiles);
 }
 
 function* newMediaCollectionRequestedSaga() {
@@ -48,7 +52,15 @@ function* newMediaCollectionRequestedSaga() {
 }
 
 function* newMediaCollectionSuccessSaga() {
-    yield takeLatest(MEDIA_COLLECTION_REQUEST_SUCCEEDED, processUserMedia);
+    yield takeLatest(MEDIA_COLLECTION_REQUEST_SUCCEEDED, processUserMediaCollections);
+}
+
+function* mediaCollectionFetchRequestedSaga() {
+    yield takeLatest(MEDIA_COLLECTION_FETCH_REQUESTED, mediaCollectionFetch);
+}
+
+function* mediaCollectionFetchSuccessSaga() {
+    yield takeLatest(MEDIA_COLLECTION_FETCH_SUCCEEDED, processUserMediaCollections);
 }
 
 export default function* mediaSagas() {
@@ -58,6 +70,8 @@ export default function* mediaSagas() {
         sessionUserMediaFetchRequestedSaga(),
         sessionUserMediaFetchSuccessSaga(),
         newMediaCollectionRequestedSaga(),
-        newMediaCollectionSuccessSaga()
+        newMediaCollectionSuccessSaga(),
+        mediaCollectionFetchRequestedSaga(),
+        mediaCollectionFetchSuccessSaga()
     ]);
 }

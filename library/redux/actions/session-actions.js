@@ -5,14 +5,15 @@ import {
     setSessionError,
     setSessionRedirectOn,
     setSessionRedirectPath,
-    setSessionUserMedia,
+    setSessionUserMediaCollections,
+    setSessionUserMediaFiles,
     setSessionUser
 } from "../reducers/session-reducer";
 import {
     SESSION_AUTHENTICATED,
     SESSION_AUTHENTICATING,
     SESSION_PAGE_PATH,
-    SESSION_STATE_KEY, SESSION_USER_MEDIA
+    SESSION_STATE_KEY, SESSION_USER_MEDIA, SESSION_USER_MEDIA_COLLECTIONS, SESSION_USER_MEDIA_FILES
 } from "../constants/session-constants";
 import {logout, setAnonSessionState} from "../../api/session";
 import produce from "immer";
@@ -26,17 +27,34 @@ export function setSessionUserAction(user) {
     store.dispatch(setSessionUser(user))
 }
 
-export function setSessionMediaDataAction({mediaData = []}) {
-    const mediaState = {...store.getState()[SESSION_STATE_KEY][SESSION_USER_MEDIA]};
+export function setSessionMediaFilesAction({mediaData = []}) {
+    const mediaState = {...store.getState()[SESSION_STATE_KEY][SESSION_USER_MEDIA][SESSION_USER_MEDIA_FILES]};
     const nextState = produce(mediaState, (draftState) => {
         mediaData.forEach(file => {
             if (!Array.isArray(draftState[file.media_category])) {
                 draftState[file.media_category] = [];
             }
-            draftState[file.media_category] = mediaData;
+            draftState[file.media_category].push(file);
         })
     })
-    store.dispatch(setSessionUserMedia(nextState))
+    store.dispatch(setSessionUserMediaFiles(nextState))
+}
+
+export function setSessionMediaCollectionsAction({collections = []}) {
+    const collectionState = {...store.getState()[SESSION_STATE_KEY][SESSION_USER_MEDIA][SESSION_USER_MEDIA_COLLECTIONS]};
+    const nextState = produce(collectionState, (draftState) => {
+        draftState = {};
+        collections.forEach(collection => {
+            if (!Array.isArray(draftState[collection.media_collection.name])) {
+                draftState[collection.media_collection.name] = [];
+            }
+            console.log(collection)
+            draftState[collection.media_collection.name].push(collection);
+        })
+        console.log(draftState)
+        return draftState;
+    })
+    store.dispatch(setSessionUserMediaCollections(nextState))
 }
 
 export function setSessionAuthenticatedAction(status) {

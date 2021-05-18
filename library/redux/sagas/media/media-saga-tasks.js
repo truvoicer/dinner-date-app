@@ -1,8 +1,10 @@
 import {checkUserInAction} from "../../../helpers/user-helper";
 import {apiConfig} from "../../../../config/api/config";
 import {call, put} from "redux-saga/effects";
-import {fileUploadApiRequest, postRequest} from "../../../api/middleware";
+import {fetchRequest, fileUploadApiRequest, postRequest} from "../../../api/middleware";
 import {
+    MEDIA_COLLECTION_FETCH_FAILED,
+    MEDIA_COLLECTION_FETCH_SUCCEEDED,
     MEDIA_COLLECTION_REQUEST_FAILED,
     MEDIA_COLLECTION_REQUEST_SUCCEEDED,
     USER_MEDIA_FETCH_FAILED,
@@ -73,5 +75,26 @@ export function* mediaCollectionRequest(action) {
         yield put({type: MEDIA_COLLECTION_REQUEST_SUCCEEDED, data: data?.data});
     } catch (e) {
         yield put({type: MEDIA_COLLECTION_REQUEST_FAILED, message: e.message});
+    }
+}
+
+export function* mediaCollectionFetch(action) {
+    if (!checkUserInAction(action)) {
+        return;
+    }
+    if (!action?.payload?.collectionName) {
+        console.error("Collection name not set for collection fetch")
+        return;
+    }
+    try {
+        let responseData = yield call(fetchRequest, {
+            endpoint: sprintf(apiConfig.endpoints.media, action),
+            operation: `collection/${action.payload.collectionName}/list`,
+            data: action.payload
+        });
+        const {data} = responseData;
+        yield put({type: MEDIA_COLLECTION_FETCH_SUCCEEDED, data: data?.data});
+    } catch (e) {
+        yield put({type: MEDIA_COLLECTION_FETCH_FAILED, message: e.message});
     }
 }

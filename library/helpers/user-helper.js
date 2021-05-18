@@ -1,10 +1,15 @@
-import {SESSION_STATE_KEY, SESSION_USER, SESSION_USER_MEDIA} from "../redux/constants/session-constants";
+import {
+    SESSION_STATE_KEY,
+    SESSION_USER,
+    SESSION_USER_MEDIA,
+    SESSION_USER_MEDIA_FILES
+} from "../redux/constants/session-constants";
 import store from "../redux/store";
 import {isNotEmpty, isObject, isSet} from "./utils-helper";
 import React from "react";
 import {MEMBERS_SINGLE, MEMBERS_STATE_KEY} from "../redux/constants/members-constants";
 import {setSessionUserMedia} from "../redux/reducers/session-reducer";
-import {setSessionMediaDataAction} from "../redux/actions/session-actions";
+import {setSessionMediaCollectionsAction, setSessionMediaFilesAction} from "../redux/actions/session-actions";
 
 
 export const getUserProfileValue = (field) => {
@@ -92,14 +97,20 @@ export const getHeightUnitValue = (height_unit) => {
     }
 }
 
-export const processUserMedia = ({data}) => {
-    setSessionMediaDataAction({
+export const processUserMediaFiles = ({data}) => {
+    console.log(data)
+    setSessionMediaFilesAction({
         mediaData: data
+    })
+}
+export const processUserMediaCollections = ({data}) => {
+    setSessionMediaCollectionsAction({
+        collections: data
     })
 }
 
 export const getUserMediaListByCategory = (categories) => {
-    const mediaState = {...store.getState()[SESSION_STATE_KEY][SESSION_USER_MEDIA]};
+    const mediaState = {...store.getState()[SESSION_STATE_KEY][SESSION_USER_MEDIA][SESSION_USER_MEDIA_FILES]};
 
     if (!Array.isArray(categories)) {
         console.warn("Media category option is not an array.")

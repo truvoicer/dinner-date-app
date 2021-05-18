@@ -9,3 +9,17 @@
   @extend %form-input;
   margin: 0;
 }
+
+.modal-list-wrapper {
+  @extend %primary-modal-wrap;
+  padding: 0;
+  text-align: center;
+  width: 100%;
+  margin: 0 auto;
+  background: #484848;
+  border-radius: 0px;
+}
+
+.modal-list-dialog {
+  max-width: 200px;
+}

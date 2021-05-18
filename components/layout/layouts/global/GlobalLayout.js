@@ -5,7 +5,15 @@ import store from "../../../../library/redux/store";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import {GlobalContext} from "../../../contexts/GlobalContext";
-import {MODAL_COMPONENT, MODAL_FOOTER, MODAL_HEADER, MODAL_NAME, MODAL_SHOW, MODAL_SIZE} from "./objects/modal-object";
+import {
+    MODAL_COMPONENT,
+    MODAL_CONTENT_CLASSES, MODAL_DIALOG_CLASSES,
+    MODAL_FOOTER,
+    MODAL_HEADER,
+    MODAL_NAME,
+    MODAL_SHOW,
+    MODAL_SIZE
+} from "./objects/modal-object";
 import {modalObject} from "./objects/modal-object";
 
 const GlobalLayout = ({children}) => {
@@ -61,7 +69,9 @@ const GlobalLayout = ({children}) => {
                             onHide={() => {
                                 closeModal(modal[MODAL_NAME])
                             }}
-                            contentClassName={"global--modal-content"}
+                            className={"global-modal"}
+                            contentClassName={`global-modal--content ${modal[MODAL_CONTENT_CLASSES]}`}
+                            dialogClassName={`global-modal--dialog ${modal[MODAL_DIALOG_CLASSES]}`}
                         >
                             {modal[MODAL_HEADER] &&
                             <Modal.Header closeButton>

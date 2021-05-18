@@ -1,11 +1,25 @@
 import React, {useEffect, useState} from 'react';
-import {isNotEmpty} from "../../../library/helpers/utils-helper";
+import {isNotEmpty, isObject} from "../../../library/helpers/utils-helper";
 import {Form, Formik} from "formik";
-import {MEDIA_COLLECTION_REQUEST} from "../../../library/redux/sagas/media/media-sagas";
+import {
+    MEDIA_COLLECTION_FETCH_REQUESTED,
+    MEDIA_COLLECTION_REQUEST
+} from "../../../library/redux/sagas/media/media-sagas";
 import CleanCheckboxList from "../lists/CleanCheckboxList";
 import AnimatedCheckboxList from "../lists/AnimatedCheckboxList";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faPlus, faSave} from "@fortawesome/free-solid-svg-icons";
+import store from "../../../library/redux/store";
+import {
+    SESSION_STATE_KEY,
+    SESSION_USER,
+    SESSION_USER_MEDIA,
+    SESSION_USER_MEDIA_COLLECTIONS
+} from "../../../library/redux/constants/session-constants";
+import {connect} from "react-redux";
 
-const CollectionForm = ({collection, collectionName, onSuccess}) => {
+const CollectionForm = ({collection, collectionName, onSuccess, session}) => {
+    const [showCreateForm, setShowCreateForm] = useState(false);
     const [initialFormValues, setInitialFormValues] = useState({
         name: ""
     })
@@ -14,38 +28,38 @@ const CollectionForm = ({collection, collectionName, onSuccess}) => {
             setInitialFormValues({...initialFormValues, ...collection})
         }
     }, [collection]);
+
+    // useEffect(() => {
+    //     const userMediaCollections = user[SESSION_USER_MEDIA][SESSION_USER_MEDIA_COLLECTIONS];
+    //     if (!isNotEmpty(userMediaCollections[collectionName])) {
+    //
+    //     }
+    // }, [user[SESSION_USER_MEDIA][SESSION_USER_MEDIA_COLLECTIONS]]);
+
+    useEffect(() => {
+        store.dispatch({type: MEDIA_COLLECTION_FETCH_REQUESTED, payload: {collectionName: collectionName}, user: session[SESSION_USER]})
+    }, []);
+
     const submitHandler = (values, {setSubmitting}) => {
         setSubmitting(true);
         let requestData = {...values};
         requestData.collection_name = collectionName;
         onSuccess(requestData)
     }
+
+    const userMediaCollections = session[SESSION_USER_MEDIA][SESSION_USER_MEDIA_COLLECTIONS];
     return (
-        <div className={"collection-form primary-modal-wrapper"}>
-            <AnimatedCheckboxList
-                name={"checks"}
-                options={[
-                    {
-                        value: "one",
-                        label: "One"
-                    },
-                    {
-                        value: "two",
-                        label: "Two"
-                    },
-                    {
-                        value: "three",
-                        label: "Three"
-                    },
-                    {
-                        value: "four",
-                        label: "Four"
-                    },
-                ]}
-                callback={(values) => {
-                    console.log(values)
+        <div className={"collection-form modal-list-wrapper"}>
+            <a
+                className={"collection-form--create-trigger"}
+                onClick={(e) => {
+                    e.preventDefault();
+                    setShowCreateForm(!showCreateForm);
                 }}
-                />
+            >
+                <FontAwesomeIcon icon={faPlus} />
+            </a>
+            {showCreateForm &&
             <Formik
                 enableReinitialize={true}
                 validate={values => {
@@ -66,18 +80,39 @@ const CollectionForm = ({collection, collectionName, onSuccess}) => {
                             value={values.name}
                             onBlur={handleBlur}
                             onChange={handleChange}
+                            type={"text"}
                         />
                         <button
                             className={"primary-button lab-btn"}
                             type={"submit"}
                         >
-                            Add Album
+                            <FontAwesomeIcon icon={faSave} />
                         </button>
                     </Form>
                 )}
             </Formik>
+            }
+            <CleanCheckboxList
+                name={"checks"}
+                options={isNotEmpty(userMediaCollections[collectionName])? userMediaCollections[collectionName].map(item => {
+                    return {
+                        value: item.id,
+                        label: item.label
+                    }
+                }) : []}
+                callback={(values) => {
+                    console.log(values)
+                }}
+            />
+
         </div>
     );
 };
 
-export default CollectionForm;
+export default connect(
+    (state) => {
+        return {
+            session: state[SESSION_STATE_KEY]
+        }
+    }
+)(CollectionForm)

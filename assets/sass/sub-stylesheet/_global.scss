@@ -932,8 +932,12 @@
     background-color: transparent;
 }
 
-.global {
-    &--modal-content {
+.global-modal {
+    display: flex !important;
+    align-items: center;
+    &--dialog {
+    }
+    &--content {
         background-color: transparent;
         .modal-body {
             padding: 0
