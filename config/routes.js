@@ -5,7 +5,7 @@ import {
     ACCOUNT_SETTINGS_VIEW,
     ACCOUNT_VIEW,
     ALL_MEMBERS_VIEW, BLOG_VIEW,
-    COMMUNITY_VIEW,
+    COMMUNITY_VIEW, GALLERY_VIEW,
     HOME_VIEW, LOGIN_VIEW, LOGOUT_VIEW, MEMBER_PROFILE_VIEW,
     MEMBERS_VIEW, PROFILE_VIEW,
     SEARCH_MEMBERS_VIEW, SIGNUP_VIEW
@@ -174,6 +174,17 @@ export const routes = [
         viewConfig: signUpViewConfig,
         access_control: {
             roles: [ROLE_ANONYMOUS, ROLE_USER, ROLE_ADMIN, ROLE_SUPER_ADMIN],
+            memberships: [MEMBERSHIP_FREE, MEMBERSHIP_BRONZE, MEMBERSHIP_SILVER, MEMBERSHIP_GOLD, MEMBERSHIP_PLATINUM]
+        }
+    },
+    {
+        name: GALLERY_VIEW,
+        label: "Gallery",
+        href: "/profile/gallery",
+        showInHeader: false,
+        viewConfig: editProfileViewConfig,
+        access_control: {
+            roles: [ROLE_USER, ROLE_ADMIN, ROLE_SUPER_ADMIN],
             memberships: [MEMBERSHIP_FREE, MEMBERSHIP_BRONZE, MEMBERSHIP_SILVER, MEMBERSHIP_GOLD, MEMBERSHIP_PLATINUM]
         }
     },

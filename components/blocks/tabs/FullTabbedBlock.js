@@ -1,15 +1,36 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Nav, Tab} from 'react-bootstrap';
 import Link from "next/link";
 import FullWidthSection from "../../layout/sections/FullWidthSection";
 import EditProfileBannerBlock from "../profile/EditProfileBannerBlock";
-import {getComponent} from "../../../library/helpers/page-helper";
-import {isSet} from "../../../library/helpers/utils-helper";
+import {
+    getComponent,
+    getContentSidebarClasses,
+    getTabEventName,
+    getTabEventRouterObject
+} from "../../../library/helpers/page-helper";
+import {isNotEmpty, isSet} from "../../../library/helpers/utils-helper";
 import SearchMembersBoxWidget from "../../widgets/search/SearchMembersBoxWidget";
 import SuggestedMembersBoxWidget from "../../widgets/SuggestedMembersBoxWidget";
 import ActiveGroupsBoxWidget from "../../widgets/ActiveGroupsBoxWidget";
+import {useRouter} from "next/router";
 
 const FullTabbedBlock = (props) => {
+    const router = useRouter()
+    const [tabEvent, setTabEvent] = useState(null);
+    const [defaultTab, setDefaultTab] = useState(props.config.defaultTab);
+    const tabEventName = getTabEventName(props?.config?.tabBlockName)
+
+    useEffect(() => {
+        getTabEventRouterObject(tabEvent, tabEventName, router)
+    }, [tabEvent])
+
+    useEffect(() => {
+        if (isSet(router?.query[tabEventName])) {
+            setDefaultTab(router?.query[tabEventName])
+        }
+    }, [router.query]);
+
     return (
         <FullWidthSection
             className={"profile-section padding-tb"}
@@ -20,8 +41,7 @@ const FullTabbedBlock = (props) => {
                     props: props
                 })}
                 <div className="profile-details">
-
-                    <Tab.Container id="left-tabs-example" defaultActiveKey={props.config.defaultTab}>
+                    <Tab.Container id="left-tabs-example" defaultActiveKey={defaultTab} activeKey={defaultTab}>
                         <div className="profile-nav">
                             <Nav variant="tabs">
                                 {props.config.tabs.map((tab, tabIndex) => {
@@ -62,6 +82,9 @@ const FullTabbedBlock = (props) => {
                                         >
                                             <Nav.Link
                                                 eventKey={tab.name}
+                                                onSelect={(eventKey => {
+                                                    setTabEvent(eventKey)
+                                                })}
                                             >
                                                 {tab.label}
                                             </Nav.Link>
@@ -81,16 +104,19 @@ const FullTabbedBlock = (props) => {
 
                                     <div>
                                         <div className="row">
-                                            <div className="col-xl-8">
+                                            <div className={getContentSidebarClasses(tab).content}>
                                                 <article>
                                                     {getComponent({
                                                         component: tab.component,
-                                                        props: tab?.props
+                                                        props: {
+                                                            ...tab?.props,
+                                                            ...{rootTabEventName: tabEventName}
+                                                        }
                                                     })}
                                                 </article>
                                             </div>
 
-                                            <div className="col-xl-4">
+                                            <div className={getContentSidebarClasses(tab).sidebar}>
                                                 <aside className="mt-5 mt-xl-0">
                                                     <SearchMembersBoxWidget/>
                                                     <SuggestedMembersBoxWidget/>
@@ -103,7 +129,6 @@ const FullTabbedBlock = (props) => {
                             ))}
                         </Tab.Content>
                     </Tab.Container>
-
                 </div>
 
             </div>

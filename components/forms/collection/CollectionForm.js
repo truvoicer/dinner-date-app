@@ -2,7 +2,8 @@ import React, {useEffect, useState} from 'react';
 import {isNotEmpty, isObject} from "../../../library/helpers/utils-helper";
 import {Form, Formik} from "formik";
 import {
-    MEDIA_COLLECTION_FETCH_REQUESTED,
+    MEDIA_COLLECTION_ALL_TYPE,
+    MEDIA_COLLECTION_FETCH_REQUESTED, MEDIA_COLLECTION_LIST_TYPE,
     MEDIA_COLLECTION_REQUEST
 } from "../../../library/redux/sagas/media/media-sagas";
 import CleanCheckboxList from "../lists/CleanCheckboxList";
@@ -37,7 +38,12 @@ const CollectionForm = ({collection, collectionName, onSuccess, session}) => {
     // }, [user[SESSION_USER_MEDIA][SESSION_USER_MEDIA_COLLECTIONS]]);
 
     useEffect(() => {
-        store.dispatch({type: MEDIA_COLLECTION_FETCH_REQUESTED, payload: {collectionName: collectionName}, user: session[SESSION_USER]})
+        store.dispatch({
+            type: MEDIA_COLLECTION_FETCH_REQUESTED,
+            payload: {collectionName: collectionName},
+            collectionFetchType: MEDIA_COLLECTION_LIST_TYPE,
+            user: session[SESSION_USER]
+        })
     }, []);
 
     const submitHandler = (values, {setSubmitting}) => {

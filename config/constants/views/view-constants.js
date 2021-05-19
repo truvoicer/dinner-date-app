@@ -11,3 +11,4 @@ export const BLOG_VIEW = "blog";
 export const ACCOUNT_VIEW = "account";
 export const ACCOUNT_SETTINGS_VIEW = "account_settings";
 export const PROFILE_VIEW = "profile";
+export const GALLERY_VIEW = "gallery";

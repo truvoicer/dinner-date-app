@@ -8,7 +8,8 @@ import {
     MODAL_SIZE
 } from "../../layout/layouts/global/objects/modal-object";
 import {
-    MEDIA_COLLECTION_FETCH_REQUESTED,
+    MEDIA_COLLECTION_ALL_TYPE,
+    MEDIA_COLLECTION_FETCH_REQUESTED, MEDIA_COLLECTION_LIST_TYPE,
     MEDIA_COLLECTION_REQUEST
 } from "../../../library/redux/sagas/media/media-sagas";
 import store from "../../../library/redux/store";
@@ -20,16 +21,27 @@ import {
     SESSION_USER_MEDIA_COLLECTIONS
 } from "../../../library/redux/constants/session-constants";
 import {isNotEmpty} from "../../../library/helpers/utils-helper";
+import {useRouter} from "next/router";
+import Link from "next/link";
+import {getRouteItem} from "../../../library/helpers/page-helper";
+import {GALLERY_VIEW} from "../../../config/constants/views/view-constants";
 
-const AlbumsMediaBlock = ({session}) => {
+const AlbumsMediaBlock = ({session, parentTabEventName, rootTabEventName}) => {
+    const router = useRouter();
     const COLLECTION_NAME = "photo_album";
     const globalContext = useContext(GlobalContext);
 
     useEffect(() => {
-        store.dispatch({type: MEDIA_COLLECTION_FETCH_REQUESTED, payload: {collectionName: COLLECTION_NAME}, user: session[SESSION_USER]})
+        store.dispatch({
+            type: MEDIA_COLLECTION_FETCH_REQUESTED,
+            payload: {collectionName: COLLECTION_NAME},
+            collectionFetchType: MEDIA_COLLECTION_LIST_TYPE,
+            user: session[SESSION_USER]}
+        )
     }, []);
+
     const userMediaCollections = session[SESSION_USER_MEDIA][SESSION_USER_MEDIA_COLLECTIONS];
-    console.log(userMediaCollections[COLLECTION_NAME])
+    console.log(parentTabEventName, rootTabEventName, userMediaCollections[COLLECTION_NAME])
     return (
         <>
             <div className="media-title">
@@ -38,9 +50,7 @@ const AlbumsMediaBlock = ({session}) => {
             <div className="media-content">
                 <ul className="media-upload">
                     <li className="upload-now">
-                        <div className="custom-upload">
-                            <a
-                                className="file-btn"
+                        <a className="custom-upload file-btn"
                                 onClick={(e) => {
                                     e.preventDefault()
                                     globalContext.showModal({
@@ -62,7 +72,6 @@ const AlbumsMediaBlock = ({session}) => {
                                 <i className="icofont-upload-alt"/>
                                 New Album
                             </a>
-                        </div>
                     </li>
                 </ul>
                 <div className="row g-4">
@@ -70,9 +79,23 @@ const AlbumsMediaBlock = ({session}) => {
                         <div className="col-lg-4 col-sm-6" key={index}>
                             <div className="album text-center">
                                 <div className="album-thumb">
-                                    <a href="#">
+                                    <Link
+                                        href={{
+                                            pathname:getRouteItem(GALLERY_VIEW).href,
+                                            query: {
+                                                ...router.query,
+                                                ...{
+                                                    collection: collection.name,
+                                                    [rootTabEventName]: "gallery"
+                                                }
+                                            }
+                                        }}
+                                        shallow={true}
+                                    >
+                                    <a>
                                         <img src="/images/member/02.jpg" alt="album"/>
                                     </a>
+                                    </Link>
                                 </div>
                                 <div className="album-content">
                                     <h6>{collection.label}</h6>

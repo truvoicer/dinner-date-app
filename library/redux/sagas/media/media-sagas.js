@@ -3,6 +3,10 @@ import {processUserMediaCollections, processUserMediaFiles} from "../../../helpe
 import {setSessionUserState} from "../../../api/session";
 import {fetchUserMedia, mediaCollectionFetch, mediaCollectionRequest, updateMedia} from "./media-saga-tasks";
 
+export const MEDIA_COLLECTION_ALL_TYPE = "MEDIA_COLLECTION_ALL_TYPE"
+export const MEDIA_COLLECTION_LIST_TYPE = "MEDIA_COLLECTION_LIST_TYPE"
+export const MEDIA_COLLECTION_FILES_TYPE = "MEDIA_COLLECTION_FILES_TYPE"
+
 export const USER_MEDIA_UPDATE_SUCCEEDED = "USER_MEDIA_UPDATE_SUCCEEDED";
 export const USER_MEDIA_UPDATE_FAILED = "USER_MEDIA_UPDATE_FAILED";
 export const USER_MEDIA_UPDATE_REQUESTED = "USER_MEDIA_UPDATE_REQUESTED";

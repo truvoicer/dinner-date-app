@@ -3,8 +3,9 @@ import {apiConfig} from "../../../../config/api/config";
 import {call, put} from "redux-saga/effects";
 import {fetchRequest, fileUploadApiRequest, postRequest} from "../../../api/middleware";
 import {
+    MEDIA_COLLECTION_ALL_TYPE,
     MEDIA_COLLECTION_FETCH_FAILED,
-    MEDIA_COLLECTION_FETCH_SUCCEEDED,
+    MEDIA_COLLECTION_FETCH_SUCCEEDED, MEDIA_COLLECTION_FILES_TYPE, MEDIA_COLLECTION_LIST_TYPE,
     MEDIA_COLLECTION_REQUEST_FAILED,
     MEDIA_COLLECTION_REQUEST_SUCCEEDED,
     USER_MEDIA_FETCH_FAILED,
@@ -82,14 +83,30 @@ export function* mediaCollectionFetch(action) {
     if (!checkUserInAction(action)) {
         return;
     }
-    if (!action?.payload?.collectionName) {
-        console.error("Collection name not set for collection fetch")
-        return;
+    let endpoint, data;
+    switch (action?.collectionFetchType) {
+        case  MEDIA_COLLECTION_LIST_TYPE:
+            if (!action?.payload?.collectionName) {
+                console.error("Collection name not set for collection fetch")
+                return;
+            }
+            endpoint = `collection/${action.payload.collectionName}/list`;
+            break;
+        case MEDIA_COLLECTION_FILES_TYPE:
+            if (!action?.payload?.userCollectionName) {
+                console.error("User collection name not set for collection fetch")
+                return;
+            }
+            endpoint = `collection/${action.payload.userCollectionName}/file/list`;
+            break;
+        default:
+            console.error("Collection fetch type not set for collection fetch")
+            return;
     }
     try {
         let responseData = yield call(fetchRequest, {
             endpoint: sprintf(apiConfig.endpoints.media, action),
-            operation: `collection/${action.payload.collectionName}/list`,
+            operation: endpoint,
             data: action.payload
         });
         const {data} = responseData;

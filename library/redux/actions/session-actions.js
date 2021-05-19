@@ -48,10 +48,8 @@ export function setSessionMediaCollectionsAction({collections = []}) {
             if (!Array.isArray(draftState[collection.media_collection.name])) {
                 draftState[collection.media_collection.name] = [];
             }
-            console.log(collection)
             draftState[collection.media_collection.name].push(collection);
         })
-        console.log(draftState)
         return draftState;
     })
     store.dispatch(setSessionUserMediaCollections(nextState))

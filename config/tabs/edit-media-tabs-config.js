@@ -6,6 +6,7 @@ import MusicMediaBlock from "../../components/blocks/media/MusicMediaBlock";
 
 export const editMediaTabsConfig = {
     defaultTab: "all_media",
+    tabBlockName: "media",
     tabs: [
         {
             name: "all_media",

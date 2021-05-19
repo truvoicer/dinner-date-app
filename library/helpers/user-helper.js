@@ -98,7 +98,6 @@ export const getHeightUnitValue = (height_unit) => {
 }
 
 export const processUserMediaFiles = ({data}) => {
-    console.log(data)
     setSessionMediaFilesAction({
         mediaData: data
     })
@@ -111,7 +110,6 @@ export const processUserMediaCollections = ({data}) => {
 
 export const getUserMediaListByCategory = (categories) => {
     const mediaState = {...store.getState()[SESSION_STATE_KEY][SESSION_USER_MEDIA][SESSION_USER_MEDIA_FILES]};
-
     if (!Array.isArray(categories)) {
         console.warn("Media category option is not an array.")
         return [];
