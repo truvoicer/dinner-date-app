@@ -3,7 +3,11 @@ import {connect} from "react-redux";
 import {
     SESSION_AUTHENTICATED,
     SESSION_AUTHENTICATING,
-    SESSION_STATE_KEY, SESSION_USER,
+    SESSION_STATE_KEY,
+    SESSION_USER,
+    SESSION_USER_MEDIA,
+    SESSION_USER_MEDIA_COLLECTIONS,
+    SESSION_USER_MEDIA_COLLECTIONS_FILES,
 } from "../../../library/redux/constants/session-constants";
 import store from "../../../library/redux/store";
 import {SESSION_USER_FETCH_REQUESTED} from "../../../library/redux/sagas/session/session-sagas";
@@ -27,13 +31,6 @@ import {useRouter} from "next/router";
 
 const GalleryBlock = ({session}) => {
     const router = useRouter();
-    // useEffect(() => {
-    //     if (!isAuthenticated()) {
-    //         return;
-    //     }
-    //     // store.dispatch({type: SESSION_USER_FETCH_REQUESTED, payload: SESSION_USER_FETCH_REQUESTED, user: session[SESSION_USER]})
-    // }, [session[SESSION_AUTHENTICATING], session[SESSION_AUTHENTICATED]]);
-    //
     useEffect(() => {
         if (isNotEmpty(router?.query?.collection)) {
             store.dispatch({
@@ -46,6 +43,7 @@ const GalleryBlock = ({session}) => {
         }
     }, [router.query.collection])
 
+    const userMediaCollections = session[SESSION_USER_MEDIA][SESSION_USER_MEDIA_COLLECTIONS][SESSION_USER_MEDIA_COLLECTIONS_FILES];
     return (
         <>
             <div className="photo-title text-center border-radius-2 bg-theme p-1 mb-4">
@@ -53,125 +51,13 @@ const GalleryBlock = ({session}) => {
             </div>
             <div
                 className="row g-3 g-lg-4 justify-content-center row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 row-cols-xl-6">
-                <div className="col">
-                    <div className="gallery-img">
-                        <img src="/images/member/03.jpg" alt="image" className="rounded" />
+                {Array.isArray(userMediaCollections[router.query.collection]) && router.query.collection.map((file, index) => (
+                    <div className="col" key={index}>
+                        <div className="gallery-img">
+                            <img src="/images/member/03.jpg" alt="image" className="rounded" />
+                        </div>
                     </div>
-                </div>
-                <div className="col">
-                    <div className="gallery-img">
-                        <img src="/images/member/02.jpg" alt="image" className="rounded" />
-
-                    </div>
-                </div>
-                <div className="col">
-                    <div className="gallery-img">
-                        <img src="/images/member/01.jpg" alt="image" className="rounded" />
-
-                    </div>
-                </div>
-                <div className="col">
-                    <div className="gallery-img">
-                        <img src="/images/member/04.jpg" alt="image" className="rounded" />
-
-                    </div>
-                </div>
-                <div className="col">
-                    <div className="gallery-img">
-                        <img src="/images/member/05.jpg" alt="image" className="rounded" />
-
-                    </div>
-                </div>
-                <div className="col">
-                    <div className="gallery-img">
-                        <img src="/images/member/06.jpg" alt="image" className="rounded" />
-
-                    </div>
-                </div>
-                <div className="col">
-                    <div className="gallery-img">
-                        <img src="/images/member/07.jpg" alt="image" className="rounded" />
-
-                    </div>
-                </div>
-                <div className="col">
-                    <div className="gallery-img">
-                        <img src="/images/member/08.jpg" alt="image" className="rounded" />
-
-                    </div>
-                </div>
-                <div className="col">
-                    <div className="gallery-img">
-                        <img src="/images/member/09.jpg" alt="image" className="rounded" />
-
-                    </div>
-                </div>
-                <div className="col">
-                    <div className="gallery-img">
-                        <img src="/images/member/10.jpg" alt="image" className="rounded" />
-
-                    </div>
-                </div>
-                <div className="col">
-                    <div className="gallery-img">
-                        <img src="/images/member/11.jpg" alt="image" className="rounded" />
-
-                    </div>
-                </div>
-                <div className="col">
-                    <div className="gallery-img">
-                        <img src="/images/member/12.jpg" alt="image" className="rounded" />
-
-                    </div>
-                </div>
-                <div className="col">
-                    <div className="gallery-img">
-                        <img src="/images/member/13.jpg" alt="image" className="rounded" />
-
-                    </div>
-                </div>
-                <div className="col">
-                    <div className="gallery-img">
-                        <img src="/images/member/14.jpg" alt="image" className="rounded" />
-
-                    </div>
-                </div>
-                <div className="col">
-                    <div className="gallery-img">
-                        <img src="/images/member/15.jpg" alt="image" className="rounded" />
-
-                    </div>
-                </div>
-                <div className="col">
-                    <div className="gallery-img">
-                        <img src="/images/member/16.jpg" alt="image" className="rounded" />
-
-                    </div>
-                </div>
-                <div className="col">
-                    <div className="gallery-img">
-                        <img src="/images/member/17.jpg" alt="image" className="rounded" />
-
-                    </div>
-                </div>
-                <div className="col">
-                    <div className="gallery-img">
-                        <img src="/images/member/18.jpg" alt="image" className="rounded" />
-
-                    </div>
-                </div>
-                <div className="col">
-                    <div className="gallery-img">
-                        <img src="/images/member/19.jpg" alt="image" className="rounded" />
-
-                    </div>
-                </div>
-                <div className="col">
-                    <div className="gallery-img">
-                        <img src="/images/member/20.jpg" alt="image" className="rounded" />
-
-                    </div>
-                </div>
+                ))}
             </div>
             <div className="load-btn">
                 <a href="#" className="lab-btn">

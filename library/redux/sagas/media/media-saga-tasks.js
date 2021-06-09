@@ -83,7 +83,7 @@ export function* mediaCollectionFetch(action) {
     if (!checkUserInAction(action)) {
         return;
     }
-    let endpoint, data;
+    let endpoint;
     switch (action?.collectionFetchType) {
         case  MEDIA_COLLECTION_LIST_TYPE:
             if (!action?.payload?.collectionName) {
@@ -110,7 +110,7 @@ export function* mediaCollectionFetch(action) {
             data: action.payload
         });
         const {data} = responseData;
-        yield put({type: MEDIA_COLLECTION_FETCH_SUCCEEDED, data: data?.data});
+        yield put({type: MEDIA_COLLECTION_FETCH_SUCCEEDED, data: data?.data, collectionFetchType: action?.collectionFetchType});
     } catch (e) {
         yield put({type: MEDIA_COLLECTION_FETCH_FAILED, message: e.message});
     }

@@ -18,7 +18,7 @@ import {
     SESSION_STATE_KEY,
     SESSION_USER,
     SESSION_USER_MEDIA,
-    SESSION_USER_MEDIA_COLLECTIONS
+    SESSION_USER_MEDIA_COLLECTIONS, SESSION_USER_MEDIA_COLLECTIONS_LISTS
 } from "../../../library/redux/constants/session-constants";
 import {isNotEmpty} from "../../../library/helpers/utils-helper";
 import {useRouter} from "next/router";
@@ -32,16 +32,16 @@ const AlbumsMediaBlock = ({session, parentTabEventName, rootTabEventName}) => {
     const globalContext = useContext(GlobalContext);
 
     useEffect(() => {
+        console.log("MEDIA EVENT")
         store.dispatch({
             type: MEDIA_COLLECTION_FETCH_REQUESTED,
             payload: {collectionName: COLLECTION_NAME},
             collectionFetchType: MEDIA_COLLECTION_LIST_TYPE,
             user: session[SESSION_USER]}
         )
-    }, []);
+    }, [router?.query?.media_event]);
 
-    const userMediaCollections = session[SESSION_USER_MEDIA][SESSION_USER_MEDIA_COLLECTIONS];
-    console.log(parentTabEventName, rootTabEventName, userMediaCollections[COLLECTION_NAME])
+    const userMediaCollections = session[SESSION_USER_MEDIA][SESSION_USER_MEDIA_COLLECTIONS][SESSION_USER_MEDIA_COLLECTIONS_LISTS];
     return (
         <>
             <div className="media-title">

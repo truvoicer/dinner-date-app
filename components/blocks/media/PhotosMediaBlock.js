@@ -9,6 +9,7 @@ import {
     USER_MEDIA_FETCH_REQUESTED,
     USER_MEDIA_UPDATE_REQUESTED
 } from "../../../library/redux/sagas/media/media-sagas";
+import GalleryImageThumb from "../../media/GalleryImageThumb";
 
 const PhotosMediaBlock = ({session}) => {
     const MEDIA_CATEGORIES = [
@@ -64,13 +65,19 @@ const PhotosMediaBlock = ({session}) => {
                             </div>
                         </FileUploadField>
                     </li>
+                    <li className="upload-now">
+                        <div className="custom-upload">
+                            <div className="file-btn">
+                                <i className="icofont-upload-alt"/>
+                                Add to Album
+                            </div>
+                        </div>
+                    </li>
                 </ul>
                 <div className="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 row-cols-xl-4 g-3">
                     {getUserMediaListByCategory(MEDIA_CATEGORIES).map((file, index) => (
                         <div className="col" key={index}>
-                            <div className="media-thumb">
-                                <img src={file.public_url} alt="img" />
-                            </div>
+                            <GalleryImageThumb src={file.public_url} />
                         </div>
                     ))}
                 </div>

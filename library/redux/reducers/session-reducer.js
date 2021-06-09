@@ -3,14 +3,26 @@ import {createSlice} from "@reduxjs/toolkit";
 import {
     SESSION_AUTHENTICATED,
     SESSION_AUTHENTICATING,
-    SESSION_ERROR, SESSION_PAGE_PATH, SESSION_REDIRECT, SESSION_REDIRECT_ON, SESSION_REDIRECT_PATH, SESSION_STATE_KEY,
-    SESSION_USER, SESSION_USER_MEDIA, SESSION_USER_MEDIA_COLLECTIONS, SESSION_USER_MEDIA_FILES
+    SESSION_ERROR,
+    SESSION_PAGE_PATH,
+    SESSION_REDIRECT,
+    SESSION_REDIRECT_ON,
+    SESSION_REDIRECT_PATH,
+    SESSION_STATE_KEY,
+    SESSION_USER,
+    SESSION_USER_MEDIA,
+    SESSION_USER_MEDIA_COLLECTIONS, SESSION_USER_MEDIA_COLLECTIONS_FILES,
+    SESSION_USER_MEDIA_COLLECTIONS_LISTS,
+    SESSION_USER_MEDIA_FILES
 } from "../constants/session-constants";
 
 const defaultState = {
     [SESSION_USER]: {},
     [SESSION_USER_MEDIA]: {
-        [SESSION_USER_MEDIA_COLLECTIONS]: {},
+        [SESSION_USER_MEDIA_COLLECTIONS]: {
+            [SESSION_USER_MEDIA_COLLECTIONS_LISTS]: {},
+            [SESSION_USER_MEDIA_COLLECTIONS_FILES]: {}
+        },
         [SESSION_USER_MEDIA_FILES]: {}
     },
     [SESSION_AUTHENTICATED]: false,
@@ -29,6 +41,12 @@ const defaultReducers = {
     },
     setSessionUserMediaCollections: (state, action) => {
         state[SESSION_USER_MEDIA][SESSION_USER_MEDIA_COLLECTIONS] = action.payload;
+    },
+    setSessionUserMediaCollectionsLists: (state, action) => {
+        state[SESSION_USER_MEDIA][SESSION_USER_MEDIA_COLLECTIONS][SESSION_USER_MEDIA_COLLECTIONS_LISTS] = action.payload;
+    },
+    setSessionUserMediaCollectionsFiles: (state, action) => {
+        state[SESSION_USER_MEDIA][SESSION_USER_MEDIA_COLLECTIONS][SESSION_USER_MEDIA_COLLECTIONS_FILES] = action.payload;
     },
     setSessionUserMediaFiles: (state, action) => {
         state[SESSION_USER_MEDIA][SESSION_USER_MEDIA_FILES] = action.payload;
@@ -64,6 +82,8 @@ export const sessionApiReducer = sessionApiSlice.reducer;
 export const {
     setSessionUser,
     setSessionUserMediaCollections,
+    setSessionUserMediaCollectionsLists,
+    setSessionUserMediaCollectionsFiles,
     setSessionUserMediaFiles,
     setSessionAuthenticated,
     setSessionAuthenticating,

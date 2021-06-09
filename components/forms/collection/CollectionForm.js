@@ -15,7 +15,7 @@ import {
     SESSION_STATE_KEY,
     SESSION_USER,
     SESSION_USER_MEDIA,
-    SESSION_USER_MEDIA_COLLECTIONS
+    SESSION_USER_MEDIA_COLLECTIONS, SESSION_USER_MEDIA_COLLECTIONS_LISTS
 } from "../../../library/redux/constants/session-constants";
 import {connect} from "react-redux";
 
@@ -53,7 +53,7 @@ const CollectionForm = ({collection, collectionName, onSuccess, session}) => {
         onSuccess(requestData)
     }
 
-    const userMediaCollections = session[SESSION_USER_MEDIA][SESSION_USER_MEDIA_COLLECTIONS];
+    const userMediaCollections = session[SESSION_USER_MEDIA][SESSION_USER_MEDIA_COLLECTIONS][SESSION_USER_MEDIA_COLLECTIONS_LISTS];
     return (
         <div className={"collection-form modal-list-wrapper"}>
             <a

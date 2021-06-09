@@ -9,7 +9,12 @@ import {isNotEmpty, isObject, isSet} from "./utils-helper";
 import React from "react";
 import {MEMBERS_SINGLE, MEMBERS_STATE_KEY} from "../redux/constants/members-constants";
 import {setSessionUserMedia} from "../redux/reducers/session-reducer";
-import {setSessionMediaCollectionsAction, setSessionMediaFilesAction} from "../redux/actions/session-actions";
+import {
+    setSessionMediaCollectionFilesAction,
+    setSessionMediaCollectionsAction, setSessionMediaCollectionsFilesAction, setSessionMediaCollectionsListsAction,
+    setSessionMediaFilesAction
+} from "../redux/actions/session-actions";
+import {MEDIA_COLLECTION_FILES_TYPE, MEDIA_COLLECTION_LIST_TYPE} from "../redux/sagas/media/media-sagas";
 
 
 export const getUserProfileValue = (field) => {
@@ -102,10 +107,22 @@ export const processUserMediaFiles = ({data}) => {
         mediaData: data
     })
 }
-export const processUserMediaCollections = ({data}) => {
-    setSessionMediaCollectionsAction({
-        collections: data
-    })
+export const processUserMediaCollections = ({collectionFetchType, data}) => {
+    switch (collectionFetchType) {
+        case  MEDIA_COLLECTION_LIST_TYPE:
+            setSessionMediaCollectionsListsAction({
+                collections: data
+            })
+            break;
+        case MEDIA_COLLECTION_FILES_TYPE:
+            setSessionMediaCollectionsFilesAction({
+                collectionData: data
+            })
+            break;
+        default:
+            console.error("Collection fetch type not set for collection fetch")
+            return;
+    }
 }
 
 export const getUserMediaListByCategory = (categories) => {
