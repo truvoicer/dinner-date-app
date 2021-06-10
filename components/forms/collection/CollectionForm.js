@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {isNotEmpty, isObject} from "../../../library/helpers/utils-helper";
 import {Form, Formik} from "formik";
 import {
+    MEDIA_COLLECTION_ADD_FILE_TYPE,
     MEDIA_COLLECTION_ALL_TYPE,
     MEDIA_COLLECTION_FETCH_REQUESTED, MEDIA_COLLECTION_LIST_TYPE,
     MEDIA_COLLECTION_REQUEST
@@ -19,7 +20,7 @@ import {
 } from "../../../library/redux/constants/session-constants";
 import {connect} from "react-redux";
 
-const CollectionForm = ({collection, collectionName, onSuccess, session}) => {
+const CollectionForm = ({collection, collectionName, files, onSuccess, session}) => {
     const [showCreateForm, setShowCreateForm] = useState(false);
     const [initialFormValues, setInitialFormValues] = useState({
         name: ""
@@ -41,7 +42,7 @@ const CollectionForm = ({collection, collectionName, onSuccess, session}) => {
         store.dispatch({
             type: MEDIA_COLLECTION_FETCH_REQUESTED,
             payload: {collectionName: collectionName},
-            collectionFetchType: MEDIA_COLLECTION_LIST_TYPE,
+            collectionRequestType: MEDIA_COLLECTION_LIST_TYPE,
             user: session[SESSION_USER]
         })
     }, []);
@@ -108,6 +109,18 @@ const CollectionForm = ({collection, collectionName, onSuccess, session}) => {
                 }) : []}
                 callback={(values) => {
                     console.log(values)
+                }}
+                onClick={(value) => {
+                    store.dispatch({
+                        type: MEDIA_COLLECTION_REQUEST,
+                        payload: {
+                            userMediaCollectionId: value,
+                            files: files
+                        },
+                        collectionRequestType: MEDIA_COLLECTION_ADD_FILE_TYPE,
+                        user: session[SESSION_USER]
+                    })
+                    console.log(value)
                 }}
             />
 

@@ -41,7 +41,7 @@ const FullTabbedBlock = (props) => {
                     props: props
                 })}
                 <div className="profile-details">
-                    <Tab.Container id="left-tabs-example" defaultActiveKey={defaultTab} activeKey={defaultTab}>
+                    <Tab.Container id="left-tabs-example" defaultActiveKey={defaultTab} activeKey={defaultTab} mountOnEnter={true} unmountOnExit={true}>
                         <div className="profile-nav">
                             <Nav variant="tabs">
                                 {props.config.tabs.map((tab, tabIndex) => {

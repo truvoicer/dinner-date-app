@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 
-const CleanCheckboxList = ({name, options = [], callback}) => {
+const CleanCheckboxList = ({name, options = [], callback, onClick}) => {
     const [checkboxListValues, setCheckboxListValues] = useState([]);
 
     useEffect(() => {
@@ -15,6 +15,7 @@ const CleanCheckboxList = ({name, options = [], callback}) => {
                         type="checkbox"
                         value={option.value}
                         onClick={(e) => {
+                            onClick(option.value)
                             setCheckboxListValues(checkboxListValues => {
                                 let cloneArray = [...checkboxListValues];
                                 const findIndex = cloneArray.findIndex(item => option.value);

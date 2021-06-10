@@ -14,7 +14,11 @@ import {
     setSessionMediaCollectionsAction, setSessionMediaCollectionsFilesAction, setSessionMediaCollectionsListsAction,
     setSessionMediaFilesAction
 } from "../redux/actions/session-actions";
-import {MEDIA_COLLECTION_FILES_TYPE, MEDIA_COLLECTION_LIST_TYPE} from "../redux/sagas/media/media-sagas";
+import {
+    MEDIA_COLLECTION_ADD_FILE_TYPE, MEDIA_COLLECTION_ADD_TYPE,
+    MEDIA_COLLECTION_FILES_TYPE,
+    MEDIA_COLLECTION_LIST_TYPE
+} from "../redux/sagas/media/media-sagas";
 
 
 export const getUserProfileValue = (field) => {
@@ -107,8 +111,8 @@ export const processUserMediaFiles = ({data}) => {
         mediaData: data
     })
 }
-export const processUserMediaCollections = ({collectionFetchType, data}) => {
-    switch (collectionFetchType) {
+export const processUserMediaCollections = ({collectionRequestType, data}) => {
+    switch (collectionRequestType) {
         case  MEDIA_COLLECTION_LIST_TYPE:
             setSessionMediaCollectionsListsAction({
                 collections: data
@@ -119,6 +123,9 @@ export const processUserMediaCollections = ({collectionFetchType, data}) => {
                 collectionData: data
             })
             break;
+        case MEDIA_COLLECTION_ADD_FILE_TYPE:
+        case MEDIA_COLLECTION_ADD_TYPE:
+                break;
         default:
             console.error("Collection fetch type not set for collection fetch")
             return;

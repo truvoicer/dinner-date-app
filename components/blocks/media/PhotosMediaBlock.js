@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import FileUploadField from "../../forms/upload/FileUpload/FileUploadField";
 import store from "../../../library/redux/store";
 import {isObjectEmpty} from "../../../library/helpers/utils-helper";
@@ -10,25 +10,21 @@ import {
     USER_MEDIA_UPDATE_REQUESTED
 } from "../../../library/redux/sagas/media/media-sagas";
 import GalleryImageThumb from "../../media/GalleryImageThumb";
+import {Formik, Form, Field, FieldArray} from 'formik';
+import {
+    buildMediaFilesInitialFormValues,
+    mediaFilesSubmitHandler,
+    PHOTO_ALBUM_COLLECTION
+} from "../../../library/api/helpers/media-helpers";
+import MediaControlsForm from "../../forms/media/MediaControlsForm";
 
 const PhotosMediaBlock = ({session}) => {
     const MEDIA_CATEGORIES = [
         "media_photo"
     ];
-    const fileUploadHandler   = ({name, file}) => {
-        store.dispatch({
-            type: USER_MEDIA_UPDATE_REQUESTED,
-            payload: {
-                upload_type: "media",
-                type: "image",
-                media_category: name,
-                file: file
-            },
-            user: session[SESSION_USER]
-        })
-    }
     useEffect(() => {
         if (!isObjectEmpty(session[SESSION_USER])) {
+            console.log("hell")
             store.dispatch({
                 type: USER_MEDIA_FETCH_REQUESTED,
                 payload: {
@@ -38,49 +34,55 @@ const PhotosMediaBlock = ({session}) => {
             })
         }
     }, []);
+    console.log(getUserMediaListByCategory(MEDIA_CATEGORIES))
     return (
         <>
             <div className="media-title">
                 <h2>All Photos</h2>
             </div>
             <div className="media-content">
-                <ul className="media-upload">
-                    <li className="upload-now">
-                        <FileUploadField
-                            name={"media_photo"}
-                            callback={fileUploadHandler}
-                            acceptedFilesMessage={"Accepted"}
-                            allowedFileTypes={[
-                                {mime_type: "image/jpeg"},
-                                {mime_type: "image/png"},
-                                {mime_type: "image/jpg"}
-                            ]}
-                            showDropzone={true}
-                        >
-                            <div className="custom-upload">
-                                <div className="file-btn">
-                                    <i className="icofont-upload-alt"/>
-                                    Upload
-                                </div>
-                            </div>
-                        </FileUploadField>
-                    </li>
-                    <li className="upload-now">
-                        <div className="custom-upload">
-                            <div className="file-btn">
-                                <i className="icofont-upload-alt"/>
-                                Add to Album
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-                <div className="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 row-cols-xl-4 g-3">
-                    {getUserMediaListByCategory(MEDIA_CATEGORIES).map((file, index) => (
-                        <div className="col" key={index}>
-                            <GalleryImageThumb src={file.public_url} />
-                        </div>
-                    ))}
-                </div>
+                <Formik
+                    enableReinitialize={true}
+                    initialValues={buildMediaFilesInitialFormValues(getUserMediaListByCategory(MEDIA_CATEGORIES))}
+                    onSubmit={mediaFilesSubmitHandler}
+                >
+                    {({values, handleChange, handleSubmit, setFieldValue}) => {
+                        return (
+                            <>
+                                <MediaControlsForm collectionName={PHOTO_ALBUM_COLLECTION}/>
+                                <Form onSubmit={handleSubmit}>
+                                    <div
+                                        className="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 row-cols-xl-4 g-3">
+                                        {getUserMediaListByCategory(MEDIA_CATEGORIES).map((file, index) => {
+                                            return (
+                                                <div className="col" key={index}>
+                                                    <label>
+                                                        <GalleryImageThumb
+                                                            src={file.public_url}
+                                                            inputElement={(
+                                                                <input
+                                                                    className={"gallery-image-thumb__checkbox"}
+                                                                    type="checkbox"
+                                                                    name="files"
+                                                                    value={parseInt(file.id)}
+                                                                    onChange={handleChange}
+                                                                    checked={values.files.includes(file.id.toString())}
+                                                                    style={{
+                                                                        display: `${values.show_checkboxes ? "block" : "none"}`
+                                                                    }}
+                                                                />
+                                                            )}
+                                                        />
+                                                    </label>
+                                                </div>
+                                            )
+                                        })}
+                                    </div>
+                                </Form>
+                            </>
+                        )
+                    }}
+                </Formik>
                 <div className="load-btn">
                     <a href="#" className="lab-btn">
                         Load More

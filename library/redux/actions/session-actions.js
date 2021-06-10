@@ -35,6 +35,17 @@ export function setSessionMediaFilesAction({mediaData = []}) {
     const mediaState = {...store.getState()[SESSION_STATE_KEY][SESSION_USER_MEDIA][SESSION_USER_MEDIA_FILES]};
     const nextState = produce(mediaState, (draftState) => {
         mediaData.forEach(file => {
+            draftState[file.media_category] = [];
+            draftState[file.media_category].push(file);
+        })
+    })
+    store.dispatch(setSessionUserMediaFiles(nextState))
+}
+
+export function addSessionMediaFilesAction({mediaData = []}) {
+    const mediaState = {...store.getState()[SESSION_STATE_KEY][SESSION_USER_MEDIA][SESSION_USER_MEDIA_FILES]};
+    const nextState = produce(mediaState, (draftState) => {
+        mediaData.forEach(file => {
             if (!Array.isArray(draftState[file.media_category])) {
                 draftState[file.media_category] = [];
             }
@@ -48,11 +59,11 @@ export function setSessionMediaCollectionsAction({collections = []}) {
     console.log(collections)
     const collectionState = {...store.getState()[SESSION_STATE_KEY][SESSION_USER_MEDIA][SESSION_USER_MEDIA_COLLECTIONS]};
     store.dispatch(setSessionUserMediaCollections(
-        buildCollectionObject({collections: collections, collectionState: collectionState})
+        buildCollectionListObject({collections: collections, collectionState: collectionState})
     ))
 }
 
-function buildCollectionObject({collections = [], collectionState = {}}) {
+function buildCollectionListObject({collections = [], collectionState = {}}) {
     return produce(collectionState, (draftState) => {
         draftState = {};
         collections.forEach(collection => {
@@ -64,18 +75,31 @@ function buildCollectionObject({collections = [], collectionState = {}}) {
         return draftState;
     })
 }
+function buildCollectionObject({collection = [], collectionState = {}}) {
+    return produce(collectionState, (draftState) => {
+        draftState = {};
+        collection.file.forEach(file => {
+            if (!Array.isArray(draftState[collection.name])) {
+                draftState[collection.name] = [];
+            }
+            draftState[collection.name].push(file);
+        })
+        return draftState;
+    })
+}
 
 export function setSessionMediaCollectionsListsAction({collections = []}) {
     const collectionState = {...store.getState()[SESSION_STATE_KEY][SESSION_USER_MEDIA][SESSION_USER_MEDIA_COLLECTIONS][SESSION_USER_MEDIA_COLLECTIONS_LISTS]};
     store.dispatch(setSessionUserMediaCollectionsLists(
-        buildCollectionObject({collections: collections, collectionState: collectionState})
+        buildCollectionListObject({collections: collections, collectionState: collectionState})
     ))
 }
 
-export function setSessionMediaCollectionsFilesAction({collectionData = []}) {
+export function setSessionMediaCollectionsFilesAction({collectionData = {}}) {
+    console.log(collectionData)
     const collectionState = {...store.getState()[SESSION_STATE_KEY][SESSION_USER_MEDIA][SESSION_USER_MEDIA_COLLECTIONS][SESSION_USER_MEDIA_COLLECTIONS_FILES]};
     store.dispatch(setSessionUserMediaCollectionsFiles(
-        buildCollectionObject({collections: collectionData?.file || [], collectionState: collectionState})
+        buildCollectionObject({collection: collectionData || [], collectionState: collectionState})
     ))
 }
 

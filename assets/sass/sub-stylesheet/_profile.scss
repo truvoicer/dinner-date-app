@@ -567,7 +567,12 @@
 
                 .media-upload {
                     @extend %mb-10;
-
+                    li {
+                        display: inline-block;
+                        &:not(:first-child) {
+                            margin-left: 5px;
+                        }
+                    }
                     .upload-now {
                         .custom-upload {
                             @extend %bg-theme;

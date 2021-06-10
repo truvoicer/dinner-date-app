@@ -8,6 +8,7 @@ import {
     MODAL_SIZE
 } from "../../layout/layouts/global/objects/modal-object";
 import {
+    MEDIA_COLLECTION_ADD_TYPE,
     MEDIA_COLLECTION_ALL_TYPE,
     MEDIA_COLLECTION_FETCH_REQUESTED, MEDIA_COLLECTION_LIST_TYPE,
     MEDIA_COLLECTION_REQUEST
@@ -36,7 +37,7 @@ const AlbumsMediaBlock = ({session, parentTabEventName, rootTabEventName}) => {
         store.dispatch({
             type: MEDIA_COLLECTION_FETCH_REQUESTED,
             payload: {collectionName: COLLECTION_NAME},
-            collectionFetchType: MEDIA_COLLECTION_LIST_TYPE,
+            collectionRequestType: MEDIA_COLLECTION_LIST_TYPE,
             user: session[SESSION_USER]}
         )
     }, [router?.query?.media_event]);
@@ -61,7 +62,12 @@ const AlbumsMediaBlock = ({session, parentTabEventName, rootTabEventName}) => {
                                                 collectionName={COLLECTION_NAME}
                                                 onSuccess={(values) => {
                                                     console.log(values)
-                                                    store.dispatch({type: MEDIA_COLLECTION_REQUEST, payload: values, user: session[SESSION_USER]})
+                                                    store.dispatch({
+                                                        type: MEDIA_COLLECTION_REQUEST,
+                                                        collectionRequestType: MEDIA_COLLECTION_ADD_TYPE,
+                                                        payload: values,
+                                                        user: session[SESSION_USER]
+                                                    })
                                                 }}
                                             />
                                         ),

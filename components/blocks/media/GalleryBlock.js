@@ -36,7 +36,7 @@ const GalleryBlock = ({session}) => {
             store.dispatch({
                     type: MEDIA_COLLECTION_FETCH_REQUESTED,
                     payload: {userCollectionName: router.query.collection},
-                    collectionFetchType: MEDIA_COLLECTION_FILES_TYPE,
+                    collectionRequestType: MEDIA_COLLECTION_FILES_TYPE,
                     user: session[SESSION_USER]
                 }
             )
@@ -44,6 +44,7 @@ const GalleryBlock = ({session}) => {
     }, [router.query.collection])
 
     const userMediaCollections = session[SESSION_USER_MEDIA][SESSION_USER_MEDIA_COLLECTIONS][SESSION_USER_MEDIA_COLLECTIONS_FILES];
+
     return (
         <>
             <div className="photo-title text-center border-radius-2 bg-theme p-1 mb-4">
@@ -51,10 +52,10 @@ const GalleryBlock = ({session}) => {
             </div>
             <div
                 className="row g-3 g-lg-4 justify-content-center row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 row-cols-xl-6">
-                {Array.isArray(userMediaCollections[router.query.collection]) && router.query.collection.map((file, index) => (
+                {Array.isArray(userMediaCollections[router.query.collection]) && userMediaCollections[router.query.collection].map((file, index) => (
                     <div className="col" key={index}>
                         <div className="gallery-img">
-                            <img src="/images/member/03.jpg" alt="image" className="rounded" />
+                            <img src={file?.public_url} alt="image" className="rounded" />
                         </div>
                     </div>
                 ))}

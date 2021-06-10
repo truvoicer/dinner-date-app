@@ -3,6 +3,7 @@ import {apiConfig} from "../../../../config/api/config";
 import {call, put} from "redux-saga/effects";
 import {fetchRequest, fileUploadApiRequest, postRequest} from "../../../api/middleware";
 import {
+    MEDIA_COLLECTION_ADD_FILE_TYPE, MEDIA_COLLECTION_ADD_TYPE,
     MEDIA_COLLECTION_ALL_TYPE,
     MEDIA_COLLECTION_FETCH_FAILED,
     MEDIA_COLLECTION_FETCH_SUCCEEDED, MEDIA_COLLECTION_FILES_TYPE, MEDIA_COLLECTION_LIST_TYPE,
@@ -66,14 +67,33 @@ export function* mediaCollectionRequest(action) {
     if (!checkUserInAction(action)) {
         return;
     }
+    console.log(action)
+    let endpoint, operation;
+    switch (action?.collectionRequestType) {
+        case  MEDIA_COLLECTION_ADD_FILE_TYPE:
+            if (!action?.payload?.userMediaCollectionId || isNaN(action.payload.userMediaCollectionId)) {
+                return;
+            }
+            endpoint = sprintf(apiConfig.endpoints.media, action);
+            operation = `collection/${action.payload.userMediaCollectionId}/file/add`;
+            break;
+        case MEDIA_COLLECTION_ADD_TYPE:
+            endpoint = sprintf(apiConfig.endpoints.media, action);
+            operation = "collection/create";
+            break;
+        default:
+            console.error("Collection fetch type not set for collection fetch")
+            return;
+    }
     try {
         let responseData = yield call(postRequest, {
-            endpoint: sprintf(apiConfig.endpoints.media, action),
-            operation: "collection/create",
+            endpoint: endpoint,
+            operation: operation,
             requestData: action.payload
         });
         const {data} = responseData;
         yield put({type: MEDIA_COLLECTION_REQUEST_SUCCEEDED, data: data?.data});
+
     } catch (e) {
         yield put({type: MEDIA_COLLECTION_REQUEST_FAILED, message: e.message});
     }
@@ -84,7 +104,7 @@ export function* mediaCollectionFetch(action) {
         return;
     }
     let endpoint;
-    switch (action?.collectionFetchType) {
+    switch (action?.collectionRequestType) {
         case  MEDIA_COLLECTION_LIST_TYPE:
             if (!action?.payload?.collectionName) {
                 console.error("Collection name not set for collection fetch")
@@ -110,7 +130,7 @@ export function* mediaCollectionFetch(action) {
             data: action.payload
         });
         const {data} = responseData;
-        yield put({type: MEDIA_COLLECTION_FETCH_SUCCEEDED, data: data?.data, collectionFetchType: action?.collectionFetchType});
+        yield put({type: MEDIA_COLLECTION_FETCH_SUCCEEDED, data: data?.data, collectionRequestType: action?.collectionRequestType});
     } catch (e) {
         yield put({type: MEDIA_COLLECTION_FETCH_FAILED, message: e.message});
     }

@@ -2,9 +2,10 @@ import React from 'react';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPlus} from "@fortawesome/free-solid-svg-icons";
 
-const GalleryImageThumb = ({src = ""}) => {
+const GalleryImageThumb = ({src = "", inputElement}) => {
     return (
         <div className="gallery-image-thumb">
+            {inputElement}
             <img src={src} alt="img" />
             <div className="gallery-image-thumb--add">
                 <a

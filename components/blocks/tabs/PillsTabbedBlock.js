@@ -26,7 +26,7 @@ const PillsTabbedBlock = (props) => {
             <div className="row">
                 <div className="col-xl-12">
                     <article>
-                        <Tab.Container id="left-tabs-example" defaultActiveKey={defaultTab} activeKey={defaultTab}>
+                        <Tab.Container id="left-tabs-example" defaultActiveKey={defaultTab} activeKey={defaultTab} mountOnEnter={true} unmountOnExit={true}>
                             <div className="media-wrapper">
                                 <Nav variant="tabs">
                                     {props.config.tabs.map((tab, tabIndex) => {
