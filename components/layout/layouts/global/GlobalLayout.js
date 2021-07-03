@@ -12,13 +12,30 @@ import {
     MODAL_HEADER,
     MODAL_NAME,
     MODAL_SHOW,
-    MODAL_SIZE
+    MODAL_SIZE,
+    modalObject
 } from "./objects/modal-object";
-import {modalObject} from "./objects/modal-object";
+
+import {
+    CHOICE_MODAL_DIALOG_CLASSES,
+    CHOICE_MODAL_SHOW,
+    CHOICE_MODAL_CONTENT_CLASSES,
+    choiceModalObject,
+    CHOICE_MODAL_BUTTONS,
+    CHOICE_MODAL_BUTTON_CLOSE,
+    CHOICE_MODAL_BUTTON_CALLBACK,
+    CHOICE_MODAL_BUTTON_TEXT,
+    CHOICE_MODAL_BUTTON_CALLBACK_PROPS,
+    CHOICE_MODAL_DESCRIPTION,
+    CHOICE_MODAL_TITLE,
+    CHOICE_MODAL_BUTTON_VARIANT, CHOICE_MODAL_CONFIRM_CALLBACK, CHOICE_MODAL_CANCEL_CALLBACK
+} from "./objects/choice-modal-object";
+import {isNotEmpty} from "../../../../library/helpers/utils-helper";
 
 const GlobalLayout = ({children}) => {
     const router = useRouter();
     const [modalComponents, setModalComponents] = useState([]);
+    const [choiceModal, setChoiceModal] = useState(choiceModalObject);
 
     useEffect(() => {
         store.dispatch({type: SET_SESSION_REDIRECT_PATH, path: router.asPath})
@@ -37,6 +54,14 @@ const GlobalLayout = ({children}) => {
         })
     }
 
+    const showChoiceModal = (object) => {
+        setChoiceModal(choiceModal => {
+            const cloneChoiceModal = {...choiceModal};
+            object[CHOICE_MODAL_SHOW] = true;
+            return {...cloneChoiceModal, ...object};
+        })
+    }
+
     const closeModal = (name) => {
         setModalComponents(modalComponents => {
             const cloneModalComponents = [...modalComponents];
@@ -47,6 +72,23 @@ const GlobalLayout = ({children}) => {
             return cloneModalComponents;
         })
     }
+
+    const closeChoiceModal = () => {
+        setChoiceModal(choiceModal => {
+            const cloneChoiceModal = {...choiceModal};
+            cloneChoiceModal[CHOICE_MODAL_SHOW] = false;
+            return cloneChoiceModal;
+        })
+    }
+
+    const [globalContext] = useState({
+        showModal: showModal,
+        closeModal: closeModal,
+        showChoiceModal: showChoiceModal,
+        closeChoiceModal: closeChoiceModal
+    })
+
+
     const getModalComponent = (name) => {
         const getComponent = modalComponents.find(modal => modal[MODAL_NAME] === name);
         if (!getComponent) {
@@ -54,9 +96,17 @@ const GlobalLayout = ({children}) => {
         }
         return getComponent[MODAL_COMPONENT];
     }
-    const [globalContext] = useState({
-        showModal: showModal
-    })
+
+    const getChoiceModalVariant = (button) => {
+        if (button.hasOwnProperty(CHOICE_MODAL_BUTTON_CLOSE) && button[CHOICE_MODAL_BUTTON_CLOSE]) {
+            return "secondary";
+        }
+        if (button.hasOwnProperty(CHOICE_MODAL_BUTTON_VARIANT) && isNotEmpty(button[CHOICE_MODAL_BUTTON_VARIANT])) {
+            return button[CHOICE_MODAL_BUTTON_VARIANT];
+        }
+        return "primary";
+    }
+
     return (
         <GlobalContext.Provider value={globalContext}>
                 {children}
@@ -96,6 +146,50 @@ const GlobalLayout = ({children}) => {
                         </Modal>
                     );
                 })}
+                <Modal
+                    show={choiceModal[CHOICE_MODAL_SHOW]}
+                    className={"global-choice-modal"}
+                    contentClassName={`global-choice-modal--content ${choiceModal[CHOICE_MODAL_CONTENT_CLASSES]}`}
+                    dialogClassName={`global-choice-modal--dialog ${choiceModal[CHOICE_MODAL_DIALOG_CLASSES]}`}
+                    onHide={() => {
+                        closeChoiceModal()
+                    }}
+                    backdrop="static"
+                    keyboard={false}
+                >
+                    <Modal.Header closeButton>
+                        <Modal.Title>{choiceModal[CHOICE_MODAL_TITLE]}</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        {choiceModal[CHOICE_MODAL_DESCRIPTION]}
+                    </Modal.Body>
+                    <Modal.Footer>
+                        {choiceModal[CHOICE_MODAL_BUTTONS].map((button, index) => (
+                            <Button
+                                variant={getChoiceModalVariant(button)}
+                                onClick={() => {
+                                    if (button.hasOwnProperty(CHOICE_MODAL_BUTTON_CLOSE) && button[CHOICE_MODAL_BUTTON_CLOSE]) {
+                                        if (choiceModal.hasOwnProperty(CHOICE_MODAL_CANCEL_CALLBACK) && choiceModal[CHOICE_MODAL_CANCEL_CALLBACK] instanceof Function) {
+                                            choiceModal[CHOICE_MODAL_CANCEL_CALLBACK]();
+                                        } else {
+                                            closeChoiceModal();
+                                        }
+                                        return;
+                                    }
+                                    if (button.hasOwnProperty(CHOICE_MODAL_BUTTON_CALLBACK) && button[CHOICE_MODAL_BUTTON_CALLBACK] instanceof Function) {
+                                        button[CHOICE_MODAL_BUTTON_CALLBACK](button[CHOICE_MODAL_BUTTON_CALLBACK_PROPS]);
+                                    } else if (choiceModal.hasOwnProperty(CHOICE_MODAL_CONFIRM_CALLBACK) && choiceModal[CHOICE_MODAL_CONFIRM_CALLBACK] instanceof Function) {
+                                        choiceModal[CHOICE_MODAL_CONFIRM_CALLBACK](choiceModal[CHOICE_MODAL_BUTTON_CALLBACK_PROPS]);
+                                    } else {
+                                        console.warn(`Button [${button[CHOICE_MODAL_BUTTON_TEXT]}] has no callback`)
+                                    }
+                                }}
+                            >
+                                {button[CHOICE_MODAL_BUTTON_TEXT]}
+                            </Button>
+                        ))}
+                    </Modal.Footer>
+                </Modal>
         </GlobalContext.Provider>
     );
 };

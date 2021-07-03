@@ -1,7 +1,13 @@
 import {all, takeEvery} from "redux-saga/effects";
 import {processUserMediaCollections, processUserMediaFiles} from "../../../helpers/user-helper";
 import {setSessionUserState} from "../../../api/session";
-import {fetchUserMedia, mediaCollectionFetch, mediaCollectionRequest, updateMedia} from "./media-saga-tasks";
+import {
+    deleteMedia,
+    fetchUserMedia,
+    mediaCollectionFetch,
+    mediaCollectionRequest,
+    updateMedia
+} from "./media-saga-tasks";
 
 export const MEDIA_COLLECTION_ALL_TYPE = "MEDIA_COLLECTION_ALL_TYPE"
 export const MEDIA_COLLECTION_LIST_TYPE = "MEDIA_COLLECTION_LIST_TYPE"
@@ -38,7 +44,7 @@ function* sessionUserMediaUpdateSuccessSaga() {
 }
 
 function* sessionUserMediaDeleteRequestedSaga() {
-    yield takeEvery(USER_MEDIA_DELETE_REQUESTED, updateMedia);
+    yield takeEvery(USER_MEDIA_DELETE_REQUESTED, deleteMedia);
 }
 
 function* sessionUserMediaDeleteSuccessSaga() {
@@ -75,9 +81,11 @@ export default function* mediaSagas() {
         sessionUserMediaUpdateSuccessSaga(),
         sessionUserMediaFetchRequestedSaga(),
         sessionUserMediaFetchSuccessSaga(),
+        sessionUserMediaDeleteRequestedSaga(),
+        sessionUserMediaDeleteSuccessSaga(),
         newMediaCollectionRequestedSaga(),
         newMediaCollectionSuccessSaga(),
         mediaCollectionFetchRequestedSaga(),
-        mediaCollectionFetchSuccessSaga()
+        mediaCollectionFetchSuccessSaga(),
     ]);
 }

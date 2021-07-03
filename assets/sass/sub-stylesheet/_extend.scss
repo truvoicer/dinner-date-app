@@ -601,3 +601,20 @@ Tags: community, couple, creative, dating, groups, love template, matching, memb
     max-width: 505px;
     margin: 0 auto 15px;
 }
+
+%global-modal {
+    display: flex !important;
+    align-items: center;
+}
+
+%global-modal-content {
+    background-color: transparent;
+    .modal-body {
+        padding: 0
+    }
+    .close {
+        appearance: none;
+        background-color: transparent;
+        border: none;
+    }
+}

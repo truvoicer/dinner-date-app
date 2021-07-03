@@ -13,7 +13,7 @@ export const modalObject = {
     [MODAL_CONTENT_CLASSES]: "",
     [MODAL_DIALOG_CLASSES]: "",
     [MODAL_SIZE]: "md",
-    [MODAL_SHOW]: true,
+    [MODAL_SHOW]: false,
     [MODAL_HEADER]: false,
     [MODAL_FOOTER]: false
 }

@@ -49,7 +49,7 @@ const PhotosMediaBlock = ({session}) => {
                     {({values, handleChange, handleSubmit, setFieldValue}) => {
                         return (
                             <>
-                                <MediaControlsForm collectionName={PHOTO_ALBUM_COLLECTION}/>
+                                <MediaControlsForm collectionName={PHOTO_ALBUM_COLLECTION} mediaCategory={"media_photo"}/>
                                 <Form onSubmit={handleSubmit}>
                                     <div
                                         className="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 row-cols-xl-4 g-3">

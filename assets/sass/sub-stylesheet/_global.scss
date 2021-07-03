@@ -933,14 +933,19 @@
 }
 
 .global-modal {
-    display: flex !important;
-    align-items: center;
-    &--dialog {
-    }
+    @extend %global-modal;
     &--content {
-        background-color: transparent;
+        @extend %global-modal-content;
+    }
+}
+
+.global-choice-modal {
+    @extend %global-modal;
+    &--content {
+        @extend %global-modal-content;
+        background-color: #19161f;
         .modal-body {
-            padding: 0
+            padding: 1rem 1rem;
         }
     }
 }
