@@ -46,8 +46,10 @@ const GlobalLayout = ({children}) => {
             const cloneModalComponents = [...modalComponents];
             const index = cloneModalComponents.findIndex(modal => modal[MODAL_NAME] === object[MODAL_NAME]);
             if (index === -1) {
+                object[MODAL_SHOW] = true;
                 cloneModalComponents.push({...modalObject, ...object})
             } else {
+                object[MODAL_SHOW] = true;
                 cloneModalComponents[index] = {...modalObject, ...object};
             }
             return cloneModalComponents;
@@ -106,11 +108,12 @@ const GlobalLayout = ({children}) => {
         }
         return "primary";
     }
-
+    console.log({modalComponents})
     return (
         <GlobalContext.Provider value={globalContext}>
                 {children}
                 {modalComponents.map((modal, index) => {
+                    console.log({modal})
                     return (
                         <Modal
                             key={index}
@@ -166,6 +169,7 @@ const GlobalLayout = ({children}) => {
                     <Modal.Footer>
                         {choiceModal[CHOICE_MODAL_BUTTONS].map((button, index) => (
                             <Button
+                                key={index}
                                 variant={getChoiceModalVariant(button)}
                                 onClick={() => {
                                     if (button.hasOwnProperty(CHOICE_MODAL_BUTTON_CLOSE) && button[CHOICE_MODAL_BUTTON_CLOSE]) {
